@@ -3,13 +3,11 @@
 ---
 <header class="site-header">
   <div class="container">
+    <!-- Premium Logo Section with original logo.webp -->
     <div class="logo-area">
       <a href="/" class="logo-link">
-        <img src="/logo.webp" alt="DigiSone Global Logo" class="main-logo" />
-        <div class="logo-text-group">
-          <span class="logo-text-bold">DigiSone</span>
-          <span class="logo-text-light">Global</span>
-        </div>
+        <img src="/logo.webp" alt="DigiSone Global Logo" class="main-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
+        <span class="logo-fallback"><span class="logo-text-bold">DigiSone</span><span class="logo-text-light">Global</span></span>
       </a>
       <span class="tagline">Origin: Sonbhadra <span class="separator">|</span> Impact: Global</span>
     </div>
@@ -80,21 +78,20 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
 
   .main-logo {
-    height: 34px;
+    height: 38px; /* Perfectly scaled premium size */
     width: auto;
     object-fit: contain;
   }
 
-  /* Written Logo Layout next to image */
-  .logo-text-group {
-    display: flex;
-    align-items: center;
-    font-size: 1.35rem;
-    line-height: 1;
+  /* Fallback layout if image fails to load */
+  .logo-fallback {
+    display: none;
+    font-size: 1.4rem;
+    line-height: 1.2;
     letter-spacing: -0.02em;
   }
 
@@ -106,13 +103,12 @@
   .logo-text-light {
     color: #2563eb;
     font-weight: 500;
-    margin-left: 1px;
   }
 
   .tagline {
     font-size: 0.68rem;
     color: #64748b;
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -169,13 +165,13 @@
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: #ffffff;
     padding: 0.55rem 1.4rem;
-    border-radius: 50px;
+    border-radius: 50px; /* Capsule pill design */
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
     font-weight: 500;
   }
 
   .nav-link.contact-btn::after {
-    display: none;
+    display: none; /* Disables underline on CTA button */
   }
 
   .nav-link.contact-btn:hover {
@@ -245,12 +241,12 @@
     }
 
     .nav-link::after {
-      display: none;
+      display: none; /* Disables standard hover line on mobile menu */
     }
 
     .nav-link:hover {
       background-color: #f8fafc;
-      padding-left: 2.3rem;
+      padding-left: 2.3rem; /* Small indentation slide on mobile touch */
     }
 
     .contact-btn-wrapper {
