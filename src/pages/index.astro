@@ -8,8 +8,9 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate));
 
-const featured = sortedPosts.length > 0 ? sortedPosts[0] : null;
-const latestPosts = sortedPosts.slice(1, 7);
+const featured = sortedPosts[0];
+const latestPosts = sortedPosts.slice(1, 10);
+const trendingPosts = sortedPosts.slice(0, 5);
 ---
 
 <!doctype html>
@@ -17,88 +18,129 @@ const latestPosts = sortedPosts.slice(1, 7);
 <head>
 	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 </head>
-<body class="bg-[#05060f] text-slate-200 font-sans antialiased">
+<body class="bg-zinc-950 text-slate-200 font-sans antialiased">
 
-	<header class="sticky top-0 z-50 bg-[#05060f]/95 backdrop-blur-xl border-b border-white/5">
+	<!-- Top Bar -->
+	<div class="bg-black py-2 text-xs border-b border-zinc-800">
+		<div class="max-w-screen-2xl mx-auto px-6 flex justify-between items-center">
+			<div class="flex items-center gap-4">
+				<span class="text-emerald-400 font-medium flex items-center gap-1">
+					<i class="fa-solid fa-bolt"></i> LIVE
+				</span>
+				<span class="hidden md:block">Latest: OpenAI o3 model expected this year</span>
+			</div>
+			<div class="text-slate-400 text-xs">Enterprise Tech Intelligence</div>
+		</div>
+	</div>
+
+	<!-- Header -->
+	<header class="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800">
 		<Header />
 	</header>
 
-	<!-- HERO -->
-	<section class="relative min-h-screen flex items-center hero-bg bg-cover bg-center" 
-			 style="background-image: url('https://picsum.photos/id/1015/2000/1200')">
-		<div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-[#05060f]"></div>
-		
-		<div class="relative max-w-5xl mx-auto px-6 pt-24 pb-20">
-			{featured ? (
+	<!-- Premium Hero -->
+	<section class="relative h-screen flex items-center bg-cover bg-center" 
+			 style="background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('https://picsum.photos/id/1015/2000/1200')">
+		<div class="max-w-screen-2xl mx-auto px-6 relative z-10">
+			{featured && (
 				<div class="max-w-3xl">
-					<div class="inline-flex items-center gap-2 uppercase text-xs tracking-widest text-emerald-400 mb-6">
-						<span class="relative flex h-2 w-2">
-							<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-							<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-						</span>
-						Featured
+					<div class="inline-flex bg-white/10 backdrop-blur-md px-5 py-1.5 rounded-full text-xs font-medium mb-6 border border-white/20">
+						FEATURED STORY
 					</div>
-
-					<a href={`/blog/${featured.slug}`} class="block group">
-						<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-none text-white group-hover:text-indigo-200 transition-colors">
+					<a href={`/blog/${featured.slug}`} class="block">
+						<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-none text-white">
 							{featured.data.title}
 						</h1>
 					</a>
-
-					<p class="mt-6 text-lg md:text-xl text-slate-300 max-w-2xl">
+					<p class="mt-6 text-xl text-slate-300 max-w-xl">
 						{featured.data.description}
 					</p>
-
-					<div class="mt-10 flex flex-wrap gap-6 items-center">
-						<a href={`/blog/${featured.slug}`} 
-						   class="px-9 py-5 bg-white hover:bg-indigo-500 text-black hover:text-white font-semibold rounded-2xl transition-all">
-							Read Full Story
+					<div class="mt-10 flex items-center gap-6">
+						<a href={`/blog/${featured.slug}`} class="bg-white text-black px-8 py-4 rounded-2xl font-semibold hover:bg-cyan-400 transition-all">
+							Read Full Analysis →
 						</a>
-						<div>
-							<p class="font-medium">{featured.data.author}</p>
-							<p class="text-xs text-slate-400">
-								{new Date(featured.data.pubDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-							</p>
+						<div class="text-sm">
+							By <span class="font-medium">{featured.data.author}</span><br>
+							<span class="text-slate-400 text-xs">
+								{new Date(featured.data.pubDate).toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})}
+							</span>
 						</div>
 					</div>
 				</div>
-			) : (
-				<p class="text-red-400">No posts found. Please add content to src/content/blog/</p>
 			)}
 		</div>
 	</section>
 
-	<div class="max-w-7xl mx-auto px-6 py-16">
+	<div class="max-w-screen-2xl mx-auto px-6 py-16">
 
-		<!-- Latest Articles -->
-		<section class="mb-20">
-			<h2 class="text-4xl font-bold mb-10">Latest Intelligence</h2>
-			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-				{latestPosts.length > 0 ? latestPosts.map(post => (
-					<a href={`/blog/${post.slug}`} class="group">
-						<div class="bg-[#0f1322] rounded-3xl overflow-hidden card-hover">
-							<img src={post.data.image || `https://picsum.photos/id/${Math.floor(Math.random() * 100) + 10}/800/450`} 
-								 class="w-full h-48 object-cover" alt={post.data.title} />
-							<div class="p-6">
-								<p class="text-xs uppercase text-violet-400 mb-2">{post.data.category || 'Tech'}</p>
-								<h3 class="font-semibold text-lg leading-tight group-hover:text-indigo-300 transition-colors line-clamp-3">
+		<div class="grid lg:grid-cols-12 gap-12">
+
+			<!-- Main Feed -->
+			<div class="lg:col-span-8 space-y-16">
+				<h2 class="text-3xl font-semibold tracking-tight border-b border-zinc-800 pb-4">Latest Stories</h2>
+
+				<div class="space-y-14">
+					{latestPosts.map(post => (
+						<div class="group grid md:grid-cols-5 gap-8">
+							<div class="md:col-span-3">
+								<img src={post.data.image || `https://picsum.photos/id/${Math.floor(Math.random()*100)+50}/800/500`} 
+									 class="w-full aspect-video object-cover rounded-3xl" alt={post.data.title} />
+							</div>
+							<div class="md:col-span-2 flex flex-col justify-center">
+								<div class="uppercase text-xs tracking-widest text-cyan-400">{post.data.category || 'Technology'}</div>
+								<a href={`/blog/${post.slug}`} class="mt-3 block text-2xl font-semibold leading-tight group-hover:text-cyan-300 transition-colors">
 									{post.data.title}
-								</h3>
-								<p class="text-slate-400 text-sm mt-4 line-clamp-2">{post.data.description}</p>
+								</a>
+								<p class="text-slate-400 mt-4 line-clamp-3 text-[15.5px]">{post.data.description}</p>
+								<div class="mt-6 text-xs text-slate-500">
+									{post.data.author} • {new Date(post.data.pubDate).toLocaleDateString('en-US', {month:'short', day:'numeric'})}
+								</div>
 							</div>
 						</div>
-					</a>
-				)) : <p>No articles available yet.</p>}
+					))}
+				</div>
 			</div>
-		</section>
 
+			<!-- Sidebar -->
+			<aside class="lg:col-span-4 space-y-12">
+
+				<!-- Trending -->
+				<div>
+					<h3 class="flex items-center gap-2 text-rose-400 uppercase text-xs tracking-widest font-medium mb-6">
+						<i class="fa-solid fa-fire"></i> Trending
+					</h3>
+					<div class="space-y-7">
+						{trendingPosts.map((post, i) => (
+							<a href={`/blog/${post.slug}`} class="flex gap-4 group">
+								<span class="text-4xl font-bold text-white/10 group-hover:text-white/30">{(i+1).toString().padStart(2, '0')}</span>
+								<div class="flex-1">
+									<p class="line-clamp-2 font-medium leading-tight group-hover:text-white transition-colors">{post.data.title}</p>
+									<p class="text-xs text-slate-500 mt-2">{post.data.author}</p>
+								</div>
+							</a>
+						))}
+					</div>
+				</div>
+
+				<!-- Newsletter -->
+				<div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-8">
+					<h3 class="text-xl font-semibold">The Pulse Newsletter</h3>
+					<p class="text-sm text-slate-400 mt-2">Curated tech insights. Every Sunday morning.</p>
+					<div class="mt-6">
+						<input type="email" placeholder="you@company.com" 
+							class="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-5 py-4 text-sm" />
+						<button class="mt-4 w-full bg-white text-black py-4 rounded-2xl font-semibold hover:bg-cyan-400 transition-all">
+							Subscribe Now
+						</button>
+					</div>
+				</div>
+
+			</aside>
+		</div>
 	</div>
 
 	<Footer />
-
-	<script>
-		// Tailwind script already included
-	</script>
 </body>
 </html>
