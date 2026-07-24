@@ -1,404 +1,175 @@
-
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>DigiSone • Premium Tech News &amp; Analysis</title>
-		<meta name="description" content="DigiSone delivers breaking news, in-depth analysis, and premium insights on AI, startups, gadgets, enterprise tech, and the future of innovation." />
-		<script src="https://cdn.tailwindcss.com"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-		<style>
-			@layer utilities {
-				.hero-bg {
-					background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
-				}
-				.article-card {
-					transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-				}
-				.article-card:hover {
-					transform: translateY(-8px);
-					box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-				}
-				.nav-link {
-					position: relative;
-				}
-				.nav-link:after {
-					content: '';
-					position: absolute;
-					width: 0;
-					height: 2px;
-					bottom: -2px;
-					left: 0;
-					background-color: #22d3ee;
-					transition: width 0.3s ease;
-				}
-				.nav-link:hover:after {
-					width: 100%;
-				}
-			}
-		</style>
-	</head>
-	<body class="bg-zinc-950 text-zinc-200 font-sans">
-		<!-- Top Bar -->
-		<div class="bg-black py-2 text-xs border-b border-zinc-800">
-			<div class="max-w-screen-2xl mx-auto px-6 flex items-center justify-between">
-				<div class="flex items-center gap-6">
-					<div class="flex items-center gap-1.5 text-emerald-400">
-						<i class="fa-solid fa-bolt"></i>
-						<span class="font-medium">LIVE</span>
-					</div>
-					<p class="hidden md:block">OpenAI's o3 model rumored for December release • <span class="text-zinc-400">2m ago</span></p>
-				</div>
-				<div class="flex items-center gap-4 text-sm">
-					<a href="#" class="hover:text-white transition-colors">Newsletters</a>
-					<a href="#" class="hover:text-white transition-colors">Events</a>
-					<a href="#" class="hover:text-white transition-colors">Podcasts</a>
-					<button onclick="toggleDarkMode()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-900">
-						<i class="fa-solid fa-moon"></i>
-					</button>
-				</div>
-			</div>
-		</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DigiSone • Premium Tech News</title>
+  <meta name="description" content="Breaking tech news, AI, startups, hardware &amp; more." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <style>
+    .hero-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+    }
+    .article-card {
+      transition: all 0.3s ease;
+    }
+    .article-card:hover {
+      transform: translateY(-6px);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #22d3ee;
+      transition: width 0.3s;
+    }
+    .nav-link:hover:after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
 
-		<!-- Navigation -->
-		<nav class="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800">
-			<div class="max-w-screen-2xl mx-auto px-6">
-				<div class="flex items-center justify-between h-16">
-					<!-- Logo -->
-					<div class="flex items-center gap-3">
-						<div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-violet-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">D</div>
-						<div>
-							<span class="text-3xl font-semibold tracking-tighter">DigiSone</span>
-						</div>
-					</div>
+  <!-- Top Live Bar -->
+  <div class="bg-black py-2.5 text-xs border-b border-zinc-800">
+    <div class="max-w-screen-2xl mx-auto px-5 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-emerald-400 flex items-center gap-1 font-medium">
+          <i class="fa-solid fa-bolt"></i> LIVE
+        </span>
+        <span class="hidden sm:inline">OpenAI o3 model rumored for December • 2m ago</span>
+      </div>
+    </div>
+  </div>
 
-					<!-- Menu -->
-					<div class="hidden md:flex items-center gap-8 text-sm font-medium">
-						<a href="#" class="nav-link text-white">Latest</a>
-						<a href="#" class="nav-link">AI &amp; ML</a>
-						<a href="#" class="nav-link">Startups</a>
-						<a href="#" class="nav-link">Hardware</a>
-						<a href="#" class="nav-link">Enterprise</a>
-						<a href="#" class="nav-link">Security</a>
-						<a href="#" class="nav-link">VC &amp; Funding</a>
-					</div>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800">
+    <div class="max-w-screen-2xl mx-auto px-5">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-violet-600 rounded-2xl flex items-center justify-center text-xl font-bold">D</div>
+          <span class="text-3xl font-semibold tracking-tighter">DigiSone</span>
+        </div>
 
-					<div class="flex items-center gap-4">
-						<div class="relative hidden md:block">
-							<input type="text" id="search" 
-								   class="bg-zinc-900 border border-zinc-700 focus:border-cyan-400 rounded-full pl-10 py-2 w-72 text-sm focus:outline-none transition-colors"
-								   placeholder="Search DigiSone..." />
-							<i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-zinc-500"></i>
-						</div>
-						<button class="bg-white text-black px-6 py-2 rounded-full font-semibold text-sm hover:bg-cyan-400 hover:text-black transition-all flex items-center gap-2">
-							<i class="fa-solid fa-newspaper"></i>
-							<span>Subscribe</span>
-						</button>
-						<button class="md:hidden text-2xl">
-							<i class="fa-solid fa-bars"></i>
-						</button>
-					</div>
-				</div>
-			</div>
-		</nav>
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium">
+          <a href="#" class="nav-link">Latest</a>
+          <a href="#" class="nav-link">AI</a>
+          <a href="#" class="nav-link">Startups</a>
+          <a href="#" class="nav-link">Hardware</a>
+          <a href="#" class="nav-link">Security</a>
+        </nav>
 
-		<!-- Hero -->
-		<header class="hero-bg h-screen flex items-center relative">
-			<div class="max-w-screen-2xl mx-auto px-6 pt-20">
-				<div class="max-w-3xl">
-					<div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs mb-6 border border-white/20">
-						<span class="bg-red-500 text-white text-[10px] px-2 py-px rounded">BREAKING</span>
-						<span class="font-medium">Anthropic unveils Claude 4 with 1M token context</span>
-					</div>
-					
-					<h1 class="text-6xl md:text-7xl font-bold leading-none tracking-tighter mb-6">
-					Claude 4 shatters benchmarks —<br>Is this the end of GPT dominance?
-					</h1>
-					
-					<p class="text-xl text-zinc-300 mb-8 max-w-lg">
-						Anthropic's latest model demonstrates unprecedented reasoning capabilities and sets a new standard for enterprise AI.
-					</p>
-					
-					<div class="flex items-center gap-6">
-						<button onclick="window.location.href='#featured'" 
-								class="bg-white text-black px-8 py-4 rounded-2xl font-semibold flex items-center gap-3 hover:scale-105 transition-transform">
-							Read the full story
-							<i class="fa-solid fa-arrow-right"></i>
-						</button>
-						
-						<div class="flex items-center gap-3 text-sm">
-							<div class="w-8 h-8 bg-zinc-700 rounded-full overflow-hidden">
-								<img src="https://picsum.photos/id/64/128/128" alt="Author" class="w-full h-full object-cover" />
-							</div>
-							<div>
-								<div class="font-medium">Sarah Chen</div>
-								<div class="text-zinc-400 text-xs">2 hours ago • 12 min read</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+        <div class="flex items-center gap-4">
+          <div class="relative hidden md:block">
+            <input type="text" id="searchInput"
+                   class="bg-zinc-900 border border-zinc-700 w-72 focus:w-80 transition-all rounded-full pl-10 py-2.5 text-sm focus:outline-none focus:border-cyan-400"
+                   placeholder="Search DigiSone..." />
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-zinc-500"></i>
+          </div>
+          <button class="bg-white text-black px-6 py-2.5 rounded-2xl font-semibold text-sm hover:bg-cyan-300 transition-colors">
+            Subscribe
+          </button>
+          <button class="md:hidden text-2xl" id="menuBtn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
-			<!-- Scroll indicator -->
-			<div class="absolute bottom-10 left-1/2 flex flex-col items-center gap-2 text-xs tracking-widest">
-				<div class="w-px h-12 bg-gradient-to-b from-transparent via-zinc-400 to-transparent"></div>
-				SCROLL FOR MORE
-			</div>
-		</header>
+  <!-- Hero -->
+  <section class="hero-bg min-h-[90vh] flex items-center relative">
+    <div class="max-w-screen-2xl mx-auto px-5 pt-12">
+      <div class="max-w-xl">
+        <div class="inline-block bg-white/10 backdrop-blur-md px-5 py-2 rounded-full text-xs mb-6 border border-white/30">
+          BREAKING • Anthropic
+        </div>
+        <h1 class="text-5xl md:text-6xl font-bold leading-none tracking-tighter mb-6">
+          Claude 4 shatters benchmarks —<br>Is this the end of GPT dominance?
+        </h1>
+        <p class="text-lg text-zinc-300 mb-8">
+          Anthropic's latest model demonstrates unprecedented reasoning capabilities.
+        </p>
+        <div class="flex flex-wrap items-center gap-6">
+          <a href="#" class="bg-white text-black px-8 py-4 rounded-2xl font-semibold inline-flex items-center gap-3 hover:scale-105 transition-transform">
+            Read Full Story <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="mt-10 flex items-center gap-4 text-sm">
+          <img src="https://picsum.photos/id/64/48/48" class="w-10 h-10 rounded-full" alt="">
+          <div>
+            <p>Sarah Chen</p>
+            <p class="text-xs text-zinc-400">2 hours ago • 12 min read</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-		<main class="max-w-screen-2xl mx-auto px-6">
-			<!-- Quick Nav -->
-			<div class="flex flex-wrap gap-2 py-8 border-b border-zinc-800">
-				<a href="#" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-3xl text-sm font-medium transition-colors">All</a>
-				<a href="#" class="px-5 py-2 hover:bg-zinc-900 rounded-3xl text-sm font-medium transition-colors">AI</a>
-				<a href="#" class="px-5 py-2 hover:bg-zinc-900 rounded-3xl text-sm font-medium transition-colors">Startups</a>
-				<a href="#" class="px-5 py-2 hover:bg-zinc-900 rounded-3xl text-sm font-medium transition-colors">Semiconductors</a>
-				<a href="#" class="px-5 py-2 hover:bg-zinc-900 rounded-3xl text-sm font-medium transition-colors">Cybersecurity</a>
-				<a href="#" class="px-5 py-2 hover:bg-zinc-900 rounded-3xl text-sm font-medium transition-colors">EV &amp; Mobility</a>
-				<a href="#" class="px-5 py-2 hover:bg-zinc-900 rounded-3xl text-sm font-medium transition-colors">Space</a>
-			</div>
+  <!-- Main Content -->
+  <main class="max-w-screen-2xl mx-auto px-5 py-12">
+    <div class="grid md:grid-cols-12 gap-10">
+      <!-- Left Feed -->
+      <div class="md:col-span-8 space-y-12">
 
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 py-12">
-				<!-- Main Feed -->
-				<div class="lg:col-span-8 space-y-12">
-					
-					<!-- Featured Article -->
-					<article id="featured" class="group">
-						<div class="grid md:grid-cols-5 gap-8">
-							<div class="md:col-span-3">
-								<img src="https://picsum.photos/id/1015/1200/800" alt="Featured" 
-									 class="w-full aspect-video object-cover rounded-3xl" />
-							</div>
-							<div class="md:col-span-2 flex flex-col justify-center">
-								<div class="uppercase text-cyan-400 text-xs tracking-[2px] mb-3">Artificial Intelligence</div>
-								<h2 class="text-4xl font-semibold leading-tight tracking-tight group-hover:text-cyan-300 transition-colors">
-									Why xAI's Grok-3 could be the most important AI model of 2026
-								</h2>
-								<p class="mt-6 text-zinc-400 text-lg">
-									Elon Musk's team releases details on massive training cluster and new reasoning architecture.
-								</p>
-								<div class="mt-auto pt-8 flex items-center gap-4 text-sm">
-									<span class="text-zinc-500">By Alex Rivera</span>
-									<span class="text-zinc-500">•</span>
-									<span class="text-zinc-500">Today</span>
-								</div>
-							</div>
-						</div>
-					</article>
+        <div class="flex items-center justify-between">
+          <h2 class="text-3xl font-semibold">Latest Stories</h2>
+          <a href="#" class="text-cyan-400 text-sm flex items-center gap-2">View All →</a>
+        </div>
 
-					<!-- Latest Stories -->
-					<div>
-						<div class="flex items-center justify-between mb-8">
-							<h3 class="text-3xl font-semibold tracking-tight">Latest Stories</h3>
-							<a href="#" class="text-cyan-400 flex items-center gap-2 hover:gap-3 transition-all text-sm font-medium">
-								View all 
-								<i class="fa-solid fa-arrow-right"></i>
-							</a>
-						</div>
-						
-						<div class="space-y-10">
-							<!-- Article Row -->
-							<div class="grid md:grid-cols-12 gap-6 article-card">
-								<div class="md:col-span-5">
-									<img src="https://picsum.photos/id/201/800/600" class="w-full h-60 object-cover rounded-3xl" alt="" />
-								</div>
-								<div class="md:col-span-7 flex flex-col">
-									<div class="uppercase text-xs tracking-widest text-violet-400">Hardware</div>
-									<h4 class="text-2xl font-semibold mt-3 leading-tight">Apple's M5 chip rumored to feature 32-core GPU and ray tracing support</h4>
-									<p class="mt-4 text-zinc-400 line-clamp-3">The next-generation silicon is expected to power Mac Pro and high-end MacBook Pros with major performance gains.</p>
-									<div class="mt-auto pt-6 text-xs text-zinc-500 flex items-center gap-4">
-										<span>Jon Patel</span>
-										<span>4h ago</span>
-										<span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> 8 min</span>
-									</div>
-								</div>
-							</div>
+        <!-- Article Cards -->
+        <div class="space-y-10">
+          <div class="grid md:grid-cols-5 gap-6 article-card">
+            <div class="md:col-span-3">
+              <img src="https://picsum.photos/id/201/800/500" class="w-full aspect-video object-cover rounded-3xl" alt="">
+            </div>
+            <div class="md:col-span-2 flex flex-col justify-center">
+              <span class="text-xs uppercase tracking-widest text-violet-400">Hardware</span>
+              <h3 class="text-xl font-semibold mt-3 leading-tight">Apple M5 chip expected with massive GPU upgrade</h3>
+              <p class="text-zinc-400 text-sm mt-3">Expected to power next-gen Mac Pro and MacBooks.</p>
+            </div>
+          </div>
+        </div>
 
-							<!-- More articles... -->
-							<div class="grid md:grid-cols-12 gap-6 article-card">
-								<div class="md:col-span-5">
-									<img src="https://picsum.photos/id/237/800/600" class="w-full h-60 object-cover rounded-3xl" alt="" />
-								</div>
-								<div class="md:col-span-7 flex flex-col">
-									<div class="uppercase text-xs tracking-widest text-amber-400">Startups</div>
-									<h4 class="text-2xl font-semibold mt-3 leading-tight">Perplexity AI raises $500M at $9B valuation in new funding round</h4>
-									<p class="mt-4 text-zinc-400 line-clamp-3">The search engine challenger continues its meteoric rise as investors bet big on AI-powered discovery.</p>
-									<div class="mt-auto pt-6 text-xs text-zinc-500 flex items-center gap-4">
-										<span>Mia Torres</span>
-										<span>7h ago</span>
-										<span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> 6 min</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+      </div>
 
-				<!-- Sidebar -->
-				<aside class="lg:col-span-4 space-y-12">
-					
-					<!-- Trending -->
-					<div>
-						<h4 class="uppercase text-xs tracking-[1.5px] mb-6 text-zinc-400 font-medium flex items-center gap-2">
-							<i class="fa-solid fa-fire"></i> TRENDING
-						</h4>
-						<ol class="space-y-8">
-							<li class="flex gap-5 group">
-								<span class="text-5xl font-bold text-zinc-800 group-hover:text-zinc-700 transition-colors">01</span>
-								<div>
-									<p class="line-clamp-2 font-medium leading-tight">Nvidia's new Blackwell GPUs sold out instantly at launch</p>
-									<p class="text-xs text-zinc-500 mt-2">3h ago</p>
-								</div>
-							</li>
-							<li class="flex gap-5 group">
-								<span class="text-5xl font-bold text-zinc-800 group-hover:text-zinc-700 transition-colors">02</span>
-								<div>
-									<p class="line-clamp-2 font-medium leading-tight">EU regulators open formal investigation into Meta's AI practices</p>
-									<p class="text-xs text-zinc-500 mt-2">11h ago</p>
-								</div>
-							</li>
-							<li class="flex gap-5 group">
-								<span class="text-5xl font-bold text-zinc-800 group-hover:text-zinc-700 transition-colors">03</span>
-								<div>
-									<p class="line-clamp-2 font-medium leading-tight">Tesla Optimus Gen 2 spotted in new factory video</p>
-									<p class="text-xs text-zinc-500 mt-2">Yesterday</p>
-								</div>
-							</li>
-						</ol>
-					</div>
+      <!-- Sidebar -->
+      <aside class="md:col-span-4">
+        <div class="bg-zinc-900 rounded-3xl p-8 sticky top-6">
+          <h3 class="font-semibold text-lg mb-6">Stay Updated</h3>
+          <div class="space-y-6">
+            <div class="text-sm">
+              <p class="font-medium">Nvidia Blackwell GPUs sold out instantly</p>
+              <p class="text-xs text-zinc-500 mt-1">3h ago</p>
+            </div>
+            <div class="text-sm">
+              <p class="font-medium">Tesla Optimus Gen 2 spotted in factory</p>
+              <p class="text-xs text-zinc-500 mt-1">Yesterday</p>
+            </div>
+          </div>
+          <button class="mt-10 w-full bg-white text-black py-4 rounded-2xl font-semibold">Subscribe to Newsletter</button>
+        </div>
+      </aside>
+    </div>
+  </main>
 
-					<!-- Newsletter -->
-					<div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-700 rounded-3xl p-8">
-						<h4 class="text-xl font-semibold mb-2">Stay ahead of the curve</h4>
-						<p class="text-zinc-400 text-sm">Get the top 5 stories every morning in your inbox. Free.</p>
-						<input type="email" placeholder="your@email.com" 
-							   class="mt-6 w-full bg-zinc-900 border border-zinc-700 focus:border-white rounded-2xl px-5 py-4 text-sm" />
-						<button class="w-full mt-4 bg-white text-black font-semibold py-4 rounded-2xl">Subscribe to The Pulse</button>
-					</div>
+  <script>
+    // Simple mobile menu toggle (you can expand later)
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      alert('Mobile menu coming soon! 🔥');
+    });
 
-					<!-- Recent Podcasts -->
-					<div>
-						<h4 class="font-medium text-lg mb-6 flex items-center gap-2">
-							<i class="fa-solid fa-podcast text-red-500"></i> Latest Episodes
-						</h4>
-						<div class="space-y-6">
-							<div class="flex gap-4">
-								<div class="w-20 h-20 bg-zinc-800 rounded-2xl flex-shrink-0"></div>
-								<div>
-									<p class="font-medium leading-tight">How quantum computing will break modern encryption by 2030</p>
-									<p class="text-xs text-zinc-500 mt-2">The Signal • 47 min</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</aside>
-			</div>
-
-			<!-- More Sections -->
-			<section class="py-16 border-t border-zinc-800">
-				<h3 class="text-4xl font-semibold mb-10">More from DigiSone</h3>
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-					<!-- Card 1 -->
-					<div class="article-card bg-zinc-900 rounded-3xl overflow-hidden">
-						<img src="https://picsum.photos/id/870/800/500" class="w-full h-52 object-cover" alt="" />
-						<div class="p-7">
-							<div class="text-teal-400 text-xs">SPACE</div>
-							<h4 class="mt-3 text-xl font-semibold leading-tight">SpaceX Starship Flight 8 achieves full reusability milestone</h4>
-							<p class="text-sm text-zinc-400 mt-4 line-clamp-2">Both booster and ship successfully caught by Mechazilla arms.</p>
-						</div>
-					</div>
-					
-					<!-- Card 2 -->
-					<div class="article-card bg-zinc-900 rounded-3xl overflow-hidden">
-						<img src="https://picsum.photos/id/1016/800/500" class="w-full h-52 object-cover" alt="" />
-						<div class="p-7">
-							<div class="text-rose-400 text-xs">CYBERSECURITY</div>
-							<h4 class="mt-3 text-xl font-semibold leading-tight">Massive breach exposes data of 2.9 billion users across 17 platforms</h4>
-							<p class="text-sm text-zinc-400 mt-4 line-clamp-2">Researchers warn of long-term consequences.</p>
-						</div>
-					</div>
-					
-					<!-- Card 3 -->
-					<div class="article-card bg-zinc-900 rounded-3xl overflow-hidden">
-						<img src="https://picsum.photos/id/201/800/500" class="w-full h-52 object-cover" alt="" />
-						<div class="p-7">
-							<div class="text-sky-400 text-xs">VENTURE</div>
-							<h4 class="mt-3 text-xl font-semibold leading-tight">a16z leads $420M round in new humanoid robotics startup</h4>
-							<p class="text-sm text-zinc-400 mt-4 line-clamp-2">The company promises general purpose robots under $30K.</p>
-						</div>
-					</div>
-				</div>
-			</section>
-		</main>
-
-		<!-- Footer -->
-		<footer class="bg-black border-t border-zinc-900 py-20">
-			<div class="max-w-screen-2xl mx-auto px-6">
-				<div class="grid grid-cols-2 md:grid-cols-5 gap-12">
-					<div>
-						<div class="flex items-center gap-3 mb-8">
-							<div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-violet-600 rounded-2xl flex items-center justify-center text-xl font-bold">D</div>
-							<span class="text-3xl font-semibold tracking-tighter">DigiSone</span>
-						</div>
-						<p class="text-sm text-zinc-500">Independent technology journalism since 2024.</p>
-					</div>
-					<div>
-						<h5 class="font-medium mb-5">Company</h5>
-						<ul class="space-y-3 text-sm">
-							<li><a href="#" class="hover:text-white">About Us</a></li>
-							<li><a href="#" class="hover:text-white">Careers</a></li>
-							<li><a href="#" class="hover:text-white">Press</a></li>
-						</ul>
-					</div>
-					<div>
-						<h5 class="font-medium mb-5">Sections</h5>
-						<ul class="space-y-3 text-sm">
-							<li><a href="#" class="hover:text-white">AI</a></li>
-							<li><a href="#" class="hover:text-white">Startups</a></li>
-							<li><a href="#" class="hover:text-white">Gadgets</a></li>
-							<li><a href="#" class="hover:text-white">Policy</a></li>
-						</ul>
-					</div>
-					<div>
-						<h5 class="font-medium mb-5">Follow Us</h5>
-						<div class="flex gap-6 text-2xl">
-							<i class="fa-brands fa-x-twitter cursor-pointer hover:text-cyan-400"></i>
-							<i class="fa-brands fa-linkedin cursor-pointer hover:text-cyan-400"></i>
-							<i class="fa-brands fa-threads cursor-pointer hover:text-cyan-400"></i>
-						</div>
-					</div>
-					<div>
-						<h5 class="font-medium mb-5">Legal</h5>
-						<ul class="space-y-3 text-xs text-zinc-500">
-							<li>Privacy Policy</li>
-							<li>Terms of Service</li>
-							<li>© 2026 DigiSone Media</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</footer>
-
-		<script>
-			// Tailwind script already loaded
-			
-			function toggleDarkMode() {
-				// Placeholder - already dark by default
-				alert("Premium theme toggle coming soon ✨");
-			}
-			
-			// Search focus effect
-			document.getElementById('search').addEventListener('focus', function() {
-				this.parentElement.classList.add('ring-2', 'ring-cyan-400');
-			});
-			
-			document.getElementById('search').addEventListener('blur', function() {
-				this.parentElement.classList.remove('ring-2', 'ring-cyan-400');
-			});
-			
-			// Keyboard shortcut hint
-			console.log('%c👾 DigiSone Premium Edition ready. Press "/" to search.', 'color:#67e8f9; font-family:monospace');
-		</script>
-	</body>
+    // Search input focus effect
+    const search = document.getElementById('searchInput');
+    search.addEventListener('focus', () => search.parentElement.classList.add('ring-2', 'ring-cyan-400'));
+    search.addEventListener('blur', () => search.parentElement.classList.remove('ring-2', 'ring-cyan-400'));
+  </script>
+</body>
 </html>
