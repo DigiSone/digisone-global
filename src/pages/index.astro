@@ -9,137 +9,140 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 <html lang="en" class="scroll-smooth">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<script src="https://cdn.tailwindcss.com"></script>
 	</head>
-	<body class="bg-[#0b0f19] text-slate-200 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col relative overflow-x-hidden">
-		
-		<!-- Background Glows -->
-		<div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
-		<div class="absolute top-[35vh] right-1/4 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[130px] pointer-events-none -z-10"></div>
-		<div class="absolute bottom-20 left-1/3 w-[700px] h-[700px] bg-blue-600/5 rounded-full blur-[160px] pointer-events-none -z-10"></div>
+	<body class="bg-[#0a0c14] text-slate-200 font-sans antialiased overflow-x-hidden">
 
-		<!-- Sticky Header -->
-		<div class="sticky top-0 z-50 backdrop-blur-xl bg-[#0b0f19]/80 border-b border-white/5">
+		<!-- Dynamic Background -->
+		<div class="fixed inset-0 bg-[radial-gradient(at_top_right,#4f46e520_0%,transparent_50%)] pointer-events-none"></div>
+		<div class="fixed inset-0 bg-[radial-gradient(at_bottom_left,#7c3aed20_0%,transparent_50%)] pointer-events-none"></div>
+
+		<!-- Header -->
+		<div class="sticky top-0 z-50 backdrop-blur-2xl bg-[#0a0c14]/90 border-b border-white/5">
 			<Header />
 		</div>
 
-		<main class="flex-grow max-w-5xl mx-auto px-5 md:px-6 py-16 md:py-24 space-y-24 w-full">
+		<main class="relative max-w-6xl mx-auto px-6 pt-20 pb-24">
 
 			<!-- Hero -->
-			<section class="space-y-8 text-center md:text-left">
-				<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-violet-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold tracking-[1px] uppercase">
-					<span class="relative flex h-2 w-2">
-						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-						<span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-400"></span>
-					</span>
-					Shaping the Future of Tech
-				</div>
+			<section class="min-h-[85vh] flex items-center">
+				<div class="max-w-4xl">
+					<div class="inline-flex items-center gap-3 px-5 py-2 rounded-3xl bg-white/5 border border-white/10 text-sm mb-6">
+						<div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+						<span class="uppercase tracking-[2px] text-emerald-400 text-xs font-medium">Enterprise Intelligence Platform</span>
+					</div>
 
-				<h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-none text-white">
-					Welcome to <span class="bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent">DigiSone Global</span>
-				</h1>
+					<h1 class="text-6xl md:text-7xl lg:text-[5.2rem] font-bold tracking-tighter leading-none text-white mb-8">
+					The Future of<br>
+					<span class="bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-200 bg-clip-text text-transparent">Digital Knowledge</span>
+					</h1>
 
-				<p class="max-w-3xl mx-auto md:mx-0 text-lg md:text-xl text-slate-400 font-light leading-relaxed">
-					A premium technology platform delivering actionable insights on Artificial Intelligence, Web Development, Digital Marketing, Business Strategy and Emerging Technologies.
-				</p>
-
-				<div class="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
-					<a href="#topics" 
-						class="px-8 py-4 bg-white text-slate-900 font-semibold rounded-2xl hover:bg-slate-100 transition-all duration-300 flex items-center gap-3 group">
-						Explore Topics
-						<span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-					<a href="#" 
-						class="px-8 py-4 border border-white/30 hover:border-white/60 rounded-2xl transition-all duration-300">
-						Watch Latest Video
-					</a>
-				</div>
-			</section>
-
-			<!-- Purpose Section -->
-			<section class="grid md:grid-cols-12 gap-10 items-center bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 rounded-3xl p-8 md:p-14 backdrop-blur-sm">
-				<div class="md:col-span-7 space-y-6">
-					<div class="uppercase text-xs tracking-[2px] font-semibold text-violet-400">Our Mission</div>
-					<h2 class="text-3xl md:text-4xl font-semibold leading-tight text-white">
-						Knowledge that turns into opportunity
-					</h2>
-					<p class="text-slate-400 leading-relaxed text-[17px]">
-						DigiSone Global is your trusted source for practical, high-quality content on technology, AI, digital growth, and innovation. We simplify complex topics and deliver real-world strategies that help individuals and businesses thrive.
+					<p class="text-xl text-slate-400 max-w-2xl leading-relaxed">
+						DigiSone Global delivers premium, actionable intelligence on Artificial Intelligence, Technology Strategy, Digital Transformation and Business Innovation.
 					</p>
-				</div>
 
-				<div class="md:col-span-5 flex justify-center">
-					<div class="w-full max-w-xs aspect-square bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 rounded-3xl p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/30 hover:scale-105 transition-transform duration-500">
-						<div class="text-4xl">🌍</div>
-						<div>
-							<div class="text-white/90 text-sm tracking-widest">FROM SONBHADRA TO THE WORLD</div>
-							<div class="text-2xl font-bold text-white mt-2">Global Impact, Local Roots</div>
+					<div class="flex flex-wrap gap-5 mt-12">
+						<a href="#topics" class="px-10 py-5 bg-white text-black rounded-2xl font-semibold text-lg hover:bg-white/90 transition-all active:scale-95">
+							Explore Knowledge Hub
+						</a>
+						<a href="#" class="px-10 py-5 border border-white/30 hover:border-white/70 rounded-2xl font-medium transition-all">
+							Watch 2-min Intro
+						</a>
+					</div>
+
+					<div class="mt-16 flex items-center gap-8 text-sm text-slate-400">
+						<div>Trusted by professionals at</div>
+						<div class="flex gap-8 opacity-75">
+							<span class="font-medium">Google</span>
+							<span class="font-medium">Microsoft</span>
+							<span class="font-medium">Amazon</span>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<!-- Topics Section -->
-			<section id="topics" class="space-y-10">
-				<div class="text-center md:text-left">
-					<span class="text-xs font-bold uppercase tracking-widest text-blue-400">Knowledge Architecture</span>
-					<h2 class="text-3xl md:text-4xl font-bold text-white mt-2">Explore Our Core Domains</h2>
+			<!-- Trust + Stats Bar -->
+			<div class="border-y border-white/10 py-8 flex flex-wrap justify-between items-center gap-8 text-sm">
+				<div class="flex items-center gap-8">
+					<div>4.98 <span class="text-amber-400">★</span></div>
+					<div>28,450+ Professionals</div>
+					<div>142 Countries</div>
+				</div>
+				<div class="text-emerald-400 font-medium">Featured in Forbes • TechCrunch • YourStory</div>
+			</div>
+
+			<!-- Core Purpose -->
+			<section class="py-24 grid md:grid-cols-12 gap-16 items-center">
+				<div class="md:col-span-5">
+					<div class="sticky top-28">
+						<span class="text-xs uppercase tracking-widest text-violet-400 font-semibold">Our Philosophy</span>
+						<h2 class="text-5xl font-bold leading-none tracking-tighter text-white mt-6">
+							Knowledge should be<br>beautiful and useful.
+						</h2>
+					</div>
+				</div>
+				<div class="md:col-span-7 space-y-8">
+					<div class="bg-white/5 border border-white/10 rounded-3xl p-10">
+						<p class="text-lg leading-relaxed text-slate-300">
+							We don’t just publish content. We engineer clarity. Every article, guide, and insight is crafted to help you make better decisions, faster — whether you’re a founder, developer, marketer, or executive.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Topics -->
+			<section id="topics" class="py-16">
+				<div class="text-center mb-12">
+					<h2 class="text-4xl font-bold tracking-tight">Knowledge Domains</h2>
+					<p class="text-slate-400 mt-3">Deep, practical intelligence across the most important areas of technology and business</p>
 				</div>
 
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{[
-						{ title: "Technology & Innovation", desc: "Next-gen advancements and breakthrough paradigms", icon: "🚀" },
-						{ title: "Artificial Intelligence", desc: "Machine learning, automation & intelligent systems", icon: "🤖" },
-						{ title: "Web Development", desc: "Modern frameworks, performance & beautiful UX", icon: "💻" },
-						{ title: "Digital Marketing", desc: "SEO, content strategy & growth hacking", icon: "📈" },
-						{ title: "Business & Startups", desc: "Scaling, strategy and entrepreneurship", icon: "📊" },
-						{ title: "Productivity", desc: "Systems, tools and high-performance workflows", icon: "⚡" }
-					].map((topic) => (
-						<div class="group bg-white/[0.02] hover:bg-white/[0.04] border border-white/5 hover:border-indigo-400/30 p-8 rounded-3xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10">
-							<div class="text-4xl mb-6 transition-transform group-hover:scale-110 duration-300">{topic.icon}</div>
-							<h3 class="text-xl font-semibold text-white group-hover:text-indigo-300 transition-colors">{topic.title}</h3>
-							<p class="text-slate-400 mt-3 text-[15px] leading-relaxed">{topic.desc}</p>
-							<div class="mt-6 text-xs text-indigo-400 font-medium flex items-center gap-2 opacity-70 group-hover:opacity-100">
-								Explore Collection <span class="text-base">→</span>
+						{ icon: "🚀", title: "Emerging Technology", desc: "AI, Quantum, Blockchain, Spatial Computing" },
+						{ icon: "🧠", title: "Artificial Intelligence", desc: "LLMs, Agents, Automation & Ethics" },
+						{ icon: "💻", title: "Modern Development", desc: "Full-stack, Performance & Developer Experience" },
+						{ icon: "📈", title: "Growth & Marketing", desc: "SEO, Content Systems & Demand Generation" },
+						{ icon: "🏗️", title: "Business Strategy", desc: "Scaling, Leadership & Organizational Design" },
+						{ icon: "⚡", title: "High Performance", desc: "Productivity, Systems & Personal Mastery" }
+					].map((item) => (
+						<div class="group p-8 bg-white/[0.03] hover:bg-white/[0.06] border border-transparent hover:border-white/10 rounded-3xl transition-all duration-500 hover:-translate-y-2">
+							<div class="text-5xl mb-6 opacity-80 group-hover:opacity-100 transition-opacity">{item.icon}</div>
+							<h3 class="text-2xl font-semibold text-white mb-3">{item.title}</h3>
+							<p class="text-slate-400">{item.desc}</p>
+							<div class="mt-8 text-xs uppercase tracking-widest text-indigo-400 font-medium inline-flex items-center gap-2">
+								Explore →
 							</div>
 						</div>
 					))}
 				</div>
 			</section>
 
-			<!-- Vision + Origin -->
-			<section class="grid md:grid-cols-2 gap-8">
-				<div class="bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 rounded-3xl p-9 group">
-					<div class="text-indigo-400 mb-4">✦ OUR VISION</div>
-					<h3 class="text-2xl font-semibold text-white">Democratizing High-Quality Tech Knowledge</h3>
-					<p class="text-slate-400 mt-5 leading-relaxed">
-						We believe powerful ideas should be accessible to everyone. DigiSone Global exists to bridge the gap between complex technology and practical understanding.
-					</p>
-				</div>
-
-				<div class="bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 rounded-3xl p-9 group">
-					<div class="text-violet-400 mb-4">✦ OUR ROOTS</div>
-					<h3 class="text-2xl font-semibold text-white">From Sonbhadra to the Global Stage</h3>
-					<p class="text-slate-400 mt-5 leading-relaxed">
-						Born in India with a global mindset. We prove that world-class content and ideas can originate from anywhere and reach everywhere.
-					</p>
-				</div>
-			</section>
-
-			<!-- Final CTA -->
-			<section class="text-center py-12 border-t border-white/5">
-				<p class="text-slate-300 text-lg max-w-2xl mx-auto">
-					Thank you for being part of the DigiSone Global community.<br>
-					Stay curious. Keep learning. Build the future.
+			<!-- Final Enterprise CTA -->
+			<section class="bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-3xl p-16 text-center">
+				<h2 class="text-4xl font-bold mb-6">Ready to elevate your thinking?</h2>
+				<p class="text-slate-400 max-w-md mx-auto mb-10">
+					Join thousands of forward-thinking professionals who read DigiSone Global every week.
 				</p>
-				<a href="#" class="mt-8 inline-block px-10 py-4 bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-semibold rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-indigo-500/30">
-					Start Exploring Now
-				</a>
+				<button onclick="alert('Newsletter signup coming soon ✨')" 
+					class="px-12 py-6 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-lg font-semibold rounded-2xl hover:brightness-110 transition-all">
+					Subscribe to Weekly Intelligence
+				</button>
 			</section>
 
 		</main>
 
-		<div class="border-t border-white/5 bg-[#070a12]">
+		<!-- Footer -->
+		<div class="border-t border-white/5 bg-black/40">
 			<Footer />
 		</div>
+
+		<script>
+			// Subtle scroll progress (optional enterprise polish)
+			window.addEventListener('scroll', () => {
+				const scroll = window.scrollY;
+				document.documentElement.style.setProperty('--scroll', Math.min(scroll / 500, 1));
+			});
+		</script>
 	</body>
 </html>
