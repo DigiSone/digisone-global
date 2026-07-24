@@ -2,148 +2,506 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+
+const sortedPosts = posts.sort(
+	(a, b) =>
+		new Date(b.data.pubDate).getTime() -
+		new Date(a.data.pubDate).getTime()
+);
+
+const featuredPost = sortedPosts[0];
+const latestPosts = sortedPosts.slice(1, 7);
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	<script src="https://cdn.tailwindcss.com"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+	<BaseHead
+		title="DigiSone Global"
+		description={SITE_DESCRIPTION}
+	/>
+
+	<style>
+		:root {
+			--bg: #fafafa;
+			--surface: #ffffff;
+			--surface-alt: #f6f8fb;
+
+			--text: #0f172a;
+			--muted: #64748b;
+
+			--primary: #2563eb;
+			--border: #e5e7eb;
+
+			--radius: 24px;
+
+			--shadow:
+				0 10px 40px rgba(15, 23, 42, 0.06);
+		}
+
+		body {
+			margin: 0;
+			background: var(--bg);
+			color: var(--text);
+		}
+
+		main {
+			max-width: 1400px;
+			margin: auto;
+			padding: 2rem;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.hero {
+			padding: 5rem 0;
+			display: grid;
+			grid-template-columns: 1.2fr .8fr;
+			gap: 3rem;
+			align-items: center;
+		}
+
+		.hero h1 {
+			font-size: clamp(3rem, 8vw, 5.5rem);
+			line-height: 1;
+			margin-bottom: 1rem;
+			letter-spacing: -2px;
+		}
+
+		.hero p {
+			font-size: 1.2rem;
+			color: var(--muted);
+			line-height: 1.8;
+			max-width: 650px;
+		}
+
+		.hero-buttons {
+			display: flex;
+			gap: 1rem;
+			margin-top: 2rem;
+			flex-wrap: wrap;
+		}
+
+		.btn {
+			padding: 14px 22px;
+			border-radius: 14px;
+			font-weight: 600;
+			display: inline-block;
+		}
+
+		.btn-primary {
+			background: var(--primary);
+			color: white;
+		}
+
+		.btn-secondary {
+			border: 1px solid var(--border);
+			background: white;
+		}
+
+		.hero-card {
+			background: white;
+			border-radius: var(--radius);
+			padding: 2rem;
+			border: 1px solid var(--border);
+			box-shadow: var(--shadow);
+		}
+
+		.section {
+			margin: 6rem 0;
+		}
+
+		.section-title {
+			font-size: 2rem;
+			margin-bottom: 2rem;
+		}
+
+		.featured {
+			background: white;
+			border-radius: 32px;
+			overflow: hidden;
+			border: 1px solid var(--border);
+			box-shadow: var(--shadow);
+		}
+
+		.featured-image {
+			height: 420px;
+			background: linear-gradient(
+				135deg,
+				#2563eb,
+				#4f46e5
+			);
+		}
+
+		.featured-content {
+			padding: 2rem;
+		}
+
+		.featured-label {
+			color: var(--primary);
+			font-weight: 700;
+			font-size: .9rem;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		.featured h2 {
+			font-size: 2.5rem;
+			margin: 1rem 0;
+			line-height: 1.1;
+		}
+
+		.featured p {
+			color: var(--muted);
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+			gap: 1.5rem;
+		}
+
+		.card {
+			background: white;
+			border: 1px solid var(--border);
+			border-radius: 24px;
+			padding: 1.5rem;
+			transition: .3s;
+			box-shadow: var(--shadow);
+		}
+
+		.card:hover {
+			transform: translateY(-8px);
+		}
+
+		.card h3 {
+			margin-top: .5rem;
+			line-height: 1.3;
+		}
+
+		.card p {
+			color: var(--muted);
+		}
+
+		.category-tag {
+			color: var(--primary);
+			font-size: .85rem;
+			font-weight: 700;
+			text-transform: uppercase;
+		}
+
+		.categories {
+			display: grid;
+			grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+			gap: 1rem;
+		}
+
+		.category {
+			background: white;
+			padding: 2rem;
+			border-radius: 20px;
+			border: 1px solid var(--border);
+			box-shadow: var(--shadow);
+		}
+
+		.newsletter {
+			background: white;
+			border-radius: 32px;
+			padding: 4rem;
+			text-align: center;
+			border: 1px solid var(--border);
+			box-shadow: var(--shadow);
+		}
+
+		.newsletter h2 {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+		}
+
+		.newsletter p {
+			color: var(--muted);
+			max-width: 700px;
+			margin: auto;
+		}
+
+		.newsletter-form {
+			margin-top: 2rem;
+			display: flex;
+			max-width: 650px;
+			margin-inline: auto;
+			gap: 1rem;
+			flex-wrap: wrap;
+		}
+
+		.newsletter-form input {
+			flex: 1;
+			padding: 16px;
+			border-radius: 12px;
+			border: 1px solid var(--border);
+		}
+
+		.newsletter-form button {
+			padding: 16px 24px;
+			border: none;
+			border-radius: 12px;
+			background: var(--primary);
+			color: white;
+			font-weight: 600;
+		}
+
+		.stats {
+			display: grid;
+			grid-template-columns: repeat(4,1fr);
+			gap: 1rem;
+		}
+
+		.stat {
+			background: white;
+			padding: 2rem;
+			text-align: center;
+			border-radius: 20px;
+			border: 1px solid var(--border);
+			box-shadow: var(--shadow);
+		}
+
+		.stat h3 {
+			font-size: 2rem;
+			color: var(--primary);
+			margin: 0;
+		}
+
+		.stat p {
+			color: var(--muted);
+		}
+
+		@media(max-width:900px){
+			.hero{
+				grid-template-columns:1fr;
+			}
+
+			.stats{
+				grid-template-columns:1fr 1fr;
+			}
+		}
+
+		@media(max-width:600px){
+			.stats{
+				grid-template-columns:1fr;
+			}
+
+			.newsletter{
+				padding:2rem;
+			}
+		}
+	</style>
 </head>
-<body class="bg-[#05070f] text-slate-200 font-sans antialiased">
 
-	<!-- Top Bar -->
-	<div class="bg-black py-3 text-xs border-b border-zinc-800">
-		<div class="max-w-screen-2xl mx-auto px-6 flex items-center justify-between">
-			<div class="flex items-center gap-4 text-emerald-400">
-				<i class="fa-solid fa-bolt"></i>
-				<span class="font-medium tracking-wider">GLOBAL TECH INTELLIGENCE</span>
-			</div>
-			<div class="hidden md:flex items-center gap-6 text-xs">
-				<a href="#" class="hover:text-white transition-colors">Newsletters</a>
-				<a href="#" class="hover:text-white transition-colors">Research</a>
-				<a href="#" class="hover:text-white transition-colors">Events</a>
-			</div>
-		</div>
-	</div>
+<body>
 
-	<!-- Header -->
-	<header class="sticky top-0 z-50 bg-[#05070f]/95 backdrop-blur-xl border-b border-white/5">
-		<Header />
-	</header>
+<Header />
 
-	<!-- Hero -->
-	<section class="min-h-screen flex items-center relative hero-bg bg-cover bg-center" 
-			 style="background-image: linear-gradient(rgba(5,7,15,0.75), rgba(5,7,15,0.9)), url('https://picsum.photos/id/1015/2000/1200')">
-		<div class="max-w-5xl mx-auto px-6 text-center md:text-left">
-			<div class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-sm mb-8">
-				<span class="text-cyan-400">✦</span> ESTABLISHED 2024
-			</div>
-			
-			<h1 class="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-none text-white">
-				DigiSone <span class="bg-gradient-to-r from-cyan-300 to-violet-300 bg-clip-text text-transparent">Global</span>
+<main>
+
+	<section class="hero">
+
+		<div>
+			<h1>
+				Technology Insights
+				For The Modern World.
 			</h1>
-			
-			<p class="mt-8 text-2xl md:text-3xl text-slate-300 max-w-3xl mx-auto md:mx-0">
-				Premium technology intelligence for leaders, innovators, and builders.
+
+			<p>
+				DigiSone Global is a premium publication covering
+				Artificial Intelligence, Business Strategy,
+				Startups, Cybersecurity, Cloud Computing,
+				Creator Economy and Enterprise Innovation.
 			</p>
-			
-			<div class="mt-12 flex flex-wrap justify-center md:justify-start gap-5">
-				<a href="#explore" class="px-10 py-5 bg-white text-black font-semibold rounded-3xl text-lg hover:bg-cyan-400 transition-all">
-					Explore the Platform
+
+			<div class="hero-buttons">
+				<a href="/blog" class="btn btn-primary">
+					Explore Articles
 				</a>
-				<a href="#" class="px-10 py-5 border border-white/40 hover:border-white rounded-3xl text-lg transition-all">
-					Watch Film
+
+				<a href="#newsletter" class="btn btn-secondary">
+					Join Newsletter
 				</a>
 			</div>
 		</div>
 
-		<div class="absolute bottom-12 left-1/2 text-xs tracking-widest opacity-60 flex flex-col items-center">
-			SCROLL TO DISCOVER
-			<div class="w-px h-12 bg-gradient-to-b from-transparent via-slate-400 to-transparent mt-4"></div>
+		<div class="hero-card">
+			<h3>Trending Topics</h3>
+
+			<ul>
+				<li>AI Agents</li>
+				<li>Enterprise Automation</li>
+				<li>Future of Work</li>
+				<li>Cybersecurity</li>
+				<li>Cloud Infrastructure</li>
+			</ul>
 		</div>
+
 	</section>
 
-	<!-- Trust Bar -->
-	<div class="border-b border-white/10 py-8 bg-black/40">
-		<div class="max-w-screen-2xl mx-auto px-6 flex flex-wrap justify-center gap-x-16 gap-y-6 items-center text-sm opacity-75">
-			<div>Featured in</div>
-			<div class="font-medium">TechCrunch</div>
-			<div class="font-medium">Forbes</div>
-			<div class="font-medium">Wired</div>
-			<div class="font-medium">YourStory</div>
-			<div class="font-medium">The Economic Times</div>
-		</div>
-	</div>
+	{featuredPost && (
+		<section class="featured">
 
-	<!-- Core Value -->
-	<section id="explore" class="max-w-screen-2xl mx-auto px-6 py-28">
-		<div class="grid md:grid-cols-2 gap-16 items-center">
-			<div>
-				<span class="uppercase text-xs tracking-widest text-violet-400">Our Mission</span>
-				<h2 class="text-5xl font-bold tracking-tighter leading-none mt-6">
-					Knowledge that drives the future.
-				</h2>
-				<p class="mt-8 text-lg text-slate-400 max-w-md">
-					DigiSone Global delivers deeply researched, beautifully presented intelligence on artificial intelligence, emerging technology, business strategy, and digital transformation.
-				</p>
-			</div>
-			<div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-white/10 rounded-3xl p-12">
-				<div class="space-y-8">
-					<div class="flex gap-6">
-						<div class="text-4xl">🚀</div>
-						<div>
-							<div class="font-semibold text-xl">Future-First Thinking</div>
-							<div class="text-slate-400">We decode tomorrow’s technology today.</div>
-						</div>
-					</div>
-					<div class="flex gap-6">
-						<div class="text-4xl">🧠</div>
-						<div>
-							<div class="font-semibold text-xl">Independent Journalism</div>
-							<div class="text-slate-400">No agendas. Only clarity and insight.</div>
-						</div>
-					</div>
+			<div class="featured-image"></div>
+
+			<div class="featured-content">
+
+				<div class="featured-label">
+					Featured Story
 				</div>
-			</div>
-		</div>
-	</section>
 
-	<!-- Topics -->
-	<section class="bg-zinc-900 py-20">
-		<div class="max-w-screen-2xl mx-auto px-6">
-			<h3 class="text-center text-sm uppercase tracking-widest text-slate-400 mb-12">What We Cover</h3>
-			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-				{[
-					"Artificial Intelligence", "Startups & Venture", "Enterprise Technology", 
-					"Cybersecurity", "Semiconductors", "Digital Transformation", 
-					"Future of Work", "Policy & Regulation"
-				].map(topic => (
-					<div class="bg-zinc-950 border border-white/10 hover:border-cyan-400/50 p-8 rounded-3xl transition-all hover:-translate-y-1 text-center">
-						<p class="font-semibold text-lg">{topic}</p>
-					</div>
-				))}
-			</div>
-		</div>
-	</section>
+				<h2>{featuredPost.data.title}</h2>
 
-	<!-- Vision -->
-	<section class="max-w-screen-2xl mx-auto px-6 py-28 text-center">
-		<div class="max-w-2xl mx-auto">
-			<h2 class="text-5xl font-bold tracking-tight">From Sonbhadra to the World</h2>
-			<p class="mt-8 text-slate-400 text-lg leading-relaxed">
-				Born with Indian roots and a global vision. DigiSone Global is where serious thinkers come to understand technology’s impact on business, society, and humanity.
-			</p>
-			<div class="mt-12">
-				<a href="#" class="inline-block px-12 py-6 bg-white text-black font-semibold rounded-3xl text-lg hover:bg-gradient-to-r hover:from-cyan-400 hover:to-violet-400 hover:text-white transition-all">
-					Join the Community
+				<p>{featuredPost.data.description}</p>
+
+				<a class="btn btn-primary" href={`/blog/${featuredPost.slug}/`}>
+					Read Article
 				</a>
+
 			</div>
+
+		</section>
+	)}
+
+	<section class="section">
+
+		<h2 class="section-title">
+			Latest Articles
+		</h2>
+
+		<div class="grid">
+
+			{latestPosts.map((post) => (
+				<a href={`/blog/${post.slug}/`} class="card">
+
+					<div class="category-tag">
+						Article
+					</div>
+
+					<h3>{post.data.title}</h3>
+
+					<p>{post.data.description}</p>
+
+				</a>
+			))}
+
 		</div>
+
 	</section>
 
-	<Footer />
+	<section class="section">
+
+		<h2 class="section-title">
+			Explore Categories
+		</h2>
+
+		<div class="categories">
+
+			<div class="category">
+				<h3>Artificial Intelligence</h3>
+				<p>AI, LLMs & Agents</p>
+			</div>
+
+			<div class="category">
+				<h3>Business</h3>
+				<p>Strategy & Leadership</p>
+			</div>
+
+			<div class="category">
+				<h3>Startups</h3>
+				<p>Funding & Growth</p>
+			</div>
+
+			<div class="category">
+				<h3>Cybersecurity</h3>
+				<p>Security & Privacy</p>
+			</div>
+
+			<div class="category">
+				<h3>Cloud</h3>
+				<p>AWS, Azure & GCP</p>
+			</div>
+
+			<div class="category">
+				<h3>Creators</h3>
+				<p>Content & Monetization</p>
+			</div>
+
+		</div>
+
+	</section>
+
+	<section id="newsletter" class="section">
+
+		<div class="newsletter">
+
+			<h2>
+				Stay Ahead of Technology.
+			</h2>
+
+			<p>
+				Join professionals, founders and decision-makers
+				reading DigiSone Global every week.
+			</p>
+
+			<form class="newsletter-form">
+
+				<input
+					type="email"
+					placeholder="Enter your email"
+				/>
+
+				<button>
+					Subscribe
+				</button>
+
+			</form>
+
+		</div>
+
+	</section>
+
+	<section class="section">
+
+		<div class="stats">
+
+			<div class="stat">
+				<h3>250K+</h3>
+				<p>Monthly Readers</p>
+			</div>
+
+			<div class="stat">
+				<h3>50+</h3>
+				<p>Countries</p>
+			</div>
+
+			<div class="stat">
+				<h3>1000+</h3>
+				<p>Articles</p>
+			</div>
+
+			<div class="stat">
+				<h3>500+</h3>
+				<p>Newsletters</p>
+			</div>
+
+		</div>
+
+	</section>
+
+</main>
+
+<Footer />
+
 </body>
 </html>
