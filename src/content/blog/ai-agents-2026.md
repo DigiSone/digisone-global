@@ -2,7 +2,7 @@
 title: 'AI Agents 2026: The Future of Business Automation and Digital Workforces'
 description: 'Discover how AI Agents are transforming businesses in 2026 through automation, intelligent workflows and enterprise innovation.'
 pubDate: 'Aug 02 2026'
-heroImage: '../../assets/blog/ai-agents-2026.jpg'
+heroImage: '../../assets/blog-placeholder-ai-agents-2026.jpg'
 ---
 
 Artificial Intelligence is evolving rapidly, and one of the biggest developments in 2026 is the rise of AI Agents. Unlike traditional AI chatbots that only answer questions, AI Agents can perform tasks, automate workflows, interact with software and assist businesses in achieving real outcomes.
