@@ -67,10 +67,12 @@ const latestPosts = sortedPosts.slice(1, 7);
 		}
 
 		main {
-			max-width: 1400px;
-			margin: auto;
-			padding: 2rem;
-		}
+	width: 100%;
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 0 1.25rem;
+	box-sizing: border-box;
+}
 
 		a {
 			color: inherit;
@@ -97,13 +99,13 @@ const latestPosts = sortedPosts.slice(1, 7);
 			margin-bottom: 2rem;
 		}
 
-		.hero {
-			padding: 5rem 0;
-			display: grid;
-			grid-template-columns: 1.2fr .8fr;
-			gap: 3rem;
-			align-items: center;
-		}
+	.hero {
+	padding: 4rem 0;
+	display: grid;
+	grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr);
+	gap: 2rem;
+	align-items: center;
+}
 
 		.hero-badge {
 			display: inline-flex;
@@ -131,11 +133,15 @@ const latestPosts = sortedPosts.slice(1, 7);
 		}
 
 		.hero-buttons {
-			display: flex;
-			gap: 1rem;
-			margin-top: 2rem;
-			flex-wrap: wrap;
-		}
+	display: flex;
+	gap: 1rem;
+	margin-top: 2rem;
+	flex-wrap: wrap;
+}
+
+.hero-buttons a {
+	flex: 0 0 auto;
+}
 
 		.btn {
 			padding: 14px 24px;
@@ -186,8 +192,8 @@ const latestPosts = sortedPosts.slice(1, 7);
 			box-shadow: var(--shadow);
 		}
 
-		.featured-image {
-			height: 520px;
+	.featured-image {
+	height: clamp(250px, 45vw, 520px);
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -231,7 +237,9 @@ const latestPosts = sortedPosts.slice(1, 7);
 		}
 
 		.card {
-			position: relative;
+	        position: relative;
+	        display: block;
+	        height: 100%;
 			overflow: hidden;
 			background: white;
 			padding: 1.75rem;
@@ -356,21 +364,96 @@ const latestPosts = sortedPosts.slice(1, 7);
 			cursor: pointer;
 		}
 
-		@media(max-width:900px) {
-			.hero {
-				grid-template-columns: 1fr;
-			}
-		}
+	@media (max-width: 992px) {
 
-		@media(max-width:600px) {
-			main {
-				padding: 1.25rem;
-			}
+	.hero {
+		grid-template-columns: 1fr;
+	}
 
-			.newsletter {
-				padding: 2rem;
-			}
-		}
+	.featured-content {
+		padding: 2rem;
+	}
+}
+
+@media (max-width: 768px) {
+
+	main {
+		padding: 0 1rem;
+	}
+
+	.section {
+		margin: 4rem 0;
+	}
+
+	.hero {
+		padding: 2rem 0;
+		gap: 1.5rem;
+	}
+
+	.hero h1 {
+		font-size: clamp(2.5rem, 10vw, 4rem);
+	}
+
+	.hero p {
+		font-size: 1rem;
+	}
+
+	.hero-buttons {
+		flex-direction: column;
+	}
+
+	.btn {
+		width: 100%;
+		text-align: center;
+		box-sizing: border-box;
+	}
+
+	.featured-content {
+		padding: 1.5rem;
+	}
+
+	.grid {
+		grid-template-columns: 1fr;
+	}
+
+	.categories {
+		grid-template-columns: 1fr;
+	}
+
+	.newsletter {
+		padding: 2rem 1.25rem;
+	}
+
+	.newsletter-form {
+		flex-direction: column;
+	}
+
+	.newsletter-form input,
+	.newsletter-form button {
+		width: 100%;
+		box-sizing: border-box;
+	}
+}
+
+@media (max-width: 480px) {
+
+	.hero-badge {
+		font-size: .8rem;
+	}
+
+	.hero h1 {
+		font-size: 2.3rem;
+	}
+
+	.section-title {
+		font-size: 1.8rem;
+	}
+
+	.card,
+	.category {
+		padding: 1.25rem;
+	}
+}
 	</style>
 </head>
 
@@ -436,7 +519,7 @@ const latestPosts = sortedPosts.slice(1, 7);
 
 			<div
 				class="featured-image"
-				style={`background-image:url(${featuredPost.data.heroImage || ''})`}
+				<div class="featured-image"></div>
 			></div>
 
 			<div class="featured-content">
