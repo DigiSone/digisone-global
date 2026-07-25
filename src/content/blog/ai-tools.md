@@ -2,7 +2,7 @@
 title: 'The Future of Artificial Intelligence: Enterprise AI, Autonomous Agents and Digital Transformation in 2026 and Beyond'
 description: 'A comprehensive enterprise-grade guide to Artificial Intelligence in 2026 and beyond. Explore AI agents, automation, business transformation, future technology trends, enterprise adoption strategies and the future of digital innovation.'
 pubDate: 'July 25 2026'
-heroImage: '../../assets/blog-placeholder-ai-tools-2026.jpg'
+heroImage: '../../assets/blog-placeholder-ai-tools.jpg'
 ---
 
 # The Future of Artificial Intelligence: Enterprise AI, Autonomous Agents and Digital Transformation in 2026 and Beyond
