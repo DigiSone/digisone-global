@@ -1,916 +1,508 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-// All blog posts — auto updates on every build when you add new .md files
-const posts = await getCollection('blog');
-
-const sortedPosts = posts.sort(
-  (a, b) =>
-    new Date(b.data.pubDate).getTime() -
-    new Date(a.data.pubDate).getTime()
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const featuredPost = sortedPosts[0] ?? null;
-const latestPosts = sortedPosts.slice(1, 7);
-
-// Compatible slug helper (works across Astro blog starter versions)
-function getPostSlug(post: (typeof posts)[number]) {
-  // Prefer slug, fallback to id (strip folder prefixes if any)
-  const raw = (post as any).slug || post.id || '';
-  return String(raw).replace(/^blog\//, '').replace(/\.mdx?$/, '');
-}
-
-function formatDate(date: Date | string) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
-
-function formatDateShort(date: Date | string) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
-
-const categories = [
-  { icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Automation', href: '/categories' },
-  { icon: '📈', title: 'Business Strategy', desc: 'Leadership & Growth', href: '/categories' },
-  { icon: '🚀', title: 'Startups', desc: 'Funding & Scale', href: '/categories' },
-  { icon: '🔒', title: 'Cybersecurity', desc: 'Security & Privacy', href: '/categories' },
-  { icon: '☁️', title: 'Cloud', desc: 'AWS, Azure & GCP', href: '/categories' },
-  { icon: '🌐', title: 'Future of Work', desc: 'Teams, Tools & Culture', href: '/categories' },
-];
+const featuredPost = posts[0];
+const latestPosts = posts.slice(1, 7);
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <BaseHead title="DigiSone Global — Technology, Business & AI" description={SITE_DESCRIPTION} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --surface: #ffffff;
-        --text: #0b1220;
-        --muted: #64748b;
-        --muted-2: #94a3b8;
-        --primary: #2563eb;
-        --primary-dark: #1d4ed8;
-        --primary-soft: rgba(37, 99, 235, 0.1);
-        --accent: #6366f1;
-        --border: rgba(15, 23, 42, 0.07);
-        --border-strong: rgba(15, 23, 42, 0.12);
-        --radius: 20px;
-        --radius-lg: 28px;
-        --radius-xl: 36px;
-        --shadow-xs: 0 2px 8px rgba(15, 23, 42, 0.04);
-        --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.06);
-        --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
-        --shadow-lg: 0 32px 80px rgba(15, 23, 42, 0.12);
-        --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
-        --ease: cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      *, *::before, *::after { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-
-      body {
-        margin: 0;
-        font-family: var(--font-sans);
-        color: var(--text);
-        background: #f1f5f9;
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-      }
-
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-        background:
-          radial-gradient(ellipse 90% 55% at 8% -12%, rgba(37, 99, 235, 0.16), transparent 55%),
-          radial-gradient(ellipse 70% 45% at 92% 0%, rgba(99, 102, 241, 0.12), transparent 50%),
-          radial-gradient(ellipse 50% 35% at 50% 100%, rgba(37, 99, 235, 0.06), transparent 60%);
-      }
-
-      main {
-        width: 100%;
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-      }
-
-      a { color: inherit; text-decoration: none; }
-
-      h1, h2, h3 {
-        font-family: var(--font-display);
-        font-weight: 700;
-        letter-spacing: -0.04em;
-        margin: 0;
-      }
-
-      p { line-height: 1.7; margin: 0; }
-
-      .section { margin: 6.5rem 0; }
-
-      .section-header {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 1.25rem;
-        margin-bottom: 2.25rem;
-        flex-wrap: wrap;
-      }
-
-      .section-title {
-        font-size: clamp(1.85rem, 3.5vw, 2.75rem);
-        letter-spacing: -0.045em;
-      }
-
-      .section-link {
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: var(--primary);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        transition: gap 0.25s var(--ease);
-      }
-
-      .section-link:hover { gap: 0.65rem; color: var(--primary-dark); }
-
-      /* HERO */
-      .hero {
-        padding: 4.75rem 0 3.25rem;
-        display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr);
-        gap: 3.25rem;
-        align-items: center;
-      }
-
-      .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.55rem;
-        padding: 0.5rem 1rem 0.5rem 0.7rem;
-        border-radius: 999px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-xs);
-        font-size: 0.84rem;
-        font-weight: 600;
-      }
-
-      .hero-badge .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #22c55e;
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
-        animation: pulse 2.2s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); }
-        50% { box-shadow: 0 0 0 7px rgba(34, 197, 94, 0.08); }
-      }
-
-      .hero h1 {
-        font-size: clamp(2.75rem, 6.8vw, 4.85rem);
-        line-height: 1.03;
-        margin: 1.35rem 0 1.25rem;
-        letter-spacing: -0.05em;
-      }
-
-      .hero h1 .line { display: block; }
-
-      .hero h1 .gradient {
-        background: linear-gradient(120deg, #2563eb 0%, #6366f1 45%, #8b5cf6 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .hero-lead {
-        font-size: 1.12rem;
-        color: var(--muted);
-        max-width: 34rem;
-        line-height: 1.75;
-      }
-
-      .hero-buttons {
-        display: flex;
-        gap: 0.85rem;
-        margin-top: 2rem;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.45rem;
-        padding: 0.9rem 1.45rem;
-        border-radius: 14px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
-        transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-      }
-
-      .btn:hover { transform: translateY(-2px); }
-      .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
-        color: #fff;
-        box-shadow: 0 10px 28px rgba(37, 99, 235, 0.36);
-      }
-
-      .btn-secondary {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        color: var(--text);
-        box-shadow: var(--shadow-xs);
-      }
-
-      .trust {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.75rem 2.25rem;
-        margin-top: 2.35rem;
-        padding-top: 1.65rem;
-        border-top: 1px solid var(--border);
-      }
-
-      .trust-item strong {
-        display: block;
-        font-family: var(--font-display);
-        font-size: 1.3rem;
-        letter-spacing: -0.03em;
-      }
-
-      .trust-item span {
-        font-size: 0.8rem;
-        color: var(--muted);
-        font-weight: 500;
-      }
-
-      .hero-card {
-        position: relative;
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border-radius: var(--radius-xl);
-        padding: 1.85rem 1.7rem;
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .hero-card::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #2563eb, #6366f1, #8b5cf6);
-      }
-
-      .hero-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1.2rem;
-      }
-
-      .hero-card h3 { font-size: 1rem; }
-
-      .live {
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: #16a34a;
-        background: rgba(34, 197, 94, 0.12);
-        padding: 0.25rem 0.5rem;
-        border-radius: 6px;
-      }
-
-      .hero-card ol {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: 0.3rem;
-      }
-
-      .hero-card li {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.55rem 0.65rem;
-        border-radius: 11px;
-        color: var(--muted);
-        font-size: 0.93rem;
-        font-weight: 500;
-        transition: background 0.2s ease, color 0.2s ease, transform 0.25s var(--ease);
-      }
-
-      .hero-card li:hover {
-        background: var(--primary-soft);
-        color: var(--primary);
-        transform: translateX(3px);
-      }
-
-      .hero-card .num {
-        width: 22px;
-        height: 22px;
-        border-radius: 7px;
-        background: var(--primary-soft);
-        color: var(--primary);
-        font-size: 0.7rem;
-        font-weight: 700;
-        display: grid;
-        place-items: center;
-        flex-shrink: 0;
-      }
-
-      /* FEATURED */
-      .featured {
-        background: var(--surface);
-        border-radius: var(--radius-xl);
-        overflow: hidden;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-        transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
-      }
-
-      .featured:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
-      }
-
-      .featured > a {
-        display: grid;
-        grid-template-columns: 1.15fr 1fr;
-        min-height: 420px;
-      }
-
-      .featured-image {
-        min-height: 280px;
-        background: linear-gradient(145deg, #1e3a8a, #312e81 55%, #1e1b4b);
-        position: relative;
-      }
-
-      .featured-image::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(160deg, rgba(15, 23, 42, 0.12), transparent 55%);
-      }
-
-      .featured-content {
-        padding: 2.75rem 2.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .featured-label {
-        color: var(--primary);
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 0.75rem;
-      }
-
-      .featured-meta {
-        color: var(--muted);
-        font-size: 0.9rem;
-        font-weight: 500;
-        margin-bottom: 0.85rem;
-      }
-
-      .featured h2 {
-        font-size: clamp(1.55rem, 3vw, 2.3rem);
-        line-height: 1.18;
-        margin-bottom: 1rem;
-      }
-
-      .featured p {
-        color: var(--muted);
-        font-size: 1.02rem;
-        margin-bottom: 1.6rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .featured .btn { align-self: flex-start; }
-
-      /* CARDS */
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.35rem;
-      }
-
-      .card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 1.7rem;
-        border-radius: var(--radius);
-        background: var(--surface);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-xs);
-        transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.25s ease;
-        overflow: hidden;
-      }
-
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--primary), var(--accent));
-        opacity: 0;
-        transition: opacity 0.25s ease;
-      }
-
-      .card:hover {
-        transform: translateY(-6px);
-        box-shadow: var(--shadow);
-        border-color: rgba(37, 99, 235, 0.14);
-      }
-
-      .card:hover::before { opacity: 1; }
-
-      .card-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        gap: 0.5rem;
-      }
-
-      .category-tag {
-        color: var(--primary);
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        background: var(--primary-soft);
-        padding: 0.28rem 0.55rem;
-        border-radius: 6px;
-      }
-
-      .card-meta {
-        font-size: 0.8rem;
-        color: var(--muted-2);
-        font-weight: 500;
-      }
-
-      .card h3 {
-        font-size: 1.15rem;
-        line-height: 1.35;
-        margin-bottom: 0.6rem;
-      }
-
-      .card p {
-        color: var(--muted);
-        font-size: 0.94rem;
-        flex: 1;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .card-footer {
-        margin-top: 1.2rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border);
-        font-size: 0.88rem;
-        font-weight: 600;
-        color: var(--primary);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        transition: gap 0.25s var(--ease);
-      }
-
-      .card:hover .card-footer { gap: 0.55rem; }
-
-      /* CATEGORIES */
-      .categories {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1.1rem;
-      }
-
-      .category {
-        background: var(--surface);
-        padding: 1.55rem 1.3rem;
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-xs);
-        transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-      }
-
-      .category:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-sm);
-      }
-
-      .category-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        display: grid;
-        place-items: center;
-        font-size: 1.25rem;
-        margin-bottom: 0.9rem;
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1));
-      }
-
-      .category h3 { font-size: 1rem; margin-bottom: 0.25rem; }
-      .category p { font-size: 0.84rem; color: var(--muted); }
-
-      /* WHY */
-      .why-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.35rem;
-      }
-
-      .why-card {
-        background: var(--surface);
-        padding: 1.9rem 1.7rem;
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-xs);
-        transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-      }
-
-      .why-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-sm);
-      }
-
-      .why-icon {
-        width: 46px;
-        height: 46px;
-        border-radius: 13px;
-        display: grid;
-        place-items: center;
-        font-size: 1.25rem;
-        margin-bottom: 1.1rem;
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.12));
-      }
-
-      .why-card h3 { font-size: 1.1rem; margin-bottom: 0.45rem; }
-      .why-card p { color: var(--muted); font-size: 0.94rem; }
-
-      /* NEWSLETTER */
-      .newsletter {
-        position: relative;
-        padding: 4.5rem 3rem;
-        border-radius: var(--radius-xl);
-        text-align: center;
-        background: linear-gradient(150deg, #0b1220 0%, #1e293b 50%, #0f172a 100%);
-        color: #fff;
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-      }
-
-      .newsletter::before,
-      .newsletter::after {
-        content: "";
-        position: absolute;
-        pointer-events: none;
-        border-radius: 50%;
-      }
-
-      .newsletter::before {
-        top: -40%; left: -20%;
-        width: 65%; height: 85%;
-        background: radial-gradient(circle, rgba(37, 99, 235, 0.28), transparent 68%);
-      }
-
-      .newsletter::after {
-        bottom: -30%; right: -15%;
-        width: 50%; height: 70%;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.22), transparent 68%);
-      }
-
-      .newsletter-inner { position: relative; z-index: 1; }
-
-      .newsletter h2 {
-        font-size: clamp(1.75rem, 4vw, 2.7rem);
-        margin-bottom: 0.8rem;
-      }
-
-      .newsletter p {
-        max-width: 30rem;
-        margin: 0 auto;
-        color: rgba(255, 255, 255, 0.72);
-        font-size: 1.05rem;
-      }
-
-      .newsletter-form {
-        display: flex;
-        gap: 0.7rem;
-        max-width: 28rem;
-        margin: 1.9rem auto 0;
-        flex-wrap: wrap;
-      }
-
-      .newsletter-form input {
-        flex: 1;
-        min-width: 200px;
-        min-height: 3.1rem;
-        padding: 0.95rem 1.1rem;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff;
-        font: inherit;
-        outline: none;
-      }
-
-      .newsletter-form input::placeholder { color: rgba(255, 255, 255, 0.4); }
-      .newsletter-form input:focus {
-        border-color: rgba(255, 255, 255, 0.35);
-        background: rgba(255, 255, 255, 0.12);
-      }
-
-      .newsletter-form button {
-        min-height: 3.1rem;
-        padding: 0.95rem 1.4rem;
-        border: none;
-        border-radius: 12px;
-        background: #fff;
-        color: #0b1220;
-        font-weight: 700;
-        font: inherit;
-        cursor: pointer;
-      }
-
-      .newsletter-note {
-        margin-top: 1rem;
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.35);
-      }
-
-      .empty {
-        background: var(--surface);
-        border: 1px dashed var(--border);
-        border-radius: var(--radius);
-        padding: 2rem;
-        text-align: center;
-        color: var(--muted);
-      }
-
-      @media (max-width: 992px) {
-        .hero {
-          grid-template-columns: 1fr;
-          gap: 2.5rem;
-          padding: 3.25rem 0 2.25rem;
-        }
-        .featured > a { grid-template-columns: 1fr; }
-        .featured-content { padding: 2rem 1.7rem; }
-        .why-grid { grid-template-columns: 1fr; }
-      }
-
-      @media (max-width: 768px) {
-        main { padding: 0 1.15rem; }
-        .section { margin: 4.5rem 0; }
-        .hero h1 { font-size: clamp(2.35rem, 9vw, 3.3rem); }
-        .hero-buttons { flex-direction: column; }
-        .btn { width: 100%; }
-        .grid { grid-template-columns: 1fr; }
-        .categories { grid-template-columns: 1fr 1fr; }
-        .newsletter { padding: 3rem 1.4rem; }
-        .newsletter-form { flex-direction: column; }
-        .newsletter-form input,
-        .newsletter-form button { width: 100%; }
-      }
-
-      @media (max-width: 480px) {
-        .categories { grid-template-columns: 1fr; }
-      }
-    </style>
-  </head>
-  <body>
-    <Header />
-    <main id="main-content">
-      <!-- HERO -->
-      <section class="hero" aria-label="Introduction">
-        <div>
-          <div class="hero-badge">
-            <span class="dot" aria-hidden="true"></span>
-            Trusted by founders, operators & technology leaders
-          </div>
-          <h1>
-            <span class="line">The Future of</span>
-            <span class="line gradient">Technology, Business & AI</span>
-          </h1>
-          <p class="hero-lead">
-            DigiSone Global delivers premium insights on Artificial Intelligence,
-            Business Strategy, Startups, Cybersecurity, Cloud Computing,
-            Digital Transformation and the Future of Work.
-          </p>
-          <div class="hero-buttons">
-            <a href="/blog" class="btn btn-primary">
-              Read Latest Insights
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="#newsletter" class="btn btn-secondary">Get Weekly Briefing</a>
-          </div>
-          <div class="trust">
-            <div class="trust-item"><strong>12k+</strong><span>Monthly readers</span></div>
-            <div class="trust-item"><strong>{sortedPosts.length}</strong><span>Published articles</span></div>
-            <div class="trust-item"><strong>4.9★</strong><span>Reader rating</span></div>
-          </div>
-        </div>
-
-        <aside class="hero-card" aria-label="Trending topics">
-          <div class="hero-card-header">
-            <h3>Trending Topics</h3>
-            <span class="live">Live</span>
-          </div>
-          <ol>
-            <li><span class="num">01</span> AI Agents & Autonomous Systems</li>
-            <li><span class="num">02</span> Enterprise Automation</li>
-            <li><span class="num">03</span> Future of Work</li>
-            <li><span class="num">04</span> Cybersecurity & Privacy</li>
-            <li><span class="num">05</span> Cloud Infrastructure</li>
-            <li><span class="num">06</span> Startup Growth Strategies</li>
-          </ol>
-        </aside>
-      </section>
-
-      <!-- FEATURED (fully linked) -->
-      {featuredPost ? (
-        <section class="featured" aria-label="Featured article">
-          <a href={`/blog/${getPostSlug(featuredPost)}/`} aria-label={`Read: ${featuredPost.data.title}`}>
-            <div class="featured-image" aria-hidden="true"></div>
-            <div class="featured-content">
-              <div class="featured-label">Featured Story</div>
-              <div class="featured-meta">
-                <time datetime={new Date(featuredPost.data.pubDate).toISOString()}>
-                  {formatDate(featuredPost.data.pubDate)}
-                </time>
-              </div>
-              <h2>{featuredPost.data.title}</h2>
-              <p>{featuredPost.data.description}</p>
-              <span class="btn btn-primary">
-                Read Article
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </div>
-          </a>
-        </section>
-      ) : (
-        <section class="section">
-          <div class="empty"><p>No articles published yet.</p></div>
-        </section>
-      )}
-
-      <!-- LATEST (auto from collection) -->
-      <section class="section" aria-label="Latest articles">
-        <div class="section-header">
-          <h2 class="section-title">Latest Articles</h2>
-          <a href="/blog" class="section-link">
-            View all
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
-
-        {latestPosts.length > 0 ? (
-          <div class="grid">
-            {latestPosts.map((post) => (
-              <a href={`/blog/${getPostSlug(post)}/`} class="card" aria-label={post.data.title}>
-                <div class="card-top">
-                  <span class="category-tag">Article</span>
-                  <span class="card-meta">
-                    <time datetime={new Date(post.data.pubDate).toISOString()}>
-                      {formatDateShort(post.data.pubDate)}
-                    </time>
-                  </span>
-                </div>
-                <h3>{post.data.title}</h3>
-                <p>{post.data.description}</p>
-                <div class="card-footer">
-                  Read more
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <div class="empty"><p>More articles coming soon.</p></div>
-        )}
-      </section>
-
-      <!-- CATEGORIES -->
-      <section class="section" aria-label="Categories">
-        <div class="section-header">
-          <h2 class="section-title">Explore Categories</h2>
-          <a href="/categories" class="section-link">Browse all</a>
-        </div>
-        <div class="categories">
-          {categories.map((cat) => (
-            <a href={cat.href} class="category">
-              <div class="category-icon" aria-hidden="true">{cat.icon}</div>
-              <h3>{cat.title}</h3>
-              <p>{cat.desc}</p>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <!-- WHY -->
-      <section class="section" aria-label="Why DigiSone Global">
-        <div class="section-header">
-          <h2 class="section-title">Why Professionals Read DigiSone Global</h2>
-        </div>
-        <div class="why-grid">
-          <div class="why-card">
-            <div class="why-icon" aria-hidden="true">🔍</div>
-            <h3>Deep Analysis</h3>
-            <p>Practical insights beyond headlines and breaking news.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon" aria-hidden="true">🧠</div>
-            <h3>Expert Perspectives</h3>
-            <p>Technology, leadership and innovation from industry operators.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon" aria-hidden="true">⚡</div>
-            <h3>Actionable Takeaways</h3>
-            <p>Frameworks, lessons and strategies you can apply immediately.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- NEWSLETTER -->
-      <section id="newsletter" class="section" aria-label="Newsletter">
-        <div class="newsletter">
-          <div class="newsletter-inner">
-            <h2>Get the Weekly Technology Briefing</h2>
-            <p>
-              Actionable insights on AI, business strategy, cybersecurity and
-              digital transformation — delivered every week.
-            </p>
-            <form class="newsletter-form" action="#" method="post">
-              <label for="newsletter-email" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
-                Email address
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                required
-                autocomplete="email"
-              />
-              <button type="submit">Subscribe</button>
-            </form>
-            <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-    <Footer />
-  </body>
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			:root {
+				--bg: #f1f5f9;
+				--surface: #fff;
+				--text: #0b1220;
+				--muted: #64748b;
+				--primary: #2563eb;
+				--primary-dark: #1d4ed8;
+				--border: rgba(15, 23, 42, 0.08);
+				--radius: 1.25rem;
+				--shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
+				--font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			}
+
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+
+			html {
+				scroll-behavior: smooth;
+			}
+
+			body {
+				margin: 0;
+				font-family: var(--font);
+				color: var(--text);
+				background: var(--bg);
+				-webkit-font-smoothing: antialiased;
+			}
+
+			main {
+				width: min(100% - 2rem, 70rem);
+				margin-inline: auto;
+				padding-block: 2rem 4rem;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+
+			h1,
+			h2,
+			h3 {
+				margin: 0;
+				line-height: 1.15;
+				letter-spacing: -0.03em;
+			}
+
+			p {
+				margin: 0;
+				line-height: 1.7;
+			}
+
+			.hero {
+				display: grid;
+				gap: 1.25rem;
+				padding: 2.5rem 0 3rem;
+			}
+
+			.hero h1 {
+				font-size: clamp(2.25rem, 6vw, 3.75rem);
+				max-width: 18ch;
+			}
+
+			.hero h1 span {
+				background: linear-gradient(120deg, #2563eb, #6366f1 55%, #8b5cf6);
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: transparent;
+			}
+
+			.hero p {
+				color: var(--muted);
+				font-size: 1.1rem;
+				max-width: 40rem;
+			}
+
+			.actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				margin-top: 0.5rem;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 2.75rem;
+				padding: 0.7rem 1.2rem;
+				border-radius: 0.75rem;
+				font-weight: 600;
+				font-size: 0.95rem;
+				border: 1px solid transparent;
+				transition: transform 0.15s ease, box-shadow 0.15s ease;
+			}
+
+			.btn:hover {
+				transform: translateY(-1px);
+			}
+
+			.btn:focus-visible {
+				outline: 2px solid var(--primary);
+				outline-offset: 2px;
+			}
+
+			.btn-primary {
+				background: linear-gradient(135deg, #2563eb, #1d4ed8);
+				color: #fff;
+				box-shadow: 0 0.5rem 1.25rem rgba(37, 99, 235, 0.3);
+			}
+
+			.btn-secondary {
+				background: var(--surface);
+				border-color: var(--border);
+				color: var(--text);
+			}
+
+			.section {
+				margin-top: 3.5rem;
+			}
+
+			.section-header {
+				display: flex;
+				align-items: end;
+				justify-content: space-between;
+				gap: 1rem;
+				margin-bottom: 1.25rem;
+				flex-wrap: wrap;
+			}
+
+			.section-header h2 {
+				font-size: clamp(1.5rem, 3vw, 2rem);
+			}
+
+			.section-header a {
+				color: var(--primary);
+				font-weight: 600;
+				font-size: 0.95rem;
+			}
+
+			.section-header a:hover {
+				color: var(--primary-dark);
+			}
+
+			/* Featured = first post, full width */
+			.featured {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.featured a {
+				display: grid;
+				gap: 1rem;
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				overflow: hidden;
+				box-shadow: var(--shadow);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+
+			.featured a:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 1.25rem 3rem rgba(15, 23, 42, 0.12);
+			}
+
+			.featured img {
+				width: 100%;
+				height: auto;
+				aspect-ratio: 2 / 1;
+				object-fit: cover;
+				display: block;
+				background: #1e3a8a;
+			}
+
+			.featured .body {
+				padding: 1.25rem 1.35rem 1.5rem;
+			}
+
+			.featured .label {
+				font-size: 0.75rem;
+				font-weight: 700;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+				color: var(--primary);
+				margin-bottom: 0.4rem;
+			}
+
+			.featured .date {
+				color: var(--muted);
+				font-size: 0.9rem;
+				margin-bottom: 0.5rem;
+			}
+
+			.featured h3 {
+				font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+				margin-bottom: 0.5rem;
+			}
+
+			.featured .desc {
+				color: var(--muted);
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			/* Latest grid */
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 1.25rem;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.card a {
+				display: grid;
+				gap: 0.65rem;
+				height: 100%;
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				overflow: hidden;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+
+			.card a:hover {
+				transform: translateY(-3px);
+				box-shadow: var(--shadow);
+			}
+
+			.card img {
+				width: 100%;
+				height: auto;
+				aspect-ratio: 2 / 1;
+				object-fit: cover;
+				display: block;
+				background: #312e81;
+			}
+
+			.card .body {
+				padding: 0.9rem 1rem 1.1rem;
+				display: grid;
+				gap: 0.35rem;
+			}
+
+			.card .date {
+				color: var(--muted);
+				font-size: 0.85rem;
+			}
+
+			.card h3 {
+				font-size: 1.1rem;
+			}
+
+			.card .desc {
+				color: var(--muted);
+				font-size: 0.92rem;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			/* Newsletter */
+			.newsletter {
+				margin-top: 4rem;
+				padding: 2.25rem 1.5rem;
+				border-radius: var(--radius);
+				background: linear-gradient(145deg, #0b1220, #1e293b);
+				color: #fff;
+				text-align: center;
+			}
+
+			.newsletter h2 {
+				font-size: clamp(1.4rem, 3vw, 2rem);
+				margin-bottom: 0.5rem;
+			}
+
+			.newsletter p {
+				color: rgba(255, 255, 255, 0.72);
+				max-width: 32rem;
+				margin: 0 auto 1.25rem;
+			}
+
+			.newsletter form {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6rem;
+				justify-content: center;
+				max-width: 28rem;
+				margin: 0 auto;
+			}
+
+			.newsletter input {
+				flex: 1 1 12rem;
+				min-height: 2.75rem;
+				padding: 0.7rem 0.9rem;
+				border-radius: 0.75rem;
+				border: 1px solid rgba(255, 255, 255, 0.15);
+				background: rgba(255, 255, 255, 0.08);
+				color: #fff;
+				font: inherit;
+			}
+
+			.newsletter input::placeholder {
+				color: rgba(255, 255, 255, 0.45);
+			}
+
+			.newsletter input:focus {
+				outline: 2px solid #93c5fd;
+				outline-offset: 1px;
+			}
+
+			.newsletter button {
+				min-height: 2.75rem;
+				padding: 0.7rem 1.1rem;
+				border: 0;
+				border-radius: 0.75rem;
+				background: #fff;
+				color: #0b1220;
+				font-weight: 700;
+				font: inherit;
+				cursor: pointer;
+			}
+
+			.note {
+				margin-top: 0.75rem;
+				font-size: 0.8rem;
+				color: rgba(255, 255, 255, 0.4);
+			}
+
+			.empty {
+				padding: 2rem;
+				border: 1px dashed var(--border);
+				border-radius: var(--radius);
+				background: var(--surface);
+				color: var(--muted);
+				text-align: center;
+			}
+
+			@media (max-width: 720px) {
+				.grid {
+					grid-template-columns: 1fr;
+				}
+
+				.newsletter form {
+					flex-direction: column;
+				}
+
+				.newsletter input,
+				.newsletter button {
+					width: 100%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero" aria-label="Introduction">
+				<h1>The Future of <span>Technology, Business & AI</span></h1>
+				<p>
+					DigiSone Global delivers premium insights on Artificial Intelligence, business strategy,
+					startups, cybersecurity, cloud, and the future of work.
+				</p>
+				<div class="actions">
+					<a class="btn btn-primary" href="/blog">Read Latest Insights</a>
+					<a class="btn btn-secondary" href="#newsletter">Get Weekly Briefing</a>
+				</div>
+			</section>
+
+			<!-- Featured (first post) -->
+			<section class="section" aria-label="Featured article">
+				{
+					featuredPost ? (
+						<article class="featured">
+							<a href={`/blog/${featuredPost.id}/`}>
+								{featuredPost.data.heroImage && (
+									<Image
+										width={1020}
+										height={510}
+										src={featuredPost.data.heroImage}
+										alt={featuredPost.data.title}
+										loading="eager"
+										fetchpriority="high"
+										format="webp"
+									/>
+								)}
+								<div class="body">
+									<div class="label">Featured Story</div>
+									<p class="date">
+										<time datetime={featuredPost.data.pubDate.toISOString()}>
+											{featuredPost.data.pubDate.toLocaleDateString('en-US', {
+												year: 'numeric',
+												month: 'long',
+												day: 'numeric',
+											})}
+										</time>
+									</p>
+									<h3>{featuredPost.data.title}</h3>
+									<p class="desc">{featuredPost.data.description}</p>
+								</div>
+							</a>
+						</article>
+					) : (
+						<div class="empty">No posts yet. Add markdown files in src/content/blog.</div>
+					)
+				}
+			</section>
+
+			<!-- Latest posts -->
+			<section class="section" aria-label="Latest articles">
+				<div class="section-header">
+					<h2>Latest Articles</h2>
+					<a href="/blog">View all</a>
+				</div>
+
+				{
+					latestPosts.length > 0 ? (
+						<ul class="grid">
+							{latestPosts.map((post) => (
+								<li class="card">
+									<a href={`/blog/${post.id}/`}>
+										{post.data.heroImage && (
+											<Image
+												width={720}
+												height={360}
+												src={post.data.heroImage}
+												alt={post.data.title}
+												loading="lazy"
+												format="webp"
+											/>
+										)}
+										<div class="body">
+											<p class="date">
+												<time datetime={post.data.pubDate.toISOString()}>
+													{post.data.pubDate.toLocaleDateString('en-US', {
+														year: 'numeric',
+														month: 'short',
+														day: 'numeric',
+													})}
+												</time>
+											</p>
+											<h3>{post.data.title}</h3>
+											<p class="desc">{post.data.description}</p>
+										</div>
+									</a>
+								</li>
+							))}
+						</ul>
+					) : (
+						<div class="empty">More articles coming soon.</div>
+					)
+				}
+			</section>
+
+			<!-- Newsletter -->
+			<section class="newsletter" id="newsletter" aria-label="Newsletter signup">
+				<h2>Get the Weekly Technology Briefing</h2>
+				<p>Actionable insights on AI, strategy, security, and digital transformation.</p>
+				<form action="#" method="post">
+					<label for="email" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+						Email address
+					</label>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						autocomplete="email"
+						required
+						placeholder="Enter your email address"
+					/>
+					<button type="submit">Subscribe</button>
+				</form>
+				<p class="note">No spam. Unsubscribe anytime.</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
 </html>
