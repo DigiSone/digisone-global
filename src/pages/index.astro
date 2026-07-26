@@ -6,11 +6,10 @@ import { SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
-
 const sortedPosts = posts.sort(
-	(a, b) =>
-		new Date(b.data.pubDate).getTime() -
-		new Date(a.data.pubDate).getTime()
+  (a, b) =>
+    new Date(b.data.pubDate).getTime() -
+    new Date(a.data.pubDate).getTime()
 );
 
 const featuredPost = sortedPosts[0];
@@ -19,700 +18,950 @@ const latestPosts = sortedPosts.slice(1, 7);
 
 <!doctype html>
 <html lang="en">
-<head>
-	<BaseHead
-		title="DigiSone Global"
-		description={SITE_DESCRIPTION}
-	/>
-
-	<style>
-		:root {
-			--surface: #ffffff;
-			--surface-alt: #f8fafc;
-
-			--text: #0f172a;
-			--muted: #64748b;
-
-			--primary: #2563eb;
-			--primary-dark: #1d4ed8;
-
-			--border: #e5e7eb;
-
-			--radius: 24px;
-
-			--shadow:
-				0 20px 50px rgba(15, 23, 42, 0.08);
-		}
-
-		html {
-			scroll-behavior: smooth;
-		}
-
-		body {
-			margin: 0;
-			color: var(--text);
-			background:
-				radial-gradient(
-					circle at top left,
-					rgba(37,99,235,.08),
-					transparent 40%
-				),
-				radial-gradient(
-					circle at top right,
-					rgba(79,70,229,.08),
-					transparent 40%
-				),
-				#f8fafc;
-		}
-
-		main {
-			width: 100%;
-			max-width: 1400px;
-			margin: 0 auto;
-			padding: 0 1.25rem;
-			box-sizing: border-box;
-		}
-
-		a {
-			color: inherit;
-			text-decoration: none;
-		}
-
-		h1,
-		h2,
-		h3 {
-			font-weight: 800;
-			letter-spacing: -0.03em;
-		}
-
-		p {
-			line-height: 1.8;
-		}
-
-		.section {
-			margin: 7rem 0;
-		}
-
-		.section-title {
-			font-size: clamp(2rem, 4vw, 3rem);
-			margin-bottom: 2rem;
-		}
-
-		.hero {
-			padding: 4rem 0;
-			display: grid;
-			grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
-			gap: 2rem;
-			align-items: center;
-		}
-
-		.hero-badge {
-			display: inline-flex;
-			align-items: center;
-			gap: .5rem;
-			padding: 10px 18px;
-			border-radius: 999px;
-			background: white;
-			border: 1px solid var(--border);
-			box-shadow: var(--shadow);
-			font-size: .9rem;
-			font-weight: 600;
-		}
-
-		.hero h1 {
-			font-size: clamp(3.5rem, 8vw, 6rem);
-			line-height: .95;
-			margin: 1.5rem 0;
-		}
-
-		.hero p {
-			font-size: 1.2rem;
-			color: var(--muted);
-			max-width: 700px;
-		}
-
-		.hero-buttons {
-			display: flex;
-			gap: 1rem;
-			margin-top: 2rem;
-			flex-wrap: wrap;
-		}
-
-		.hero-buttons a {
-			flex: 0 0 auto;
-		}
-
-		.btn {
-			padding: 14px 24px;
-			border-radius: 14px;
-			font-weight: 700;
-			display: inline-block;
-			transition: .3s;
-		}
-
-		.btn:hover {
-			transform: translateY(-3px);
-		}
-
-		.btn-primary {
-			background: var(--primary);
-			color: white;
-		}
-
-		.btn-primary:hover {
-			background: var(--primary-dark);
-		}
-
-		.btn-secondary {
-			background: white;
-			border: 1px solid var(--border);
-		}
-
-		.hero-card {
-			background: rgba(255,255,255,.8);
-			backdrop-filter: blur(20px);
-			border-radius: 28px;
-			padding: 2rem;
-			border: 1px solid rgba(255,255,255,.5);
-			box-shadow: var(--shadow);
-		}
-
-		.hero-card ul {
-			padding-left: 1.2rem;
-			line-height: 2;
-			color: var(--muted);
-		}
-
-		.featured {
-			background: white;
-			border-radius: 32px;
-			overflow: hidden;
-			border: 1px solid var(--border);
-			box-shadow: var(--shadow);
-		}
-
-		.featured-image {
-			height: clamp(250px, 45vw, 520px);
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			background-color: #2563eb;
-		}
-
-		.featured-content {
-			padding: 3rem;
-		}
-
-		.featured-label {
-			color: var(--primary);
-			font-size: .9rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-		}
-
-		.featured-meta {
-			color: var(--muted);
-			font-size: .95rem;
-			margin-top: .75rem;
-		}
-
-		.featured h2 {
-			font-size: clamp(2rem, 4vw, 3.5rem);
-			line-height: 1.1;
-			margin: 1rem 0;
-		}
-
-		.featured p {
-			color: var(--muted);
-			max-width: 850px;
-		}
-
-		.grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-			gap: 2rem;
-			margin-top: 2rem;
-			align-items: stretch;
-		}
-
-		.card {
-			position: relative;
-			overflow: hidden;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			height: 100%;
-			padding: 2rem;
-			border-radius: 24px;
-			background: white;
-			border: 1px solid var(--border);
-			box-shadow: var(--shadow);
-			transition: .3s;
-		}
-
-		.card::before {
-			content: "";
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(
-				180deg,
-				transparent,
-				rgba(37, 99, 235, .03)
-			);
-			opacity: 0;
-			transition: .3s;
-		}
-
-		.card:hover {
-			transform: translateY(-8px);
-		}
-
-		.card:hover::before {
-			opacity: 1;
-		}
-
-		.card-meta {
-			font-size: .85rem;
-			color: var(--muted);
-			margin-bottom: .5rem;
-		}
-
-		.category-tag {
-			color: var(--primary);
-			font-size: .85rem;
-			font-weight: 700;
-			text-transform: uppercase;
-		}
-
-		.card p {
-			color: var(--muted);
-		}
-
-		.categories {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-			gap: 1.25rem;
-		}
-
-		.category {
-			background: white;
-			padding: 2rem;
-			border-radius: 24px;
-			border: 1px solid var(--border);
-			box-shadow: var(--shadow);
-		}
-
-		.category-icon {
-			font-size: 2rem;
-			margin-bottom: 1rem;
-		}
-
-		.newsletter {
-			padding: 5rem 3rem;
-			border-radius: 32px;
-			text-align: center;
-			background: linear-gradient(
-				135deg,
-				#0f172a,
-				#1e293b
-			);
-			color: white;
-			box-shadow: var(--shadow);
-		}
-
-		.newsletter h2 {
-			color: #ffffff;
-			font-size: clamp(2rem, 5vw, 4rem);
-			margin-bottom: 1rem;
-		}
-
-		.newsletter p {
-			max-width: 700px;
-			margin: auto;
-			color: rgba(255, 255, 255, .8);
-		}
-
-		.newsletter-form {
-			display: flex;
-			gap: 1rem;
-			max-width: 650px;
-			margin: 2rem auto 0;
-			flex-wrap: wrap;
-		}
-
-		.newsletter-form input {
-			flex: 1;
-			padding: 16px;
-			border-radius: 12px;
-			border: 1px solid rgba(255, 255, 255, .15);
-			background: rgba(255, 255, 255, .1);
-			color: white;
-		}
-
-		.newsletter-form input::placeholder {
-			color: rgba(255, 255, 255, .6);
-		}
-
-		.newsletter-form button {
-			padding: 16px 24px;
-			border: none;
-			border-radius: 12px;
-			background: white;
-			color: #0f172a;
-			font-weight: 700;
-			cursor: pointer;
-		}
-
-		@media (max-width: 992px) {
-			.hero {
-				grid-template-columns: 1fr;
-			}
-
-			.featured-content {
-				padding: 2rem;
-			}
-		}
-
-		@media (max-width: 768px) {
-			main {
-				padding: 0 1rem;
-			}
-
-			.section {
-				margin: 4rem 0;
-			}
-
-			.hero {
-				padding: 2rem 0;
-				gap: 1.5rem;
-			}
-
-			.hero h1 {
-				font-size: clamp(2.5rem, 10vw, 4rem);
-			}
-
-			.hero p {
-				font-size: 1rem;
-			}
-
-			.hero-buttons {
-				flex-direction: column;
-			}
-
-			.btn {
-				width: 100%;
-				text-align: center;
-				box-sizing: border-box;
-			}
-
-			.featured-content {
-				padding: 1.5rem;
-			}
-
-			.grid {
-				grid-template-columns: 1fr;
-			}
-
-			.categories {
-				grid-template-columns: 1fr;
-			}
-
-			.newsletter {
-				padding: 2rem 1.25rem;
-			}
-
-			.newsletter-form {
-				flex-direction: column;
-			}
-
-			.newsletter-form input,
-			.newsletter-form button {
-				width: 100%;
-				box-sizing: border-box;
-			}
-		}
-
-		@media (max-width: 480px) {
-			.hero-badge {
-				font-size: .8rem;
-			}
-
-			.hero h1 {
-				font-size: 2.3rem;
-			}
-
-			.section-title {
-				font-size: 1.8rem;
-			}
-
-			.section .card {
-				min-height: 220px;
-			}
-
-			.card,
-			.category {
-				padding: 1.25rem;
-			}
-		}
-	</style>
-</head>
-
-<body>
-
-<Header />
-
-<main>
-
-	<section class="hero">
-
-		<div>
-
-			<div class="hero-badge">
-				🚀 Trusted by founders, operators & technology leaders
-			</div>
-
-			<h1>
-				The Future of Technology,
-				Business & AI.
-			</h1>
-
-			<p>
-				DigiSone Global delivers premium insights on Artificial Intelligence,
-				Business Strategy, Startups, Cybersecurity, Cloud Computing,
-				Digital Transformation and the Future of Work.
-			</p>
-
-			<div class="hero-buttons">
-
-				<a href="/blog" class="btn btn-primary">
-					Read Latest Insights
-				</a>
-
-				<a href="#newsletter" class="btn btn-secondary">
-					Get Weekly Briefing
-				</a>
-
-			</div>
-
-		</div>
-
-		<div class="hero-card">
-
-			<h3>Trending Topics</h3>
-
-			<ul>
-				<li>AI Agents & Autonomous Systems</li>
-				<li>Enterprise Automation</li>
-				<li>Future of Work</li>
-				<li>Cybersecurity & Privacy</li>
-				<li>Cloud Infrastructure</li>
-				<li>Startup Growth Strategies</li>
-			</ul>
-
-		</div>
-
-	</section>
-
-{featuredPost && (
-
-<section class="featured">
-
-	<a
-		href={`/blog/${featuredPost.slug}/`}
-		style="display:block;"
-	>
-
-		<div
-			class="featured-image"
-			style={`background-image:url(${featuredPost.data.heroImage || ''})`}
-		></div>
-
-		<div class="featured-content">
-
-			<div class="featured-label">
-				Featured Story
-			</div>
-
-			<div class="featured-meta">
-				{new Date(featuredPost.data.pubDate).toLocaleDateString()}
-			</div>
-
-			<h2>
-				{featuredPost.data.title}
-			</h2>
-
-			<p>
-				{featuredPost.data.description}
-			</p>
-
-			<div class="btn btn-primary">
-				Read Article
-			</div>
-
-		</div>
-
-	</a>
-
-</section>
-
-)}
-
-	<section class="section">
-
-		<h2 class="section-title">
-			Latest Articles
-		</h2>
-
-		<div class="grid">
-
-			{latestPosts.map((post) => (
-
-				<a
-					href={`/blog/${post.slug}/`}
-					class="card"
-				>
-
-					<div class="category-tag">
-						Article
-					</div>
-
-					<div class="card-meta">
-						5 min read
-					</div>
-
-					<h3>
-						{post.data.title}
-					</h3>
-
-					<p>
-						{post.data.description}
-					</p>
-
-				</a>
-
-			))}
-
-		</div>
-
-	</section>
-
-	<section class="section">
-
-		<h2 class="section-title">
-			Explore Categories
-		</h2>
-
-		<div class="categories">
-
-			<div class="category">
-				<div class="category-icon">🤖</div>
-				<h3>Artificial Intelligence</h3>
-				<p>AI Models, Agents & Automation</p>
-			</div>
-
-			<div class="category">
-				<div class="category-icon">📈</div>
-				<h3>Business</h3>
-				<p>Strategy & Leadership</p>
-			</div>
-
-			<div class="category">
-				<div class="category-icon">🚀</div>
-				<h3>Startups</h3>
-				<p>Funding & Growth</p>
-			</div>
-
-			<div class="category">
-				<div class="category-icon">🔒</div>
-				<h3>Cybersecurity</h3>
-				<p>Security & Privacy</p>
-			</div>
-
-			<div class="category">
-				<div class="category-icon">☁️</div>
-				<h3>Cloud</h3>
-				<p>AWS, Azure & GCP</p>
-			</div>
-
-			<div class="category">
-				<div class="category-icon">🎥</div>
-				<h3>Creator Economy</h3>
-				<p>Content & Monetization</p>
-			</div>
-
-		</div>
-
-	</section>
-
-	<section class="section">
-		<h2 class="section-title">
-			Why Professionals Read DigiSone Global
-		</h2>
-
-		<div class="grid">
-
-			<div class="card">
-				<h3>Deep Analysis</h3>
-				<p>
-					Practical insights beyond headlines and breaking news.
-				</p>
-			</div>
-
-			<div class="card">
-				<h3>Expert Perspectives</h3>
-				<p>
-					Technology, leadership and innovation from industry experts.
-				</p>
-			</div>
-
-			<div class="card">
-				<h3>Actionable Takeaways</h3>
-				<p>
-					Frameworks, lessons and strategies you can apply immediately.
-				</p>
-			</div>
-
-		</div>
-
-	</section>
-
-	<section
-		id="newsletter"
-		class="section"
-	>
-
-		<div class="newsletter">
-
-			<h2>
-				Get the Weekly Technology Briefing
-			</h2>
-
-			<p>
-				Actionable insights on AI, business strategy,
-				cybersecurity and digital transformation.
-			</p>
-
-			<form class="newsletter-form">
-
-				<input
-					type="email"
-					placeholder="Enter your email address"
-				/>
-
-				<button>
-					Subscribe
-				</button>
-
-			</form>
-
-		</div>
-
-	</section>
-
-</main>
-
-<Footer />
-
-</body>
+  <head>
+    <BaseHead title="DigiSone Global" description={SITE_DESCRIPTION} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #ffffff;
+        --surface-alt: #f8fafc;
+        --surface-elevated: rgba(255, 255, 255, 0.72);
+        --text: #0b1220;
+        --muted: #64748b;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: rgba(37, 99, 235, 0.12);
+        --accent: #6366f1;
+        --border: rgba(15, 23, 42, 0.08);
+        --radius: 24px;
+        --radius-lg: 32px;
+        --shadow-sm: 0 4px 20px rgba(15, 23, 42, 0.04);
+        --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        --shadow-lg: 0 30px 80px rgba(15, 23, 42, 0.12);
+        --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+        --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--text);
+        background:
+          radial-gradient(ellipse 80% 50% at 20% -10%, rgba(37, 99, 235, 0.14), transparent),
+          radial-gradient(ellipse 60% 40% at 90% 5%, rgba(99, 102, 241, 0.12), transparent),
+          radial-gradient(ellipse 50% 30% at 50% 100%, rgba(37, 99, 235, 0.06), transparent),
+          #f1f5f9;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      main {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        margin: 0;
+      }
+
+      p {
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      .section {
+        margin: 6.5rem 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.5rem;
+        margin-bottom: 2.25rem;
+        flex-wrap: wrap;
+      }
+
+      .section-title {
+        font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+        letter-spacing: -0.04em;
+      }
+
+      .section-link {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--primary);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: gap 0.25s ease, color 0.25s ease;
+      }
+
+      .section-link:hover {
+        gap: 0.65rem;
+        color: var(--primary-dark);
+      }
+
+      /* ——— Hero ——— */
+      .hero {
+        padding: 4.5rem 0 3rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.55rem 1.1rem;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: -0.01em;
+      }
+
+      .hero-badge span {
+        display: inline-flex;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+        }
+        50% {
+          box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.1);
+        }
+      }
+
+      .hero h1 {
+        font-size: clamp(2.75rem, 6.5vw, 4.75rem);
+        line-height: 1.05;
+        margin: 1.35rem 0 1.25rem;
+        letter-spacing: -0.045em;
+      }
+
+      .hero h1 .gradient {
+        background: linear-gradient(135deg, #2563eb 0%, #6366f1 50%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero p {
+        font-size: 1.125rem;
+        color: var(--muted);
+        max-width: 540px;
+        line-height: 1.75;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 0.85rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.9rem 1.5rem;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: -0.01em;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 12px 32px rgba(37, 99, 235, 0.45);
+      }
+
+      .btn-secondary {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .btn-secondary:hover {
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card {
+        position: relative;
+        background: var(--surface-elevated);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-radius: var(--radius-lg);
+        padding: 2rem 1.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #2563eb, #6366f1, #8b5cf6);
+      }
+
+      .hero-card h3 {
+        font-size: 1.05rem;
+        margin-bottom: 1.25rem;
+        color: var(--text);
+        letter-spacing: -0.02em;
+      }
+
+      .hero-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .hero-card li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+        color: var(--muted);
+        font-weight: 500;
+        padding: 0.45rem 0.65rem;
+        border-radius: 10px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .hero-card li:hover {
+        background: var(--primary-soft);
+        color: var(--primary);
+      }
+
+      .hero-card li::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary);
+        flex-shrink: 0;
+      }
+
+      /* ——— Featured ——— */
+      .featured {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        transition: box-shadow 0.35s ease, transform 0.35s ease;
+      }
+
+      .featured:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-4px);
+      }
+
+      .featured a {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        min-height: 420px;
+      }
+
+      .featured-image {
+        min-height: 280px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #1e3a8a;
+        position: relative;
+      }
+
+      .featured-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), transparent 60%);
+      }
+
+      .featured-content {
+        padding: 2.75rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .featured-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--primary);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.75rem;
+      }
+
+      .featured-meta {
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.85rem;
+      }
+
+      .featured h2 {
+        font-size: clamp(1.65rem, 3vw, 2.35rem);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        letter-spacing: -0.035em;
+      }
+
+      .featured p {
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 1.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .featured .btn {
+        align-self: flex-start;
+      }
+
+      /* ——— Cards grid ——— */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 1.75rem;
+        border-radius: var(--radius);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow);
+        border-color: rgba(37, 99, 235, 0.15);
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .category-tag {
+        color: var(--primary);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        background: var(--primary-soft);
+        padding: 0.3rem 0.65rem;
+        border-radius: 6px;
+      }
+
+      .card-meta {
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .card h3 {
+        font-size: 1.2rem;
+        line-height: 1.35;
+        margin-bottom: 0.65rem;
+        letter-spacing: -0.025em;
+        flex-grow: 0;
+      }
+
+      .card p {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.65;
+        flex-grow: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .card-footer {
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition: gap 0.25s ease;
+      }
+
+      .card:hover .card-footer {
+        gap: 0.55rem;
+      }
+
+      /* ——— Categories ——— */
+      .categories {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.15rem;
+      }
+
+      .category {
+        background: var(--surface);
+        padding: 1.75rem 1.5rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        cursor: default;
+      }
+
+      .category:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+        border-color: rgba(37, 99, 235, 0.12);
+      }
+
+      .category-icon {
+        font-size: 1.75rem;
+        margin-bottom: 0.85rem;
+        line-height: 1;
+      }
+
+      .category h3 {
+        font-size: 1.05rem;
+        margin-bottom: 0.35rem;
+        letter-spacing: -0.02em;
+      }
+
+      .category p {
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      /* ——— Why ——— */
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+
+      .why-card {
+        background: var(--surface);
+        padding: 2rem 1.75rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .why-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+      }
+
+      .why-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        margin-bottom: 1.15rem;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.12));
+      }
+
+      .why-card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .why-card p {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      /* ——— Newsletter ——— */
+      .newsletter {
+        position: relative;
+        padding: 4.5rem 3rem;
+        border-radius: var(--radius-lg);
+        text-align: center;
+        background: linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        color: white;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+      }
+
+      .newsletter::before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -20%;
+        width: 60%;
+        height: 80%;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.25), transparent 70%);
+        pointer-events: none;
+      }
+
+      .newsletter::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        right: -15%;
+        width: 50%;
+        height: 70%;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent 70%);
+        pointer-events: none;
+      }
+
+      .newsletter h2 {
+        position: relative;
+        font-size: clamp(1.75rem, 4vw, 2.75rem);
+        margin-bottom: 0.85rem;
+        letter-spacing: -0.04em;
+      }
+
+      .newsletter p {
+        position: relative;
+        max-width: 520px;
+        margin: 0 auto;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 1.05rem;
+      }
+
+      .newsletter-form {
+        position: relative;
+        display: flex;
+        gap: 0.75rem;
+        max-width: 480px;
+        margin: 2rem auto 0;
+        flex-wrap: wrap;
+      }
+
+      .newsletter-form input {
+        flex: 1;
+        min-width: 200px;
+        padding: 1rem 1.15rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        font-size: 0.95rem;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .newsletter-form input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      .newsletter-form input:focus {
+        border-color: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .newsletter-form button {
+        padding: 1rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        background: white;
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 0.95rem;
+        font-family: inherit;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .newsletter-form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      }
+
+      .newsletter-note {
+        position: relative;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* ——— Responsive ——— */
+      @media (max-width: 992px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          padding: 3rem 0 2rem;
+        }
+
+        .featured a {
+          grid-template-columns: 1fr;
+        }
+
+        .featured-image {
+          min-height: 240px;
+        }
+
+        .featured-content {
+          padding: 2rem 1.75rem;
+        }
+
+        .why-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        main {
+          padding: 0 1.15rem;
+        }
+
+        .section {
+          margin: 4.5rem 0;
+        }
+
+        .hero h1 {
+          font-size: clamp(2.25rem, 9vw, 3.25rem);
+        }
+
+        .hero p {
+          font-size: 1.05rem;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .categories {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .newsletter {
+          padding: 3rem 1.5rem;
+        }
+
+        .newsletter-form {
+          flex-direction: column;
+        }
+
+        .newsletter-form input,
+        .newsletter-form button {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-badge {
+          font-size: 0.8rem;
+        }
+
+        .categories {
+          grid-template-columns: 1fr;
+        }
+
+        .card,
+        .category,
+        .why-card {
+          padding: 1.35rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <div class="hero-badge">
+            <span></span>
+            Trusted by founders, operators & technology leaders
+          </div>
+          <h1>
+            The Future of<br />
+            <span class="gradient">Technology, Business & AI</span>
+          </h1>
+          <p>
+            DigiSone Global delivers premium insights on Artificial Intelligence,
+            Business Strategy, Startups, Cybersecurity, Cloud Computing,
+            Digital Transformation and the Future of Work.
+          </p>
+          <div class="hero-buttons">
+            <a href="/blog" class="btn btn-primary">
+              Read Latest Insights
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#newsletter" class="btn btn-secondary">
+              Get Weekly Briefing
+            </a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h3>Trending Topics</h3>
+          <ul>
+            <li>AI Agents & Autonomous Systems</li>
+            <li>Enterprise Automation</li>
+            <li>Future of Work</li>
+            <li>Cybersecurity & Privacy</li>
+            <li>Cloud Infrastructure</li>
+            <li>Startup Growth Strategies</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Featured -->
+      {featuredPost && (
+        <section class="featured">
+          <a href={`/blog/${featuredPost.slug}/`}>
+            <div
+              class="featured-image"
+              style={`background-image:url(${featuredPost.data.heroImage || ''})`}
+            ></div>
+            <div class="featured-content">
+              <div class="featured-label">Featured Story</div>
+              <div class="featured-meta">
+                {new Date(featuredPost.data.pubDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+              <h2>{featuredPost.data.title}</h2>
+              <p>{featuredPost.data.description}</p>
+              <span class="btn btn-primary">
+                Read Article
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </section>
+      )}
+
+      <!-- Latest Articles -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Latest Articles</h2>
+          <a href="/blog" class="section-link">
+            View all
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+        <div class="grid">
+          {latestPosts.map((post) => (
+            <a href={`/blog/${post.slug}/`} class="card">
+              <div class="card-top">
+                <span class="category-tag">Article</span>
+                <span class="card-meta">5 min read</span>
+              </div>
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+              <div class="card-footer">
+                Read more
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Explore Categories</h2>
+        </div>
+        <div class="categories">
+          <div class="category">
+            <div class="category-icon">🤖</div>
+            <h3>Artificial Intelligence</h3>
+            <p>AI Models, Agents & Automation</p>
+          </div>
+          <div class="category">
+            <div class="category-icon">📈</div>
+            <h3>Business</h3>
+            <p>Strategy & Leadership</p>
+          </div>
+          <div class="category">
+            <div class="category-icon">🚀</div>
+            <h3>Startups</h3>
+            <p>Funding & Growth</p>
+          </div>
+          <div class="category">
+            <div class="category-icon">🔒</div>
+            <h3>Cybersecurity</h3>
+            <p>Security & Privacy</p>
+          </div>
+          <div class="category">
+            <div class="category-icon">☁️</div>
+            <h3>Cloud</h3>
+            <p>AWS, Azure & GCP</p>
+          </div>
+          <div class="category">
+            <div class="category-icon">🎥</div>
+            <h3>Creator Economy</h3>
+            <p>Content & Monetization</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Why Professionals Read DigiSone Global</h2>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">🔍</div>
+            <h3>Deep Analysis</h3>
+            <p>Practical insights beyond headlines and breaking news.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🧠</div>
+            <h3>Expert Perspectives</h3>
+            <p>Technology, leadership and innovation from industry experts.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">⚡</div>
+            <h3>Actionable Takeaways</h3>
+            <p>Frameworks, lessons and strategies you can apply immediately.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Newsletter -->
+      <section id="newsletter" class="section">
+        <div class="newsletter">
+          <h2>Get the Weekly Technology Briefing</h2>
+          <p>
+            Actionable insights on AI, business strategy, cybersecurity and
+            digital transformation — delivered every week.
+          </p>
+          <form class="newsletter-form" action="#" method="post">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email address"
+              required
+              autocomplete="email"
+            />
+            <button type="submit">Subscribe</button>
+          </form>
+          <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
 </html>
