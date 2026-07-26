@@ -2,7 +2,7 @@
 title: "AI Agents & Autonomous Systems: The Next Leap Beyond Chatbots"
 description: "AI agents are moving from simple assistants to systems that plan, act, and collaborate. Here’s what leaders need to understand about autonomous AI in 2026."
 pubDate: 2026-07-20
-heroImage: "/images/ai-agents-hero.jpg"
+heroImage: "/images/blog-placeholder-aiagentshero.jpg"
 tags: ["Artificial Intelligence", "AI Agents", "Automation", "Enterprise AI"]
 ---
 
