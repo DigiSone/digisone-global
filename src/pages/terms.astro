@@ -1,0 +1,565 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION } from '../consts';
+
+const lastUpdated = 'July 26, 2026';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title="Terms of Service — DigiSone Global" description={SITE_DESCRIPTION} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #0b1220;
+        --muted: #64748b;
+        --muted-2: #94a3b8;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: rgba(37, 99, 235, 0.1);
+        --border: rgba(15, 23, 42, 0.07);
+        --radius: 20px;
+        --radius-lg: 28px;
+        --radius-xl: 36px;
+        --shadow-xs: 0 2px 8px rgba(15, 23, 42, 0.04);
+        --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--text);
+        background: #f1f5f9;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 90% 60% at 10% -15%, rgba(37, 99, 235, 0.14), transparent 55%),
+          radial-gradient(ellipse 70% 50% at 95% 5%, rgba(99, 102, 241, 0.1), transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      main {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 1.5rem 4rem;
+      }
+
+      a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: var(--primary-dark);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+
+      p,
+      li {
+        line-height: 1.75;
+      }
+
+      .policy-hero {
+        padding: 4.5rem 0 2.5rem;
+        max-width: 720px;
+      }
+
+      .policy-hero .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xs);
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 1.35rem;
+      }
+
+      .policy-hero h1 {
+        font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+        line-height: 1.08;
+        margin-bottom: 1rem;
+      }
+
+      .policy-hero .lead {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 560px;
+        margin: 0;
+      }
+
+      .policy-hero .updated {
+        margin-top: 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--muted-2);
+      }
+
+      .policy-layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      .toc {
+        position: sticky;
+        top: 6rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.35rem 1.25rem;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .toc-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--muted-2);
+        margin-bottom: 0.85rem;
+      }
+
+      .toc ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .toc a {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--muted);
+        padding: 0.4rem 0.6rem;
+        border-radius: 8px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .toc a:hover {
+        background: var(--primary-soft);
+        color: var(--primary);
+      }
+
+      .policy-content {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        padding: 2.75rem 2.5rem;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .policy-content section {
+        margin-bottom: 2.75rem;
+        scroll-margin-top: 7rem;
+      }
+
+      .policy-content section:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .policy-content h2 .num {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .policy-content h3 {
+        font-size: 1.08rem;
+        margin: 1.5rem 0 0.65rem;
+      }
+
+      .policy-content p {
+        color: var(--muted);
+        font-size: 1rem;
+        margin: 0 0 1rem;
+      }
+
+      .policy-content p:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-content ul {
+        margin: 0 0 1rem;
+        padding-left: 1.25rem;
+        color: var(--muted);
+      }
+
+      .policy-content li {
+        margin-bottom: 0.45rem;
+        font-size: 1rem;
+      }
+
+      .policy-content li strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .highlight-box {
+        background: var(--primary-soft);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 14px;
+        padding: 1.25rem 1.35rem;
+        margin: 1.25rem 0;
+      }
+
+      .highlight-box p {
+        color: var(--text);
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .contact-card {
+        background: linear-gradient(145deg, #0b1220 0%, #1e293b 100%);
+        border-radius: var(--radius-lg);
+        padding: 1.85rem 1.75rem;
+        color: white;
+        margin-top: 1.25rem;
+      }
+
+      .contact-card p {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0.75rem;
+      }
+
+      .contact-card a {
+        color: #93c5fd;
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .contact-card a:hover {
+        color: #bfdbfe;
+      }
+
+      @media (max-width: 900px) {
+        .policy-layout {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        .toc ul {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.25rem;
+        }
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 0 1.15rem 3rem;
+        }
+
+        .policy-hero {
+          padding: 3.25rem 0 1.75rem;
+        }
+
+        .policy-content {
+          padding: 1.85rem 1.4rem;
+        }
+
+        .toc ul {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="policy-hero">
+        <div class="badge">Legal</div>
+        <h1>Terms of Service</h1>
+        <p class="lead">
+          These terms govern your use of DigiSone Global. Please read them carefully
+          before using our website and services.
+        </p>
+        <p class="updated">Last updated: {lastUpdated}</p>
+      </section>
+
+      <div class="policy-layout">
+        <aside class="toc">
+          <div class="toc-title">On this page</div>
+          <ul>
+            <li><a href="#agreement">Agreement to terms</a></li>
+            <li><a href="#use-of-site">Use of the site</a></li>
+            <li><a href="#intellectual-property">Intellectual property</a></li>
+            <li><a href="#user-content">User content</a></li>
+            <li><a href="#newsletter">Newsletter & communications</a></li>
+            <li><a href="#disclaimers">Disclaimers</a></li>
+            <li><a href="#limitation">Limitation of liability</a></li>
+            <li><a href="#links">Third-party links</a></li>
+            <li><a href="#termination">Termination</a></li>
+            <li><a href="#governing-law">Governing law</a></li>
+            <li><a href="#changes">Changes to terms</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+        </aside>
+
+        <article class="policy-content">
+          <section id="agreement">
+            <h2><span class="num">01</span> Agreement to terms</h2>
+            <p>
+              By accessing or using the DigiSone Global website and related services
+              (“Site”), you agree to be bound by these Terms of Service (“Terms”). If you
+              do not agree with any part of these Terms, you must not use the Site.
+            </p>
+            <p>
+              These Terms apply to all visitors, users, and others who access or use the
+              Site. We may update these Terms from time to time. Continued use after
+              changes means you accept the revised Terms.
+            </p>
+          </section>
+
+          <section id="use-of-site">
+            <h2><span class="num">02</span> Use of the site</h2>
+            <p>You agree to use the Site only for lawful purposes and in accordance with these Terms. You agree not to:</p>
+            <ul>
+              <li>Use the Site in any way that violates applicable laws or regulations</li>
+              <li>Attempt to gain unauthorized access to any part of the Site, servers, or systems</li>
+              <li>Interfere with or disrupt the Site or servers connected to the Site</li>
+              <li>Scrape, crawl, or harvest content systematically without our prior written permission</li>
+              <li>Transmit malware, spam, or other harmful code</li>
+              <li>Impersonate DigiSone Global or any other person or entity</li>
+              <li>Use the Site to harass, abuse, or harm others</li>
+            </ul>
+            <p>
+              We reserve the right to restrict or terminate access for anyone who violates
+              these Terms or uses the Site in a way that may harm us or other users.
+            </p>
+          </section>
+
+          <section id="intellectual-property">
+            <h2><span class="num">03</span> Intellectual property</h2>
+            <p>
+              All content on the Site — including articles, text, graphics, logos, icons,
+              images, and design — is owned by DigiSone Global or its licensors and is
+              protected by copyright, trademark, and other intellectual property laws.
+            </p>
+            <p>You may:</p>
+            <ul>
+              <li>View and read content for personal, non-commercial use</li>
+              <li>Share links to our articles with proper attribution</li>
+            </ul>
+            <p>You may not, without prior written permission:</p>
+            <ul>
+              <li>Copy, reproduce, republish, or distribute our content in bulk</li>
+              <li>Modify, adapt, or create derivative works from our content</li>
+              <li>Use our content for commercial purposes</li>
+              <li>Remove any copyright, trademark, or proprietary notices</li>
+            </ul>
+            <div class="highlight-box">
+              <p>
+                For syndication, reprints, or commercial licensing, contact us at
+                <a href="mailto:info@digisone.com">info@digisone.com</a>.
+              </p>
+            </div>
+          </section>
+
+          <section id="user-content">
+            <h2><span class="num">04</span> User content</h2>
+            <p>
+              If you submit content to us (for example via contact forms, comments, or
+              guest contributions), you retain ownership of your content. By submitting it,
+              you grant DigiSone Global a non-exclusive, worldwide, royalty-free license to
+              use, reproduce, and display that content in connection with operating and
+              promoting the Site.
+            </p>
+            <p>
+              You are responsible for ensuring that any content you submit does not
+              infringe the rights of others and complies with applicable law. We may
+              remove or refuse any content at our discretion.
+            </p>
+          </section>
+
+          <section id="newsletter">
+            <h2><span class="num">05</span> Newsletter & communications</h2>
+            <p>
+              If you subscribe to our newsletter or request updates, you consent to receive
+              emails from us. You can unsubscribe at any time using the link in our emails
+              or by contacting us.
+            </p>
+            <p>
+              We aim to keep communications relevant and useful. Our use of your contact
+              information is also described in our
+              <a href="/privacy">Privacy Policy</a>.
+            </p>
+          </section>
+
+          <section id="disclaimers">
+            <h2><span class="num">06</span> Disclaimers</h2>
+            <p>
+              The Site and its content are provided for general information and educational
+              purposes only. Content does not constitute professional, financial, legal,
+              investment, or technical advice.
+            </p>
+            <ul>
+              <li>
+                We do not guarantee that the information on the Site is complete, accurate,
+                or up to date at all times.
+              </li>
+              <li>
+                Any reliance you place on content from the Site is at your own risk.
+              </li>
+              <li>
+                The Site is provided on an “as is” and “as available” basis without
+                warranties of any kind, whether express or implied.
+              </li>
+            </ul>
+            <p>
+              We do not warrant that the Site will be uninterrupted, secure, or free from
+              errors or harmful components.
+            </p>
+          </section>
+
+          <section id="limitation">
+            <h2><span class="num">07</span> Limitation of liability</h2>
+            <p>
+              To the fullest extent permitted by law, DigiSone Global and its operators
+              shall not be liable for any indirect, incidental, special, consequential, or
+              punitive damages, or any loss of profits, data, or goodwill, arising from:
+            </p>
+            <ul>
+              <li>Your use of or inability to use the Site</li>
+              <li>Any content obtained from the Site</li>
+              <li>Unauthorized access to or alteration of your data</li>
+              <li>Any third-party conduct or content on the Site</li>
+            </ul>
+            <p>
+              Some jurisdictions do not allow certain limitations of liability. In those
+              cases, our liability will be limited to the maximum extent permitted by law.
+            </p>
+          </section>
+
+          <section id="links">
+            <h2><span class="num">08</span> Third-party links</h2>
+            <p>
+              The Site may contain links to third-party websites or services that are not
+              owned or controlled by DigiSone Global. We are not responsible for the
+              content, privacy policies, or practices of any third-party sites.
+            </p>
+            <p>
+              You acknowledge and agree that DigiSone Global shall not be liable for any
+              damage or loss caused by your use of any third-party content, goods, or
+              services.
+            </p>
+          </section>
+
+          <section id="termination">
+            <h2><span class="num">09</span> Termination</h2>
+            <p>
+              We may suspend or terminate your access to the Site at any time, with or
+              without notice, for any reason, including if you breach these Terms.
+            </p>
+            <p>
+              Upon termination, your right to use the Site will immediately cease. All
+              provisions of these Terms that by their nature should survive termination
+              shall survive, including ownership, disclaimers, and limitations of liability.
+            </p>
+          </section>
+
+          <section id="governing-law">
+            <h2><span class="num">10</span> Governing law</h2>
+            <p>
+              These Terms shall be governed by and construed in accordance with applicable
+              laws, without regard to conflict of law principles. Any disputes arising from
+              these Terms or your use of the Site shall be resolved in the courts of
+              competent jurisdiction, unless otherwise required by law.
+            </p>
+          </section>
+
+          <section id="changes">
+            <h2><span class="num">11</span> Changes to terms</h2>
+            <p>
+              We reserve the right to modify or replace these Terms at any time. We will
+              update the “Last updated” date when changes are made. For material changes,
+              we may provide additional notice via the Site or email where appropriate.
+            </p>
+            <p>
+              Your continued use of the Site after any changes constitutes acceptance of
+              the new Terms. If you do not agree to the revised Terms, please stop using
+              the Site.
+            </p>
+          </section>
+
+          <section id="contact">
+            <h2><span class="num">12</span> Contact us</h2>
+            <p>
+              If you have questions about these Terms of Service, please contact us:
+            </p>
+            <div class="contact-card">
+              <p>DigiSone Global</p>
+              <a href="mailto:info@digisone.com">info@digisone.com</a>
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
