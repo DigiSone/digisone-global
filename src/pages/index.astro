@@ -5,15 +5,40 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 
+// All blog posts — auto updates on every build when you add new .md files
 const posts = await getCollection('blog');
+
 const sortedPosts = posts.sort(
   (a, b) =>
     new Date(b.data.pubDate).getTime() -
     new Date(a.data.pubDate).getTime()
 );
 
-const featuredPost = sortedPosts[0];
+const featuredPost = sortedPosts[0] ?? null;
 const latestPosts = sortedPosts.slice(1, 7);
+
+// Compatible slug helper (works across Astro blog starter versions)
+function getPostSlug(post: (typeof posts)[number]) {
+  // Prefer slug, fallback to id (strip folder prefixes if any)
+  const raw = (post as any).slug || post.id || '';
+  return String(raw).replace(/^blog\//, '').replace(/\.mdx?$/, '');
+}
+
+function formatDate(date: Date | string) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function formatDateShort(date: Date | string) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 
 const categories = [
   { icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Automation', href: '/categories' },
@@ -38,7 +63,6 @@ const categories = [
     <style>
       :root {
         --surface: #ffffff;
-        --surface-2: #f8fafc;
         --text: #0b1220;
         --muted: #64748b;
         --muted-2: #94a3b8;
@@ -46,7 +70,6 @@ const categories = [
         --primary-dark: #1d4ed8;
         --primary-soft: rgba(37, 99, 235, 0.1);
         --accent: #6366f1;
-        --violet: #8b5cf6;
         --border: rgba(15, 23, 42, 0.07);
         --border-strong: rgba(15, 23, 42, 0.12);
         --radius: 20px;
@@ -62,7 +85,6 @@ const categories = [
       }
 
       *, *::before, *::after { box-sizing: border-box; }
-
       html { scroll-behavior: smooth; }
 
       body {
@@ -104,7 +126,7 @@ const categories = [
 
       p { line-height: 1.7; margin: 0; }
 
-      .section { margin: 6.5rem 0; content-visibility: auto; }
+      .section { margin: 6.5rem 0; }
 
       .section-header {
         display: flex;
@@ -132,7 +154,7 @@ const categories = [
 
       .section-link:hover { gap: 0.65rem; color: var(--primary-dark); }
 
-      /* ========== HERO ========== */
+      /* HERO */
       .hero {
         padding: 4.75rem 0 3.25rem;
         display: grid;
@@ -222,8 +244,6 @@ const categories = [
         box-shadow: 0 10px 28px rgba(37, 99, 235, 0.36);
       }
 
-      .btn-primary:hover { box-shadow: 0 14px 34px rgba(37, 99, 235, 0.48); }
-
       .btn-secondary {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -253,10 +273,9 @@ const categories = [
         font-weight: 500;
       }
 
-      /* Trending panel */
       .hero-card {
         position: relative;
-        background: rgba(255, 255, 255, 0.72);
+        background: rgba(255, 255, 255, 0.75);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border-radius: var(--radius-xl);
@@ -333,7 +352,7 @@ const categories = [
         flex-shrink: 0;
       }
 
-      /* ========== FEATURED ========== */
+      /* FEATURED */
       .featured {
         background: var(--surface);
         border-radius: var(--radius-xl);
@@ -356,9 +375,7 @@ const categories = [
 
       .featured-image {
         min-height: 280px;
-        background:
-          linear-gradient(145deg, rgba(37, 99, 235, 0.2), rgba(99, 102, 241, 0.15)),
-          linear-gradient(160deg, #1e3a8a, #312e81);
+        background: linear-gradient(145deg, #1e3a8a, #312e81 55%, #1e1b4b);
         position: relative;
       }
 
@@ -410,7 +427,7 @@ const categories = [
 
       .featured .btn { align-self: flex-start; }
 
-      /* ========== CARDS ========== */
+      /* CARDS */
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -505,7 +522,7 @@ const categories = [
 
       .card:hover .card-footer { gap: 0.55rem; }
 
-      /* ========== CATEGORIES ========== */
+      /* CATEGORIES */
       .categories {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -537,17 +554,10 @@ const categories = [
         background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1));
       }
 
-      .category h3 {
-        font-size: 1rem;
-        margin-bottom: 0.25rem;
-      }
+      .category h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+      .category p { font-size: 0.84rem; color: var(--muted); }
 
-      .category p {
-        font-size: 0.84rem;
-        color: var(--muted);
-      }
-
-      /* ========== WHY ========== */
+      /* WHY */
       .why-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -579,17 +589,10 @@ const categories = [
         background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.12));
       }
 
-      .why-card h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.45rem;
-      }
+      .why-card h3 { font-size: 1.1rem; margin-bottom: 0.45rem; }
+      .why-card p { color: var(--muted); font-size: 0.94rem; }
 
-      .why-card p {
-        color: var(--muted);
-        font-size: 0.94rem;
-      }
-
-      /* ========== NEWSLETTER ========== */
+      /* NEWSLETTER */
       .newsletter {
         position: relative;
         padding: 4.5rem 3rem;
@@ -610,18 +613,14 @@ const categories = [
       }
 
       .newsletter::before {
-        top: -40%;
-        left: -20%;
-        width: 65%;
-        height: 85%;
+        top: -40%; left: -20%;
+        width: 65%; height: 85%;
         background: radial-gradient(circle, rgba(37, 99, 235, 0.28), transparent 68%);
       }
 
       .newsletter::after {
-        bottom: -30%;
-        right: -15%;
-        width: 50%;
-        height: 70%;
+        bottom: -30%; right: -15%;
+        width: 50%; height: 70%;
         background: radial-gradient(circle, rgba(99, 102, 241, 0.22), transparent 68%);
       }
 
@@ -661,7 +660,6 @@ const categories = [
       }
 
       .newsletter-form input::placeholder { color: rgba(255, 255, 255, 0.4); }
-
       .newsletter-form input:focus {
         border-color: rgba(255, 255, 255, 0.35);
         background: rgba(255, 255, 255, 0.12);
@@ -677,12 +675,6 @@ const categories = [
         font-weight: 700;
         font: inherit;
         cursor: pointer;
-        transition: transform 0.2s var(--ease), box-shadow 0.2s ease;
-      }
-
-      .newsletter-form button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
       }
 
       .newsletter-note {
@@ -700,14 +692,12 @@ const categories = [
         color: var(--muted);
       }
 
-      /* ========== RESPONSIVE ========== */
       @media (max-width: 992px) {
         .hero {
           grid-template-columns: 1fr;
           gap: 2.5rem;
           padding: 3.25rem 0 2.25rem;
         }
-
         .featured > a { grid-template-columns: 1fr; }
         .featured-content { padding: 2rem 1.7rem; }
         .why-grid { grid-template-columns: 1fr; }
@@ -716,14 +706,11 @@ const categories = [
       @media (max-width: 768px) {
         main { padding: 0 1.15rem; }
         .section { margin: 4.5rem 0; }
-
         .hero h1 { font-size: clamp(2.35rem, 9vw, 3.3rem); }
         .hero-buttons { flex-direction: column; }
         .btn { width: 100%; }
-
         .grid { grid-template-columns: 1fr; }
         .categories { grid-template-columns: 1fr 1fr; }
-
         .newsletter { padding: 3rem 1.4rem; }
         .newsletter-form { flex-direction: column; }
         .newsletter-form input,
@@ -732,7 +719,6 @@ const categories = [
 
       @media (max-width: 480px) {
         .categories { grid-template-columns: 1fr; }
-        .card, .category, .why-card { padding: 1.35rem; }
       }
     </style>
   </head>
@@ -764,9 +750,9 @@ const categories = [
             </a>
             <a href="#newsletter" class="btn btn-secondary">Get Weekly Briefing</a>
           </div>
-          <div class="trust" aria-label="Platform stats">
+          <div class="trust">
             <div class="trust-item"><strong>12k+</strong><span>Monthly readers</span></div>
-            <div class="trust-item"><strong>{sortedPosts.length || '180'}+</strong><span>In-depth articles</span></div>
+            <div class="trust-item"><strong>{sortedPosts.length}</strong><span>Published articles</span></div>
             <div class="trust-item"><strong>4.9★</strong><span>Reader rating</span></div>
           </div>
         </div>
@@ -787,20 +773,16 @@ const categories = [
         </aside>
       </section>
 
-      <!-- FEATURED -->
-      {featuredPost && (
+      <!-- FEATURED (fully linked) -->
+      {featuredPost ? (
         <section class="featured" aria-label="Featured article">
-          <a href={`/blog/${featuredPost.slug}/`} aria-label={`Read: ${featuredPost.data.title}`}>
+          <a href={`/blog/${getPostSlug(featuredPost)}/`} aria-label={`Read: ${featuredPost.data.title}`}>
             <div class="featured-image" aria-hidden="true"></div>
             <div class="featured-content">
               <div class="featured-label">Featured Story</div>
               <div class="featured-meta">
                 <time datetime={new Date(featuredPost.data.pubDate).toISOString()}>
-                  {new Date(featuredPost.data.pubDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+                  {formatDate(featuredPost.data.pubDate)}
                 </time>
               </div>
               <h2>{featuredPost.data.title}</h2>
@@ -814,9 +796,13 @@ const categories = [
             </div>
           </a>
         </section>
+      ) : (
+        <section class="section">
+          <div class="empty"><p>No articles published yet.</p></div>
+        </section>
       )}
 
-      <!-- LATEST -->
+      <!-- LATEST (auto from collection) -->
       <section class="section" aria-label="Latest articles">
         <div class="section-header">
           <h2 class="section-title">Latest Articles</h2>
@@ -831,16 +817,12 @@ const categories = [
         {latestPosts.length > 0 ? (
           <div class="grid">
             {latestPosts.map((post) => (
-              <a href={`/blog/${post.slug}/`} class="card" aria-label={post.data.title}>
+              <a href={`/blog/${getPostSlug(post)}/`} class="card" aria-label={post.data.title}>
                 <div class="card-top">
                   <span class="category-tag">Article</span>
                   <span class="card-meta">
                     <time datetime={new Date(post.data.pubDate).toISOString()}>
-                      {new Date(post.data.pubDate).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                      {formatDateShort(post.data.pubDate)}
                     </time>
                   </span>
                 </div>
@@ -911,7 +893,7 @@ const categories = [
               digital transformation — delivered every week.
             </p>
             <form class="newsletter-form" action="#" method="post">
-              <label for="newsletter-email" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+              <label for="newsletter-email" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
                 Email address
               </label>
               <input
