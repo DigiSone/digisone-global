@@ -1,0 +1,603 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title="Contact — DigiSone Global" description={SITE_DESCRIPTION} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --surface-glass: rgba(255, 255, 255, 0.65);
+        --text: #0b1220;
+        --muted: #64748b;
+        --muted-2: #94a3b8;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: rgba(37, 99, 235, 0.1);
+        --accent: #6366f1;
+        --violet: #8b5cf6;
+        --border: rgba(15, 23, 42, 0.07);
+        --border-strong: rgba(15, 23, 42, 0.12);
+        --radius: 20px;
+        --radius-lg: 28px;
+        --radius-xl: 36px;
+        --shadow-xs: 0 2px 8px rgba(15, 23, 42, 0.04);
+        --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.05);
+        --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        --shadow-lg: 0 32px 80px rgba(15, 23, 42, 0.12);
+        --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--text);
+        background: #f1f5f9;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 90% 60% at 10% -15%, rgba(37, 99, 235, 0.16), transparent 55%),
+          radial-gradient(ellipse 70% 50% at 95% 5%, rgba(99, 102, 241, 0.12), transparent 50%),
+          radial-gradient(ellipse 50% 40% at 50% 110%, rgba(37, 99, 235, 0.06), transparent 60%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      main {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      h1, h2, h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+
+      p {
+        line-height: 1.75;
+        margin: 0;
+      }
+
+      .section {
+        margin: 6rem 0;
+      }
+
+      /* ========== HERO ========== */
+      .contact-hero {
+        padding: 5rem 0 2.5rem;
+        max-width: 720px;
+      }
+
+      .contact-hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem 1.05rem 0.5rem 0.7rem;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xs);
+        font-size: 0.84rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      .contact-hero .badge .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
+      }
+
+      .contact-hero h1 {
+        font-size: clamp(2.6rem, 6vw, 4.1rem);
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+        margin-bottom: 1.25rem;
+      }
+
+      .contact-hero h1 .gradient {
+        background: linear-gradient(120deg, #2563eb 0%, #6366f1 45%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .contact-hero .lead {
+        font-size: 1.15rem;
+        color: var(--muted);
+        max-width: 560px;
+        line-height: 1.8;
+      }
+
+      /* ========== LAYOUT ========== */
+      .contact-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      /* ========== FORM CARD ========== */
+      .form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        padding: 2.5rem 2.25rem;
+        box-shadow: var(--shadow);
+      }
+
+      .form-card h2 {
+        font-size: 1.45rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-card .form-desc {
+        color: var(--muted);
+        font-size: 0.98rem;
+        margin-bottom: 2rem;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.15rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+
+      .form-group.full {
+        grid-column: 1 / -1;
+      }
+
+      .form-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: -0.01em;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 0.9rem 1.05rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-strong);
+        background: var(--surface-2);
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      }
+
+      .form-group textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: var(--muted-2);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.95rem 1.55rem;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: -0.01em;
+        transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.25s ease;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        box-shadow: 0 10px 28px rgba(37, 99, 235, 0.35);
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 14px 36px rgba(37, 99, 235, 0.45);
+      }
+
+      /* ========== SIDEBAR ========== */
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1.35rem;
+      }
+
+      .info-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.85rem 1.7rem;
+        box-shadow: var(--shadow-xs);
+        transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+      }
+
+      .info-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .info-card.dark {
+        background: linear-gradient(145deg, #0b1220 0%, #1e293b 100%);
+        color: white;
+        border-color: transparent;
+      }
+
+      .info-card.dark p,
+      .info-card.dark .info-label {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        margin-bottom: 1.1rem;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.12));
+      }
+
+      .info-card.dark .info-icon {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .info-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .info-card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .info-card p {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .info-card a.email-link {
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: color 0.2s ease;
+      }
+
+      .info-card.dark a.email-link {
+        color: #93c5fd;
+      }
+
+      .info-card a.email-link:hover {
+        color: var(--primary-dark);
+      }
+
+      .info-card.dark a.email-link:hover {
+        color: #bfdbfe;
+      }
+
+      /* Social */
+      .social-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-top: 0.35rem;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.75rem 0.9rem;
+        border-radius: 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+        transition: transform 0.25s var(--ease), background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      }
+
+      .social-link:hover {
+        transform: translateY(-2px);
+        background: var(--primary-soft);
+        border-color: rgba(37, 99, 235, 0.2);
+        color: var(--primary);
+      }
+
+      .social-link .icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        background: var(--surface);
+        flex-shrink: 0;
+      }
+
+      .social-handle {
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .social-link:hover .social-handle {
+        color: var(--primary);
+      }
+
+      /* Response note */
+      .note-card {
+        background: var(--primary-soft);
+        border: 1px solid rgba(37, 99, 235, 0.15);
+        border-radius: var(--radius);
+        padding: 1.35rem 1.4rem;
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+      }
+
+      .note-card .note-icon {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      .note-card p {
+        font-size: 0.9rem;
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .note-card strong {
+        font-weight: 600;
+      }
+
+      /* ========== RESPONSIVE ========== */
+      @media (max-width: 992px) {
+        .contact-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          order: -1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        main {
+          padding: 0 1.15rem;
+        }
+
+        .contact-hero {
+          padding: 3.5rem 0 2rem;
+        }
+
+        .contact-hero h1 {
+          font-size: clamp(2.25rem, 9vw, 3.2rem);
+        }
+
+        .form-card {
+          padding: 1.85rem 1.5rem;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .social-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          margin: 4.5rem 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <!-- Hero -->
+      <section class="contact-hero">
+        <div class="badge">
+          <span class="dot"></span>
+          Get in touch
+        </div>
+        <h1>
+          Let’s talk about<br />
+          <span class="gradient">ideas & opportunities</span>
+        </h1>
+        <p class="lead">
+          Whether you have a question, partnership idea, feedback, or media
+          inquiry — we’d love to hear from you.
+        </p>
+      </section>
+
+      <!-- Main content -->
+      <section class="section" style="margin-top: 2.5rem;">
+        <div class="contact-layout">
+          <!-- Form -->
+          <div class="form-card">
+            <h2>Send a message</h2>
+            <p class="form-desc">
+              Fill out the form below and we’ll get back to you as soon as possible.
+            </p>
+
+            <form action={`mailto:info@digisone.com`} method="post" enctype="text/plain">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="name">Full name</label>
+                  <input type="text" id="name" name="name" placeholder="Jane Doe" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input type="email" id="email" name="email" placeholder="jane@company.com" required />
+                </div>
+                <div class="form-group full">
+                  <label for="subject">Subject</label>
+                  <select id="subject" name="subject" required>
+                    <option value="" disabled selected>Select a topic</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Partnership">Partnership / Collaboration</option>
+                    <option value="Guest Post">Guest Post / Contribution</option>
+                    <option value="Media">Media / Press</option>
+                    <option value="Feedback">Feedback</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" placeholder="Tell us what’s on your mind..." required></textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Send Message
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="sidebar">
+            <!-- Email -->
+            <div class="info-card dark">
+              <div class="info-icon">✉️</div>
+              <div class="info-label">Email</div>
+              <h3>Write to us</h3>
+              <p style="margin-bottom: 0.75rem;">We typically respond within 1–2 business days.</p>
+              <a href="mailto:info@digisone.com" class="email-link">info@digisone.com</a>
+            </div>
+
+            <!-- Social -->
+            <div class="info-card">
+              <div class="info-icon">🌐</div>
+              <div class="info-label">Social</div>
+              <h3>Follow @digisoneglobal</h3>
+              <p style="margin-bottom: 1rem;">Insights, updates, and conversations across platforms.</p>
+              <div class="social-grid">
+                <a href="https://x.com/digisoneglobal" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="icon">𝕏</span>
+                  <div>
+                    <div>X / Twitter</div>
+                    <div class="social-handle">@digisoneglobal</div>
+                  </div>
+                </a>
+                <a href="https://linkedin.com/company/digisoneglobal" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="icon">in</span>
+                  <div>
+                    <div>LinkedIn</div>
+                    <div class="social-handle">@digisoneglobal</div>
+                  </div>
+                </a>
+                <a href="https://instagram.com/digisoneglobal" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="icon">📷</span>
+                  <div>
+                    <div>Instagram</div>
+                    <div class="social-handle">@digisoneglobal</div>
+                  </div>
+                </a>
+                <a href="https://youtube.com/@digisoneglobal" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="icon">▶</span>
+                  <div>
+                    <div>YouTube</div>
+                    <div class="social-handle">@digisoneglobal</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Note -->
+            <div class="note-card">
+              <span class="note-icon">💡</span>
+              <p>
+                <strong>Partnerships & guest posts:</strong> Include a short pitch
+                and relevant links — it helps us respond faster.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
