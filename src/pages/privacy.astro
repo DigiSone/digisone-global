@@ -1,0 +1,941 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION } from '../consts';
+
+const lastUpdated = "July 26, 2026";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title="Privacy Policy — DigiSone Global" description={SITE_DESCRIPTION} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #0b1220;
+        --muted: #64748b;
+        --muted-2: #94a3b8;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: rgba(37, 99, 235, 0.1);
+        --border: rgba(15, 23, 42, 0.07);
+        --border-strong: rgba(15, 23, 42, 0.12);
+        --radius: 20px;
+        --radius-lg: 28px;
+        --radius-xl: 36px;
+        --shadow-xs: 0 2px 8px rgba(15, 23, 42, 0.04);
+        --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.05);
+        --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--text);
+        background: #f1f5f9;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 90% 60% at 10% -15%, rgba(37, 99, 235, 0.14), transparent 55%),
+          radial-gradient(ellipse 70% 50% at 95% 5%, rgba(99, 102, 241, 0.1), transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      main {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--primary-dark);
+      }
+
+      h1, h2, h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+
+      p, li {
+        line-height: 1.75;
+      }
+
+      /* Hero */
+      .policy-hero {
+        padding: 4.5rem 0 2.5rem;
+        max-width: 720px;
+      }
+
+      .policy-hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xs);
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 1.35rem;
+      }
+
+      .policy-hero h1 {
+        font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+        margin-bottom: 1rem;
+      }
+
+      .policy-hero .lead {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 560px;
+      }
+
+      .policy-hero .updated {
+        margin-top: 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--muted-2);
+      }
+
+      /* Layout */
+      .policy-layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 3rem;
+        align-items: start;
+        padding-bottom: 5rem;
+      }
+
+      /* TOC */
+      .toc {
+        position: sticky;
+        top: 6rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.35rem 1.25rem;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .toc-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--muted-2);
+        margin-bottom: 0.85rem;
+      }
+
+      .toc ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .toc a {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--muted);
+        padding: 0.4rem 0.6rem;
+        border-radius: 8px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .toc a:hover {
+        background: var(--primary-soft);
+        color: var(--primary);
+      }
+
+      /* Content */
+      .policy-content {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        padding: 2.75rem 2.5rem;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .policy-content section {
+        margin-bottom: 2.75rem;
+        scroll-margin-top: 7rem;
+      }
+
+      .policy-content section:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        letter-spacing: -0.03em;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .policy-content h2 .num {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .policy-content h3 {
+        font-size: 1.08rem;
+        margin: 1.5rem 0 0.65rem;
+        letter-spacing: -0.02em;
+      }
+
+      .policy-content p {
+        color: var(--muted);
+        font-size: 1rem;
+        margin: 0 0 1rem;
+      }
+
+      .policy-content p:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-content ul {
+        margin: 0 0 1rem;
+        padding-left: 1.25rem;
+        color: var(--muted);
+      }
+
+      .policy-content li {
+        margin-bottom: 0.45rem;
+        font-size: 1rem;
+      }
+
+      .policy-content li strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .highlight-box {
+        background: var(--primary-soft);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 14px;
+        padding: 1.25rem 1.35rem;
+        margin: 1.25rem 0;
+      }
+
+      .highlight-box p {
+        color: var(--text);
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .contact-card {
+        background: linear-gradient(145deg, #0b1220 0%, #1e293b 100%);
+        border-radius: var(--radius-lg);
+        padding: 1.85rem 1.75rem;
+        color: white;
+        margin-top: 1.25rem;
+      }
+
+      .contact-card p {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0.75rem;
+      }
+
+      .contact-card a {
+        color: #93c5fd;
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .contact-card a:hover {
+        color: #bfdbfe;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .policy-layout {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        .toc ul {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.25rem;
+        }
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 0 1.15rem;
+        }
+
+        .policy-hero {
+          padding: 3.25rem 0 1.75rem;
+        }
+
+        .policy-content {
+          padding: 1.85rem 1.4rem;
+        }
+
+        .toc ul {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="policy-hero">
+        <div class="badge">Legal</div>
+        <h1>Privacy Policy</h1>
+        <p class="lead">
+          Your privacy matters. This policy explains what information DigiSone Global
+          collects, how we use it, and the choices you have.
+        </p>
+        <p class="updated">Last updated: {lastUpdated}</p>
+      </section>
+
+      <div class="policy-layout">
+        <!-- Table of contents -->
+        <aside class="toc">
+          <div class="toc-title">On this page</div>
+          <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#information-we-collect">Information we collect</a></li>
+            <li><a href="#how-we-use">How we use information</a></li>
+            <li><a href="#cookies">Cookies & analytics</a></li>
+            <li><a href="#third-parties">Third-party services</a></li>
+            <li><a href="#data-retention">Data retention</a></li>
+            <li><a href="#your-rights">Your rights</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#children">Children’s privacy</a></li>
+            <li><a href="#changes">Changes to this policy</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+        </aside>
+
+        <!-- Content -->
+        <article class="policy-content">
+          <section id="introduction">
+            <h2><span class="num">01</span> Introduction</h2>
+            <p>
+              DigiSone Global (“we”, “us”, or “our”) operates the website and related
+              services that provide technology, business, and AI insights. This Privacy
+              Policy describes how we collect, use, store, and share information when
+              you visit our website, subscribe to our newsletter, or otherwise interact
+              with us.
+            </p>
+            <p>
+              By using our website, you agree to the practices described in this policy.
+              If you do not agree, please do not use our services.
+            </p>
+          </section>
+
+          <section id="information-we-collect">
+            <h2><span class="num">02</span> Information we collect</h2>
+            <p>We may collect the following types of information:</p>
+
+            <h3>Information you provide</h3>
+            <ul>
+              <li><strong>Contact details</strong> — such as your name and email address when you subscribe to our newsletter or submit a contact form.</li>
+              <li><strong>Messages```astro
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION } from '../consts';
+
+const lastUpdated = "July 26, 2026";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+   Head title="Privacy Policy — DigiSone Global" description={SITE_DESCRIPTION} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #0b1220;
+        --muted: #64748b;
+        --muted-2: #94a3b8;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: rgba(37, 99, 235, 0.1);
+        --border: rgba(15, 23, 42, 0.07);
+        --border-strong: rgba(15, 23, 42, 0.12);
+        --radius: 20px;
+        --radius-lg: 28px;
+        --radius-xl: 36px;
+        --shadow-xs: 0 2px 8px rgba(15, 23, 42, 0.04);
+        --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.05);
+        --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--text);
+        background: #f1f5f9;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 90% 60% at 10% -15%, rgba(37, 99, 235, 0.14), transparent 55%),
+          radial-gradient(ellipse 70% 50% at 95% 5%, rgba(99, 102, 241, 0.1), transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      main {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--primary-dark);
+      }
+
+      h1, h2, h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+
+      p, li {
+        line-height: 1.75;
+      }
+
+      /* Hero */
+      .policy-hero {
+        padding: 4.5rem 0 2.5rem;
+        max-width: 720px;
+      }
+
+      .policy-hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xs);
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 1.35rem;
+      }
+
+      .policy-hero h1 {
+        font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+        margin-bottom: 1rem;
+      }
+
+      .policy-hero .lead {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 560px;
+      }
+
+      .policy-hero .updated {
+        margin-top: 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--muted-2);
+      }
+
+      /* Layout */
+      .policy-layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 3rem;
+        align-items: start;
+        padding-bottom: 5rem;
+      }
+
+      /* TOC */
+      .toc {
+        position: sticky;
+        top: 6rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.35rem 1.25rem;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .toc-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--muted-2);
+        margin-bottom: 0.85rem;
+      }
+
+      .toc ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .toc a {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--muted);
+        padding: 0.4rem 0.6rem;
+        border-radius: 8px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .toc a:hover {
+        background: var(--primary-soft);
+        color: var(--primary);
+      }
+
+      /* Content */
+      .policy-content {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        padding: 2.75rem 2.5rem;
+        box-shadow: var(--shadow-xs);
+      }
+
+      .policy-content section {
+        margin-bottom: 2.75rem;
+        scroll-margin-top: 7rem;
+      }
+
+      .policy-content section:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        letter-spacing: -0.03em;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .policy-content h2 .num {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .policy-content h3 {
+        font-size: 1.08rem;
+        margin: 1.5rem 0 0.65rem;
+        letter-spacing: -0.02em;
+      }
+
+      .policy-content p {
+        color: var(--muted);
+        font-size: 1rem;
+        margin: 0 0 1rem;
+      }
+
+      .policy-content p:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-content ul {
+        margin: 0 0 1rem;
+        padding-left: 1.25rem;
+        color: var(--muted);
+      }
+
+      .policy-content li {
+        margin-bottom: 0.45rem;
+        font-size: 1rem;
+      }
+
+      .policy-content li strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .highlight-box {
+        background: var(--primary-soft);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 14px;
+        padding: 1.25rem 1.35rem;
+        margin: 1.25rem 0;
+      }
+
+      .highlight-box p {
+        color: var(--text);
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .contact-card {
+        background: linear-gradient(145deg, #0b1220 0%, #1e293b 100%);
+        border-radius: var(--radius-lg);
+        padding: 1.85rem 1.75rem;
+        color: white;
+        margin-top: 1.25rem;
+      }
+
+      .contact-card p {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0.75rem;
+      }
+
+      .contact-card a {
+        color: #93c5fd;
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .contact-card a:hover {
+        color: #bfdbfe;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .policy-layout {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        .toc ul {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.25rem;
+        }
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 0 1.15rem;
+        }
+
+        .policy-hero {
+          padding: 3.25rem 0 1.75rem;
+        }
+
+        .policy-content {
+          padding: 1.85rem 1.4rem;
+        }
+
+        .toc ul {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="policy-hero">
+        <div class="badge">Legal</div>
+        <h1>Privacy Policy</h1>
+        <p class="lead">
+          Your privacy matters. This policy explains what information DigiSone Global
+          collects, how we use it, and the choices you have.
+        </p>
+        <p class="updated">Last updated: {lastUpdated}</p>
+      </section>
+
+      <div class="policy-layout">
+        <!-- Table of contents -->
+        <aside class="toc">
+          <div class="toc-title">On this page</div>
+          <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#information-we-collect">Information we collect</a></li>
+            <li><a href="#how-we-use">How we use information</a></li>
+            <li><a href="#cookies">Cookies & analytics</a></li>
+            <li><a href="#third-parties">Third-party services</a></li>
+            <li><a href="#data-retention">Data retention</a></li>
+            <li><a href="#your-rights">Your rights</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#children">Children’s privacy</a></li>
+            <li><a href="#changes">Changes to this policy</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+        </aside>
+
+        <!-- Content -->
+        <article class="policy-content">
+          <section id="introduction">
+            <h2><span class="num">01</span> Introduction</h2>
+            <p>
+              DigiSone Global (“we”, “us”, or “our”) operates the website and related
+              services that provide technology, business, and AI insights. This Privacy
+              Policy describes how we collect, use, store, and share information when
+              you visit our website, subscribe to our newsletter, or otherwise interact
+              with us.
+            </p>
+            <p>
+              By using our website, you agree to the practices described in this policy.
+              If you do not agree, please do not use our services.
+            </p>
+          </section>
+
+          <section id="information-we-collect">
+            <h2><span class="num">02</span> Information we collect</h2>
+            <p>We may collect the following types of information:</p>
+
+            <h3>Information you provide</h3>
+            <ul>
+              <li><strong>Contact details</strong> — such as your name and email address when you subscribe to our newsletter or submit a contact form.</li>
+              <li><strong>Messages</strong> — content you send us via forms, email, or other channels.</li>
+              <li><strong>Other voluntary information</strong> — any details you choose to share with us.</li>
+            </ul>
+
+            <h3>Information collected automatically</h3>
+            <ul>
+              <li><strong>Usage data</strong> — pages visited, time spent, referring URLs, and similar interaction data.</li>
+              <li><strong>Device & technical data</strong> — browser type, operating system, device type, IP address, and approximate location.</li>
+              <li><strong>Cookies and similar technologies</strong> — as described in the Cookies section below.</li>
+            </ul>
+          </section>
+
+          <section id="how-we-use">
+            <h2><span class="num">03</span> How we use information</h2>
+            <p>We use the information we collect to:</p>
+            <ul>
+              <li>Operate, maintain, and improve our website and content</li>
+              <li>Send newsletters and updates you have requested</li>
+              <li>Respond to inquiries, feedback, and support requests</li>
+              <li>Understand how visitors use our site so we can improve the experience</li>
+              <li>Detect, prevent, and address technical issues or abuse</li>
+              <li>Comply with legal obligations where applicable</li>
+            </ul>
+            <div class="highlight-box">
+              <p>
+                We do <strong>not</strong> sell your personal information to third parties.
+              </p>
+            </div>
+          </section>
+
+          <section id="cookies">
+            <h2><span class="num">04</span> Cookies & analytics</h2>
+            <p>
+              We may use cookies and similar technologies to remember preferences,
+              understand traffic patterns, and improve performance. These may include:
+            </p>
+            <ul>
+              <li><strong>Essential cookies</strong> — required for basic site functionality</li>
+              <li><strong>Analytics cookies</strong> — to measure usage and improve content (e.g. privacy-friendly analytics tools)</li>
+              <li><strong>Preference cookies</strong> — to remember settings such as theme or language</li>
+            </ul>
+            <p>
+              You can control or delete cookies through your browser settings. Disabling
+              certain cookies may affect how the site functions.
+            </p>
+          </section>
+
+          <section id="third-parties">
+            <h2><span class="num">05</span> Third-party services</h2>
+            <p>
+              We may use trusted third-party services to help operate our website and
+              communications. These may include:
+            </p>
+            <ul>
+              <li>Email delivery and newsletter platforms</li>
+              <li>Analytics and performance monitoring tools</li>
+              <li>Hosting and content delivery providers</li>
+            </ul>
+            <p>
+              These providers process data only as needed to perform their services for
+              us and are expected to protect your information appropriately. Our site may
+              also contain links to external websites. We are not responsible for the
+              privacy practices of those third-party sites.
+            </p>
+          </section>
+
+          <section id="data-retention">
+            <h2><span class="num">06</span> Data retention</h2>
+            <p>
+              We retain personal information only as long as necessary for the purposes
+              described in this policy, unless a longer retention period is required or
+              permitted by law. Newsletter subscription data is kept until you unsubscribe
+              or request deletion. Contact form messages may be retained for a reasonable
+              period to manage correspondence.
+            </p>
+          </section>
+
+          <section id="your-rights">
+            <h2><span class="num">07</span> Your rights</h2>
+            <p>
+              Depending on your location, you may have rights regarding your personal
+              information, including the right to:
+            </p>
+            <ul>
+              <li>Access the personal data we hold about you</li>
+              <li>Request correction of inaccurate information</li>
+              <li>Request deletion of your data</li>
+              <li>Object to or restrict certain processing</li>
+              <li>Withdraw consent (for example, unsubscribe from emails)</li>
+              <li>Lodge a complaint with a supervisory authority where applicable</li>
+            </ul>
+            <p>
+              To exercise these rights, contact us at
+              <a href="mailto:info@digisone.com">info@digisone.com</a>.
+              We will respond within a reasonable timeframe.
+            </p>
+          </section>
+
+          <section id="security">
+            <h2><span class="num">08</span> Security</h2>
+            <p>
+              We take reasonable technical and organizational measures to protect personal
+              information against unauthorized access, loss, misuse, or alteration. However,
+              no method of transmission or storage is completely secure, and we cannot
+              guarantee absolute security.
+            </p>
+          </section>
+
+          <section id="children">
+            <h2><span class="num">09</span> Children’s privacy</h2>
+            <p>
+              Our services are not directed at children under the age of 16 (or the
+              equivalent minimum age in your jurisdiction). We do not knowingly collect
+              personal information from children. If you believe we have collected such
+              information, please contact us and we will take appropriate steps to delete it.
+            </p>
+          </section>
+
+          <section id="changes">
+            <h2><span class="num">10</span> Changes to this policy</h2>
+            <p>
+              We may update this Privacy Policy from time to time. When we do, we will
+              revise the “Last updated” date at the top of this page. Significant changes
+              may be communicated via our website or email where appropriate. Continued
+              use of our services after changes take effect constitutes acceptance of the
+              updated policy.
+            </p>
+          </section>
+
+          <section id="contact">
+            <h2><span class="num">11</span> Contact us</h2>
+            <p>
+              If you have questions about this Privacy Policy or our data practices,
+              please reach out:
+            </p>
+            <div class="contact-card">
+              <p>DigiSone Global</p>
+              <a href="mailto:info@digisone.com">info@digisone.com</a>
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
