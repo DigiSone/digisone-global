@@ -890,52 +890,131 @@ const categories = [
 					scroll-behavior: auto !important;
 				}
 			}
-	/* ——— Partner / Referral ad ——— */
-			.partner {
-				margin-top: 4rem;
-			}
+/* Partner referral — Binance */
+.partner {
+	margin-top: 4rem;
+}
 
-			.partner-label {
-				font-size: 0.75rem;
-				font-weight: 700;
-				letter-spacing: 0.06em;
-				text-transform: uppercase;
-				color: var(--muted);
-				margin-bottom: 0.75rem;
-			}
+.partner-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-bottom: 0.75rem;
+}
 
-			.partner a {
-				display: block;
-				border-radius: var(--radius-lg);
-				overflow: hidden;
-				border: 1px solid var(--border);
-				box-shadow: var(--shadow);
-				background: #0b0e11;
-				transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-			}
+.partner-card {
+	display: grid;
+	grid-template-columns: 1.2fr 0.8fr;
+	gap: 1.5rem;
+	align-items: center;
+	padding: 1.75rem 1.75rem;
+	border-radius: var(--radius-lg);
+	border: 1px solid rgba(240, 185, 11, 0.22);
+	background:
+		radial-gradient(ellipse 80% 80% at 100% 0%, rgba(240, 185, 11, 0.12), transparent 55%),
+		linear-gradient(145deg, #0b0e11, #141820 55%, #0b0e11);
+	color: #fff;
+	box-shadow: var(--shadow);
+	transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.25s ease;
+}
 
-			.partner a:hover {
-				transform: translateY(-4px);
-				box-shadow: var(--shadow-lg);
-			}
+.partner-card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--shadow-lg);
+	border-color: rgba(240, 185, 11, 0.4);
+}
 
-			.partner img {
-				width: 100%;
-				height: auto;
-				display: block;
-				aspect-ratio: 9 / 16;
-				object-fit: cover;
-				max-height: 28rem;
-			}
+.partner-kicker {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: #f0b90b;
+	margin-bottom: 0.65rem;
+}
 
-			@media (min-width: 720px) {
-				.partner img {
-					aspect-ratio: 16 / 9;
-					max-height: 22rem;
-					object-fit: contain;
-					background: #0b0e11;
-				}
-			}
+.partner-card h3 {
+	font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+	letter-spacing: -0.03em;
+	margin-bottom: 0.55rem;
+	color: #fff;
+}
+
+.partner-card p {
+	color: rgba(255, 255, 255, 0.72);
+	font-size: 0.98rem;
+	max-width: 34rem;
+	margin-bottom: 1.15rem;
+}
+
+.partner-cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	min-height: 2.75rem;
+	padding: 0.7rem 1.2rem;
+	border-radius: 0.75rem;
+	background: #f0b90b;
+	color: #0b0e11;
+	font-weight: 700;
+	font-size: 0.95rem;
+	border: none;
+	transition: transform 0.2s var(--ease), box-shadow 0.2s ease;
+}
+
+.partner-card:hover .partner-cta {
+	transform: translateY(-2px);
+	box-shadow: 0 0.6rem 1.25rem rgba(240, 185, 11, 0.35);
+}
+
+.partner-side {
+	display: grid;
+	gap: 0.65rem;
+	justify-items: end;
+}
+
+.partner-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.55rem 0.85rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.partner-chip .dot {
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 50%;
+	background: #f0b90b;
+}
+
+.partner-brand {
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.45);
+	font-weight: 500;
+}
+
+@media (max-width: 720px) {
+	.partner-card {
+		grid-template-columns: 1fr;
+		padding: 1.4rem 1.25rem;
+	}
+
+	.partner-side {
+		justify-items: start;
+	}
+}
 
 		</style>
 	</head>
@@ -1125,24 +1204,41 @@ const categories = [
 				</div>
 			</section>
 
+<!-- Partner referral -->
 <section class="partner section" aria-label="Partner offer">
-				<div class="partner-label">Partner</div>
-				<a
-					href="https://www.binance.com/register?ref=764244481"
-					target="_blank"
-					rel="noopener noreferrer sponsored"
-					aria-label="Explore crypto with Binance — open registration"
-				>
-					<img
-						src="/images/binance-ad.webp"
-						alt="Explore Crypto with me on Binance — Join the world's leading crypto trading platform"
-						width="1080"
-						height="1920"
-						loading="lazy"
-						decoding="async"
-					/>
-				</a>
-			</section>
+	<div class="partner-label">Partner</div>
+	<a
+		class="partner-card"
+		href="https://www.binance.com/register?ref=764244481"
+		target="_blank"
+		rel="noopener noreferrer sponsored"
+		aria-label="Explore crypto on Binance — open registration"
+	>
+		<div>
+			<div class="partner-kicker">
+				<span aria-hidden="true">◆</span>
+				Crypto partner
+			</div>
+			<h3>Explore crypto with me on Binance</h3>
+			<p>
+				Join one of the world’s leading crypto trading platforms — spot, futures,
+				and more. Register with this link to get started.
+			</p>
+			<span class="partner-cta">
+				Create Binance account
+				<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+					<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</span>
+		</div>
+		<div class="partner-side">
+			<span class="partner-chip"><span class="dot" aria-hidden="true"></span> Fast onboarding</span>
+			<span class="partner-chip"><span class="dot" aria-hidden="true"></span> Global platform</span>
+			<span class="partner-chip"><span class="dot" aria-hidden="true"></span> Secure trading</span>
+			<span class="partner-brand">binance.com</span>
+		</div>
+	</a>
+</section>
 
 			<!-- Newsletter -->
 			<section class="newsletter reveal" id="newsletter" aria-label="Newsletter signup">
