@@ -12,6 +12,24 @@ const posts = (await getCollection('blog')).sort(
 
 const featuredPost = posts[0];
 const latestPosts = posts.slice(1, 7);
+
+const trendingTopics = [
+	'AI Agents & Autonomous Systems',
+	'Enterprise Automation',
+	'Future of Work',
+	'Cybersecurity & Privacy',
+	'Cloud Infrastructure',
+	'Startup Growth Strategies',
+];
+
+const categories = [
+	{ icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Automation', href: '/categories' },
+	{ icon: '📈', title: 'Business Strategy', desc: 'Leadership & Growth', href: '/categories' },
+	{ icon: '🚀', title: 'Startups', desc: 'Funding & Scale', href: '/categories' },
+	{ icon: '🔒', title: 'Cybersecurity', desc: 'Security & Privacy', href: '/categories' },
+	{ icon: '☁️', title: 'Cloud', desc: 'AWS, Azure & GCP', href: '/categories' },
+	{ icon: '🌐', title: 'Future of Work', desc: 'Teams, Tools & Culture', href: '/categories' },
+];
 ---
 
 <!doctype html>
@@ -21,15 +39,22 @@ const latestPosts = posts.slice(1, 7);
 		<style>
 			:root {
 				--bg: #f1f5f9;
-				--surface: #fff;
+				--surface: #ffffff;
 				--text: #0b1220;
 				--muted: #64748b;
+				--muted-2: #94a3b8;
 				--primary: #2563eb;
 				--primary-dark: #1d4ed8;
+				--primary-soft: rgba(37, 99, 235, 0.1);
+				--accent: #6366f1;
 				--border: rgba(15, 23, 42, 0.08);
 				--radius: 1.25rem;
+				--radius-lg: 1.75rem;
+				--shadow-xs: 0 0.15rem 0.5rem rgba(15, 23, 42, 0.04);
 				--shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
+				--shadow-lg: 0 1.75rem 4rem rgba(15, 23, 42, 0.12);
 				--font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+				--ease: cubic-bezier(0.22, 1, 0.36, 1);
 			}
 
 			*,
@@ -50,10 +75,21 @@ const latestPosts = posts.slice(1, 7);
 				-webkit-font-smoothing: antialiased;
 			}
 
+			body::before {
+				content: '';
+				position: fixed;
+				inset: 0;
+				z-index: -1;
+				pointer-events: none;
+				background:
+					radial-gradient(ellipse 80% 50% at 10% -10%, rgba(37, 99, 235, 0.12), transparent 55%),
+					radial-gradient(ellipse 60% 40% at 90% 0%, rgba(99, 102, 241, 0.1), transparent 50%);
+			}
+
 			main {
-				width: min(100% - 2rem, 70rem);
+				width: min(100% - 2rem, 72rem);
 				margin-inline: auto;
-				padding-block: 2rem 4rem;
+				padding-block: 1.5rem 4rem;
 			}
 
 			a {
@@ -74,15 +110,68 @@ const latestPosts = posts.slice(1, 7);
 				line-height: 1.7;
 			}
 
+			.section {
+				margin-top: 4rem;
+			}
+
+			.section-header {
+				display: flex;
+				align-items: end;
+				justify-content: space-between;
+				gap: 1rem;
+				margin-bottom: 1.35rem;
+				flex-wrap: wrap;
+			}
+
+			.section-header h2 {
+				font-size: clamp(1.5rem, 3vw, 2rem);
+			}
+
+			.section-header a {
+				color: var(--primary);
+				font-weight: 600;
+				font-size: 0.95rem;
+			}
+
+			.section-header a:hover {
+				color: var(--primary-dark);
+			}
+
+			/* ——— Hero ——— */
 			.hero {
 				display: grid;
-				gap: 1.25rem;
-				padding: 2.5rem 0 3rem;
+				grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr);
+				gap: 2.5rem;
+				align-items: center;
+				padding: 2.75rem 0 2rem;
+			}
+
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.45rem 0.95rem 0.45rem 0.65rem;
+				border-radius: 999px;
+				background: var(--surface);
+				border: 1px solid var(--border);
+				box-shadow: var(--shadow-xs);
+				font-size: 0.84rem;
+				font-weight: 600;
+				margin-bottom: 1.1rem;
+			}
+
+			.hero-badge .dot {
+				width: 0.5rem;
+				height: 0.5rem;
+				border-radius: 50%;
+				background: #22c55e;
+				box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
 			}
 
 			.hero h1 {
-				font-size: clamp(2.25rem, 6vw, 3.75rem);
-				max-width: 18ch;
+				font-size: clamp(2.4rem, 6vw, 4rem);
+				max-width: 14ch;
+				margin-bottom: 1rem;
 			}
 
 			.hero h1 span {
@@ -92,23 +181,24 @@ const latestPosts = posts.slice(1, 7);
 				color: transparent;
 			}
 
-			.hero p {
+			.hero-lead {
 				color: var(--muted);
 				font-size: 1.1rem;
-				max-width: 40rem;
+				max-width: 36rem;
 			}
 
 			.actions {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 0.75rem;
-				margin-top: 0.5rem;
+				margin-top: 1.5rem;
 			}
 
 			.btn {
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
+				gap: 0.4rem;
 				min-height: 2.75rem;
 				padding: 0.7rem 1.2rem;
 				border-radius: 0.75rem;
@@ -139,67 +229,144 @@ const latestPosts = posts.slice(1, 7);
 				color: var(--text);
 			}
 
-			.section {
-				margin-top: 3.5rem;
-			}
-
-			.section-header {
+			.trust {
 				display: flex;
-				align-items: end;
-				justify-content: space-between;
-				gap: 1rem;
-				margin-bottom: 1.25rem;
 				flex-wrap: wrap;
+				gap: 1.5rem 2rem;
+				margin-top: 2rem;
+				padding-top: 1.5rem;
+				border-top: 1px solid var(--border);
 			}
 
-			.section-header h2 {
-				font-size: clamp(1.5rem, 3vw, 2rem);
+			.trust strong {
+				display: block;
+				font-size: 1.25rem;
+				letter-spacing: -0.02em;
 			}
 
-			.section-header a {
-				color: var(--primary);
-				font-weight: 600;
-				font-size: 0.95rem;
+			.trust span {
+				font-size: 0.8rem;
+				color: var(--muted);
+				font-weight: 500;
 			}
 
-			.section-header a:hover {
-				color: var(--primary-dark);
+			/* Trending card */
+			.trending {
+				background: rgba(255, 255, 255, 0.8);
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				padding: 1.5rem 1.35rem;
+				box-shadow: var(--shadow);
+				position: relative;
+				overflow: hidden;
 			}
 
-			/* Featured = first post, full width */
-			.featured {
+			.trending::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 3px;
+				background: linear-gradient(90deg, #2563eb, #6366f1, #8b5cf6);
+			}
+
+			.trending-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 1rem;
+			}
+
+			.trending-header h2 {
+				font-size: 1rem;
+			}
+
+			.live {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.05em;
+				text-transform: uppercase;
+				color: #15803d;
+				background: rgba(34, 197, 94, 0.12);
+				padding: 0.2rem 0.45rem;
+				border-radius: 0.35rem;
+			}
+
+			.trending ol {
 				list-style: none;
 				margin: 0;
 				padding: 0;
+				display: grid;
+				gap: 0.25rem;
 			}
 
+			.trending li {
+				display: flex;
+				align-items: center;
+				gap: 0.7rem;
+				padding: 0.5rem 0.55rem;
+				border-radius: 0.65rem;
+				color: var(--muted);
+				font-size: 0.92rem;
+				font-weight: 500;
+				transition: background 0.15s ease, color 0.15s ease;
+			}
+
+			.trending li:hover {
+				background: var(--primary-soft);
+				color: var(--primary);
+			}
+
+			.trending .num {
+				width: 1.4rem;
+				height: 1.4rem;
+				border-radius: 0.4rem;
+				background: var(--primary-soft);
+				color: var(--primary);
+				font-size: 0.7rem;
+				font-weight: 700;
+				display: grid;
+				place-items: center;
+				flex-shrink: 0;
+			}
+
+			/* Featured */
 			.featured a {
 				display: grid;
-				gap: 1rem;
+				grid-template-columns: 1.15fr 1fr;
 				background: var(--surface);
 				border: 1px solid var(--border);
-				border-radius: var(--radius);
+				border-radius: var(--radius-lg);
 				overflow: hidden;
 				box-shadow: var(--shadow);
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				min-height: 20rem;
 			}
 
 			.featured a:hover {
 				transform: translateY(-3px);
-				box-shadow: 0 1.25rem 3rem rgba(15, 23, 42, 0.12);
+				box-shadow: var(--shadow-lg);
 			}
 
-			.featured img {
+			.featured-media {
+				background: linear-gradient(145deg, #1e3a8a, #312e81);
+				min-height: 14rem;
+			}
+
+			.featured-media img {
 				width: 100%;
-				height: auto;
-				aspect-ratio: 2 / 1;
+				height: 100%;
 				object-fit: cover;
 				display: block;
-				background: #1e3a8a;
+				aspect-ratio: 2 / 1;
 			}
 
 			.featured .body {
-				padding: 1.25rem 1.35rem 1.5rem;
+				padding: 1.75rem 1.75rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
 			}
 
 			.featured .label {
@@ -208,18 +375,18 @@ const latestPosts = posts.slice(1, 7);
 				letter-spacing: 0.06em;
 				text-transform: uppercase;
 				color: var(--primary);
-				margin-bottom: 0.4rem;
+				margin-bottom: 0.45rem;
 			}
 
 			.featured .date {
 				color: var(--muted);
 				font-size: 0.9rem;
-				margin-bottom: 0.5rem;
+				margin-bottom: 0.55rem;
 			}
 
 			.featured h3 {
 				font-size: clamp(1.35rem, 2.5vw, 1.85rem);
-				margin-bottom: 0.5rem;
+				margin-bottom: 0.55rem;
 			}
 
 			.featured .desc {
@@ -228,9 +395,14 @@ const latestPosts = posts.slice(1, 7);
 				-webkit-line-clamp: 3;
 				-webkit-box-orient: vertical;
 				overflow: hidden;
+				margin-bottom: 1.1rem;
 			}
 
-			/* Latest grid */
+			.featured .btn {
+				align-self: flex-start;
+			}
+
+			/* Cards grid */
 			.grid {
 				display: grid;
 				grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -242,7 +414,7 @@ const latestPosts = posts.slice(1, 7);
 
 			.card a {
 				display: grid;
-				gap: 0.65rem;
+				gap: 0;
 				height: 100%;
 				background: var(--surface);
 				border: 1px solid var(--border);
@@ -266,7 +438,7 @@ const latestPosts = posts.slice(1, 7);
 			}
 
 			.card .body {
-				padding: 0.9rem 1rem 1.1rem;
+				padding: 1rem 1.05rem 1.15rem;
 				display: grid;
 				gap: 0.35rem;
 			}
@@ -277,7 +449,7 @@ const latestPosts = posts.slice(1, 7);
 			}
 
 			.card h3 {
-				font-size: 1.1rem;
+				font-size: 1.08rem;
 			}
 
 			.card .desc {
@@ -289,14 +461,99 @@ const latestPosts = posts.slice(1, 7);
 				overflow: hidden;
 			}
 
+			/* Categories */
+			.categories {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1rem;
+			}
+
+			.category {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1.35rem 1.2rem;
+				box-shadow: var(--shadow-xs);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+
+			.category:hover {
+				transform: translateY(-3px);
+				box-shadow: var(--shadow);
+			}
+
+			.category-icon {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: 0.75rem;
+				display: grid;
+				place-items: center;
+				font-size: 1.2rem;
+				margin-bottom: 0.85rem;
+				background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1));
+			}
+
+			.category h3 {
+				font-size: 1rem;
+				margin-bottom: 0.25rem;
+			}
+
+			.category p {
+				font-size: 0.85rem;
+				color: var(--muted);
+			}
+
+			/* Why */
+			.why-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1rem;
+			}
+
+			.why-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1.5rem 1.35rem;
+				box-shadow: var(--shadow-xs);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+
+			.why-card:hover {
+				transform: translateY(-3px);
+				box-shadow: var(--shadow);
+			}
+
+			.why-icon {
+				width: 2.75rem;
+				height: 2.75rem;
+				border-radius: 0.8rem;
+				display: grid;
+				place-items: center;
+				font-size: 1.2rem;
+				margin-bottom: 1rem;
+				background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.12));
+			}
+
+			.why-card h3 {
+				font-size: 1.08rem;
+				margin-bottom: 0.4rem;
+			}
+
+			.why-card p {
+				color: var(--muted);
+				font-size: 0.94rem;
+			}
+
 			/* Newsletter */
 			.newsletter {
 				margin-top: 4rem;
-				padding: 2.25rem 1.5rem;
-				border-radius: var(--radius);
+				padding: 2.75rem 1.5rem;
+				border-radius: var(--radius-lg);
 				background: linear-gradient(145deg, #0b1220, #1e293b);
 				color: #fff;
 				text-align: center;
+				box-shadow: var(--shadow-lg);
 			}
 
 			.newsletter h2 {
@@ -304,7 +561,7 @@ const latestPosts = posts.slice(1, 7);
 				margin-bottom: 0.5rem;
 			}
 
-			.newsletter p {
+			.newsletter > p {
 				color: rgba(255, 255, 255, 0.72);
 				max-width: 32rem;
 				margin: 0 auto 1.25rem;
@@ -366,9 +623,37 @@ const latestPosts = posts.slice(1, 7);
 				text-align: center;
 			}
 
+			@media (max-width: 900px) {
+				.hero {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+				}
+
+				.featured a {
+					grid-template-columns: 1fr;
+				}
+
+				.why-grid,
+				.categories {
+					grid-template-columns: 1fr;
+				}
+			}
+
 			@media (max-width: 720px) {
 				.grid {
 					grid-template-columns: 1fr;
+				}
+
+				.categories {
+					grid-template-columns: 1fr 1fr;
+				}
+
+				.actions {
+					flex-direction: column;
+				}
+
+				.btn {
+					width: 100%;
 				}
 
 				.newsletter form {
@@ -380,40 +665,86 @@ const latestPosts = posts.slice(1, 7);
 					width: 100%;
 				}
 			}
+
+			@media (max-width: 480px) {
+				.categories {
+					grid-template-columns: 1fr;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
+			<!-- Hero + Trending -->
 			<section class="hero" aria-label="Introduction">
-				<h1>The Future of <span>Technology, Business & AI</span></h1>
-				<p>
-					DigiSone Global delivers premium insights on Artificial Intelligence, business strategy,
-					startups, cybersecurity, cloud, and the future of work.
-				</p>
-				<div class="actions">
-					<a class="btn btn-primary" href="/blog">Read Latest Insights</a>
-					<a class="btn btn-secondary" href="#newsletter">Get Weekly Briefing</a>
+				<div>
+					<div class="hero-badge">
+						<span class="dot" aria-hidden="true"></span>
+						Trusted by founders, operators & technology leaders
+					</div>
+					<h1>The Future of <span>Technology, Business & AI</span></h1>
+					<p class="hero-lead">
+						DigiSone Global delivers premium insights on Artificial Intelligence, business strategy,
+						startups, cybersecurity, cloud, and the future of work.
+					</p>
+					<div class="actions">
+						<a class="btn btn-primary" href="/blog">Read Latest Insights</a>
+						<a class="btn btn-secondary" href="#newsletter">Get Weekly Briefing</a>
+					</div>
+					<div class="trust" aria-label="Platform stats">
+						<div>
+							<strong>{posts.length}</strong>
+							<span>Published articles</span>
+						</div>
+						<div>
+							<strong>12k+</strong>
+							<span>Monthly readers</span>
+						</div>
+						<div>
+							<strong>4.9★</strong>
+							<span>Reader rating</span>
+						</div>
+					</div>
 				</div>
+
+				<aside class="trending" aria-label="Trending topics">
+					<div class="trending-header">
+						<h2>Trending Topics</h2>
+						<span class="live">Live</span>
+					</div>
+					<ol>
+						{
+							trendingTopics.map((topic, i) => (
+								<li>
+									<span class="num">{String(i + 1).padStart(2, '0')}</span>
+									{topic}
+								</li>
+							))
+						}
+					</ol>
+				</aside>
 			</section>
 
-			<!-- Featured (first post) -->
-			<section class="section" aria-label="Featured article">
+			<!-- Featured -->
+			<section class="section featured" aria-label="Featured article">
 				{
 					featuredPost ? (
-						<article class="featured">
-							<a href={`/blog/${featuredPost.id}/`}>
-								{featuredPost.data.heroImage && (
-									<Image
-										width={1020}
-										height={510}
-										src={featuredPost.data.heroImage}
-										alt={featuredPost.data.title}
-										loading="eager"
-										fetchpriority="high"
-										format="webp"
-									/>
-								)}
+						<article>
+							<a href={`/blog/${featuredPost.id}/`} aria-label={`Read: ${featuredPost.data.title}`}>
+								<div class="featured-media">
+									{featuredPost.data.heroImage && (
+										<Image
+											width={1020}
+											height={510}
+											src={featuredPost.data.heroImage}
+											alt={featuredPost.data.title}
+											loading="eager"
+											fetchpriority="high"
+											format="webp"
+										/>
+									)}
+								</div>
 								<div class="body">
 									<div class="label">Featured Story</div>
 									<p class="date">
@@ -427,6 +758,7 @@ const latestPosts = posts.slice(1, 7);
 									</p>
 									<h3>{featuredPost.data.title}</h3>
 									<p class="desc">{featuredPost.data.description}</p>
+									<span class="btn btn-primary">Read Article</span>
 								</div>
 							</a>
 						</article>
@@ -436,7 +768,7 @@ const latestPosts = posts.slice(1, 7);
 				}
 			</section>
 
-			<!-- Latest posts -->
+			<!-- Latest -->
 			<section class="section" aria-label="Latest articles">
 				<div class="section-header">
 					<h2>Latest Articles</h2>
@@ -448,7 +780,7 @@ const latestPosts = posts.slice(1, 7);
 						<ul class="grid">
 							{latestPosts.map((post) => (
 								<li class="card">
-									<a href={`/blog/${post.id}/`}>
+									<a href={`/blog/${post.id}/`} aria-label={post.data.title}>
 										{post.data.heroImage && (
 											<Image
 												width={720}
@@ -482,12 +814,60 @@ const latestPosts = posts.slice(1, 7);
 				}
 			</section>
 
+			<!-- Categories -->
+			<section class="section" aria-label="Categories">
+				<div class="section-header">
+					<h2>Explore Categories</h2>
+					<a href="/categories">Browse all</a>
+				</div>
+				<div class="categories">
+					{
+						categories.map((cat) => (
+							<a href={cat.href} class="category">
+								<div class="category-icon" aria-hidden="true">
+									{cat.icon}
+								</div>
+								<h3>{cat.title}</h3>
+								<p>{cat.desc}</p>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- Why -->
+			<section class="section" aria-label="Why professionals read DigiSone Global">
+				<div class="section-header">
+					<h2>Why Professionals Read DigiSone Global</h2>
+				</div>
+				<div class="why-grid">
+					<div class="why-card">
+						<div class="why-icon" aria-hidden="true">🔍</div>
+						<h3>Deep Analysis</h3>
+						<p>Practical insights beyond headlines and breaking news.</p>
+					</div>
+					<div class="why-card">
+						<div class="why-icon" aria-hidden="true">🧠</div>
+						<h3>Expert Perspectives</h3>
+						<p>Technology, leadership and innovation from industry operators.</p>
+					</div>
+					<div class="why-card">
+						<div class="why-icon" aria-hidden="true">⚡</div>
+						<h3>Actionable Takeaways</h3>
+						<p>Frameworks, lessons and strategies you can apply immediately.</p>
+					</div>
+				</div>
+			</section>
+
 			<!-- Newsletter -->
 			<section class="newsletter" id="newsletter" aria-label="Newsletter signup">
 				<h2>Get the Weekly Technology Briefing</h2>
 				<p>Actionable insights on AI, strategy, security, and digital transformation.</p>
 				<form action="#" method="post">
-					<label for="email" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+					<label
+						for="email"
+						style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;"
+					>
 						Email address
 					</label>
 					<input
