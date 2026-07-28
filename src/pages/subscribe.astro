@@ -453,45 +453,22 @@ const description =
 
 					<div id="form-msg" class="msg" role="status" aria-live="polite"></div>
 
-					<form class="form" id="subscribe-form">
-						<label class="label" for="email">
-							Email address
-							<input
-								class="input"
-								id="email"
-								name="email"
-								type="email"
-								autocomplete="email"
-								required
-								placeholder="you@company.com"
-							/>
-						</label>
-
-						<label class="label" for="name">
-							Name
-							<span style="font-weight: 500; color: var(--muted-2)">(optional)</span>
-							<input
-								class="input"
-								id="name"
-								name="name"
-								type="text"
-								autocomplete="name"
-								placeholder="Your name"
-							/>
-						</label>
-
-						<button class="btn" id="submit-btn" type="submit">
-							Subscribe to briefing
-							<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-								<path
-									d="M3 8h10M9 4l4 4-4 4"
-									stroke="currentColor"
-									stroke-width="1.75"
-									stroke-linecap="round"
-									stroke-linejoin="round"></path>
-							</svg>
-						</button>
-					</form>
+					<form
+	class="form"
+	action="mailto:info@digisone.com?subject=Newsletter%20Subscribe"
+	method="post"
+	enctype="text/plain"
+>
+	<label class="label" for="email">
+		Email address
+		<input class="input" id="email" name="email" type="email" required placeholder="you@company.com" />
+	</label>
+	<label class="label" for="name">
+		Name <span style="font-weight:500;color:var(--muted-2)">(optional)</span>
+		<input class="input" id="name" name="name" type="text" placeholder="Your name" />
+	</label>
+	<button class="btn" type="submit">Subscribe to briefing</button>
+</form>
 
 					<p class="note">
 						No spam. Unsubscribe anytime. Your email stays with DigiSone Global — we don’t sell
