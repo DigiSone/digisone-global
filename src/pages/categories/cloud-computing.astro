@@ -1,0 +1,395 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = "Cloud Computing — DigiSone Global";
+const description = "A clear and practical guide to Cloud Computing in 2026. What it really enables, how organisations use it well and poorly, and how to think about cloud as a long-term capability rather than a temporary migration.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="category-page">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <p class="eyebrow">Category · July 2026</p>
+          <h1>Cloud Computing</h1>
+          <p class="lead">
+            Cloud computing is the delivery of computing resources — servers, storage, databases, networking, software and intelligence — over the internet on a flexible, on-demand basis. It has moved from an alternative infrastructure model to the default foundation for most new digital systems.
+          </p>
+        </div>
+      </section>
+
+      <div class="container content">
+
+        <!-- 1 -->
+        <section>
+          <h2>What Cloud Computing Really Means</h2>
+          <p>
+            At its simplest, the cloud replaces the need to own and operate physical data centres with the ability to rent capacity from specialised providers. The deeper shift is economic and operational: organisations can treat infrastructure as a variable cost, scale capacity up or down with demand, and access advanced services without building them from scratch.
+          </p>
+          <p>
+            The major providers — Amazon Web Services, Microsoft Azure and Google Cloud — offer far more than virtual machines. They provide managed databases, AI services, global networking, security controls and application platforms. The value increasingly lies in these higher-level services rather than in raw compute alone.
+          </p>
+
+          <div class="example-box">
+            <strong>A useful distinction</strong>
+            <p>
+              Moving servers to the cloud is not the same as becoming cloud-native. The first is a change of location. The second is a change in how systems are designed, deployed, operated and evolved.
+            </p>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section>
+          <h2>Why Cloud Matters in 2026</h2>
+          <p>
+            Cloud has become infrastructure in the same way that electricity and the internet once did. New products are expected to launch globally, handle variable demand, integrate AI capabilities and meet rising security and compliance expectations. Doing this on traditional on-premises infrastructure is possible but increasingly slow and expensive for most organisations.
+          </p>
+          <p>
+            At the same time, the conversation has matured. The early enthusiasm for “move everything to the cloud” has given way to more selective decisions about what belongs where, how costs are controlled, and how architectural complexity is managed.
+          </p>
+        </section>
+
+        <!-- 3 -->
+        <section>
+          <h2>The Main Service Models</h2>
+
+          <div class="cards">
+            <div class="card">
+              <h3>Infrastructure as a Service (IaaS)</h3>
+              <p>Raw computing resources — virtual machines, storage and networking — that organisations configure and manage themselves.</p>
+            </div>
+            <div class="card">
+              <h3>Platform as a Service (PaaS)</h3>
+              <p>Managed environments for building and running applications without handling the underlying infrastructure.</p>
+            </div>
+            <div class="card">
+              <h3>Software as a Service (SaaS)</h3>
+              <p>Complete applications delivered over the internet, from email and collaboration tools to industry-specific platforms.</p>
+            </div>
+          </div>
+
+          <p style="margin-top: 1.75rem;">
+            A fourth category has grown rapidly: managed AI and data services. These allow organisations to use advanced models and analytics without operating the specialised hardware and software required to run them at scale.
+          </p>
+        </section>
+
+        <!-- 4 -->
+        <section>
+          <h2>Where Organisations Gain Advantage</h2>
+          <p>When used well, cloud delivers several durable benefits:</p>
+          <ul>
+            <li><strong>Speed</strong> — New environments and services can be provisioned in minutes rather than months.</li>
+            <li><strong>Elasticity</strong> — Capacity can expand and contract with real demand, reducing both waste and risk of shortage.</li>
+            <li><strong>Access to advanced capability</strong> — AI, global content delivery, sophisticated databases and security tools become available without large capital investment.</li>
+            <li><strong>Geographic reach</strong> — Applications can be deployed closer to users across multiple regions with relatively little friction.</li>
+            <li><strong>Focus</strong> — Engineering effort can shift from maintaining infrastructure toward building product and customer value.</li>
+          </ul>
+        </section>
+
+        <!-- 5 -->
+        <section>
+          <h2>Where Organisations Most Often Struggle</h2>
+          <p>Cloud does not automatically produce better outcomes. Common difficulties include:</p>
+          <ul>
+            <li>Uncontrolled costs caused by poor visibility, over-provisioning or inefficient architectures.</li>
+            <li>Lift-and-shift migrations that move existing problems into a more expensive environment.</li>
+            <li>Growing architectural complexity that becomes difficult to operate and secure.</li>
+            <li>Skills gaps — teams familiar with traditional infrastructure may lack experience with cloud-native patterns.</li>
+            <li>Security and compliance failures arising from misconfigured services or unclear ownership.</li>
+            <li>Vendor lock-in concerns that are sometimes overstated and sometimes underestimated.</li>
+          </ul>
+          <p>
+            The organisations that extract the most value treat cloud as a capability to be developed, not merely as a destination for existing systems.
+          </p>
+        </section>
+
+        <!-- 6 -->
+        <section>
+          <h2>Cloud Strategy, Not Just Cloud Migration</h2>
+          <p>
+            A serious approach to cloud begins with clear intent. Which workloads benefit most from elasticity and managed services? Which systems are better left where they are for reasons of cost, latency, regulation or complexity? How will costs be governed? How will security and identity be handled consistently?
+          </p>
+          <p>
+            Multi-cloud and hybrid approaches have become common. They can provide resilience and negotiating leverage, but they also increase operational burden. The decision should be driven by specific requirements rather than by fashion.
+          </p>
+        </section>
+
+        <!-- 7 -->
+        <section>
+          <h2>A Practical Orientation</h2>
+
+          <div class="steps">
+            <div class="step">
+              <span>1</span>
+              <div>
+                <strong>Start with the workload</strong>
+                <p>Evaluate each system on its own merits — demand patterns, data sensitivity, latency needs and existing architecture — rather than applying a single rule to everything.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span>2</span>
+              <div>
+                <strong>Design for the cloud</strong>
+                <p>Where possible, use managed services, automation and loosely coupled architectures instead of simply recreating traditional designs in virtual machines.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span>3</span>
+              <div>
+                <strong>Govern cost and access early</strong>
+                <p>Visibility, budgets, tagging and identity controls are far easier to establish at the beginning than to retrofit later.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span>4</span>
+              <div>
+                <strong>Build operational skill</strong>
+                <p>Cloud success depends as much on people and processes as on technology. Invest in the ability to observe, respond and improve systems continuously.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span>5</span>
+              <div>
+                <strong>Review regularly</strong>
+                <p>Pricing, services and best practices evolve quickly. Periodic architectural and cost reviews prevent drift and waste.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8 -->
+        <section>
+          <h2>Looking Further Ahead</h2>
+          <p>
+            Cloud will continue to absorb more of the technology stack. The boundary between infrastructure, platform and application services will keep shifting upward. AI workloads will place new demands on specialised compute and data architecture. Edge computing will matter more for latency-sensitive use cases.
+          </p>
+          <p>
+            The organisations that benefit most will be those that treat cloud as a strategic platform for speed, learning and capability rather than as a cost-reduction exercise alone.
+          </p>
+        </section>
+
+        <!-- Closing -->
+        <section>
+          <h2>Closing Perspective</h2>
+          <p>
+            Cloud computing has changed the economics and tempo of building digital systems. It removes many traditional constraints while introducing new ones around cost discipline, architectural clarity and operational maturity.
+          </p>
+          <p>
+            The difference between organisations that gain lasting advantage and those that merely relocate their problems usually lies in the quality of their decisions — what to move, how to design, how to govern, and how to build the skills required to operate well.
+          </p>
+          <p>
+            At DigiSone Global we examine cloud with the same standard we apply elsewhere: clarity over fashion, substance over migration theatre, and long-term capability over short-term relocation.
+          </p>
+        </section>
+
+        <section class="related">
+          <h2>Related Writing</h2>
+          <p class="muted">Articles on Cloud Computing will appear here as they are published.</p>
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .category-page {
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --blue: #2563eb;
+    --bg-soft: #f8fafc;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .hero {
+    padding: 4.5rem 0 3.25rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--blue);
+    margin-bottom: 0.85rem;
+  }
+
+  .hero h1 {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: clamp(2.1rem, 5vw, 2.9rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    margin: 0 0 1.15rem;
+    color: var(--text);
+    line-height: 1.15;
+  }
+
+  .lead {
+    font-size: 1.175rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+
+  .content {
+    padding: 3.5rem 0 5.5rem;
+  }
+
+  .content section {
+    margin-bottom: 4rem;
+  }
+
+  .content h2 {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin: 0 0 1.35rem;
+    color: var(--text);
+    letter-spacing: -0.025em;
+  }
+
+  .content h3 {
+    font-size: 1.2rem;
+    font-weight: 650;
+    margin: 2rem 0 0.65rem;
+    color: var(--text);
+  }
+
+  .content p {
+    color: #334155;
+    line-height: 1.8;
+    margin: 0 0 1.15rem;
+    font-size: 1.05rem;
+  }
+
+  .content ul {
+    padding-left: 1.3rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .content li {
+    margin-bottom: 0.6rem;
+    line-height: 1.7;
+    color: #334155;
+    font-size: 1.05rem;
+  }
+
+  .example-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem 1.5rem;
+    margin: 1.75rem 0;
+  }
+
+  .example-box strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .cards {
+    display: grid;
+    gap: 1.1rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem 1.35rem;
+  }
+
+  .card h3 {
+    margin: 0 0 0.55rem;
+    font-size: 1.05rem;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.15rem;
+    align-items: flex-start;
+  }
+
+  .step span {
+    width: 34px;
+    height: 34px;
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .step strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 1.05rem;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .related {
+    border-top: 1px solid var(--border);
+    padding-top: 3rem;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+</style>
