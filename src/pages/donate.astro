@@ -1,152 +1,170 @@
 ---
-// src/pages/donate.astro
-import Layout from '../layouts/Layout.astro'; // adjust path if your layout is different
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Donate — DigiSone Global";
+const description = "Support independent digital insights and research at DigiSone Global.";
 ---
 
-<Layout title="Donate — DigiSone Global" description="Support independent digital insights and research at DigiSone Global.">
-  <main class="donate-page">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-badge">Support Independent Work</div>
-        <h1>
-          Help us keep <span class="gradient-text">DigiSone Global</span> free & independent
-        </h1>
-        <p class="hero-sub">
-          Your contribution directly funds research, writing, tools, and the time it takes to bring
-          clear digital insights to thousands of readers every month.
-        </p>
-      </div>
-    </section>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-    <!-- Main Content -->
-    <section class="content">
-      <div class="container grid">
-        <!-- Left: Why Donate -->
-        <div class="why">
-          <h2>Where your support goes</h2>
-          <ul class="impact-list">
-            <li>
-              <div class="icon">🔍</div>
-              <div>
-                <strong>Independent Research</strong>
-                <span>Deep-dive articles and analysis free from ads and sponsored bias.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">✍️</div>
-              <div>
-                <strong>Quality Writing & Editing</strong>
-                <span>Hours spent researching, writing, and refining every piece.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🛠️</div>
-              <div>
-                <strong>Tools & Infrastructure</strong>
-                <span>Hosting, newsletters, analytics, and the tech that keeps the site running.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🌍</div>
-              <div>
-                <strong>Growing the Community</strong>
-                <span>Reaching more readers who care about thoughtful digital content.</span>
-              </div>
-            </li>
-          </ul>
+  <body>
+    <Header />
 
-          <div class="note">
-            <strong>100% independent.</strong> We don’t run ads or accept paid placements that
-            compromise editorial integrity. Your support is what makes this possible.
-          </div>
-        </div>
-
-        <!-- Right: Donation Card -->
-        <div class="donate-card">
-          <div class="card-header">
-            <h3>Make a Contribution</h3>
-            <p>Choose an amount or enter your own. Every bit helps.</p>
-          </div>
-
-          <div class="amount-grid">
-            <button class="amount-btn" data-amount="5">₹500</button>
-            <button class="amount-btn" data-amount="10">₹1,000</button>
-            <button class="amount-btn active" data-amount="25">₹2,500</button>
-            <button class="amount-btn" data-amount="50">₹5,000</button>
-          </div>
-
-          <div class="custom-amount">
-            <label for="custom">Or enter a custom amount (₹)</label>
-            <div class="input-wrap">
-              <span>₹</span>
-              <input type="number" id="custom" placeholder="Enter amount" min="100" />
-            </div>
-          </div>
-
-          <div class="freq">
-            <label class="radio">
-              <input type="radio" name="freq" value="once" checked />
-              <span>One-time</span>
-            </label>
-            <label class="radio">
-              <input type="radio" name="freq" value="monthly" />
-              <span>Monthly</span>
-            </label>
-          </div>
-
-          <!-- Replace these hrefs with your real payment links -->
-          <a href="https://razorpay.me/your-link" class="btn-primary" id="donate-btn">
-            Donate ₹2,500
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-
-          <p class="secure">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/>
-            </svg>
-            Secure payment • Instant confirmation
+    <main class="donate-page">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-badge">Support Independent Work</div>
+          <h1>
+            Help us keep <span class="gradient-text">DigiSone Global</span> free & independent
+          </h1>
+          <p class="hero-sub">
+            Your contribution directly funds research, writing, tools, and the time it takes to bring
+            clear digital insights to thousands of readers every month.
           </p>
+        </div>
+      </section>
 
-          <div class="alt-methods">
-            <p>Prefer another way?</p>
-            <div class="alt-links">
-              <a href="mailto:hello@digisoneglobal.com">Email us</a>
-              <span>•</span>
-              <a href="https://paypal.me/yourhandle" target="_blank" rel="noopener">PayPal</a>
-              <span>•</span>
-              <a href="/contact">Contact</a>
+      <!-- Main Content -->
+      <section class="content">
+        <div class="container grid">
+          <!-- Left: Why Donate -->
+          <div class="why">
+            <h2>Where your support goes</h2>
+            <ul class="impact-list">
+              <li>
+                <div class="icon">🔍</div>
+                <div>
+                  <strong>Independent Research</strong>
+                  <span>Deep-dive articles and analysis free from ads and sponsored bias.</span>
+                </div>
+              </li>
+              <li>
+                <div class="icon">✍️</div>
+                <div>
+                  <strong>Quality Writing & Editing</strong>
+                  <span>Hours spent researching, writing, and refining every piece.</span>
+                </div>
+              </li>
+              <li>
+                <div class="icon">🛠️</div>
+                <div>
+                  <strong>Tools & Infrastructure</strong>
+                  <span>Hosting, newsletters, analytics, and the tech that keeps the site running.</span>
+                </div>
+              </li>
+              <li>
+                <div class="icon">🌍</div>
+                <div>
+                  <strong>Growing the Community</strong>
+                  <span>Reaching more readers who care about thoughtful digital content.</span>
+                </div>
+              </li>
+            </ul>
+
+            <div class="note">
+              <strong>100% independent.</strong> We don’t run ads or accept paid placements that
+              compromise editorial integrity. Your support is what makes this possible.
+            </div>
+          </div>
+
+          <!-- Right: Donation Card -->
+          <div class="donate-card">
+            <div class="card-header">
+              <h3>Make a Contribution</h3>
+              <p>Choose an amount or enter your own. Every bit helps.</p>
+            </div>
+
+            <div class="amount-grid">
+              <button class="amount-btn" data-amount="500">₹500</button>
+              <button class="amount-btn" data-amount="1000">₹1,000</button>
+              <button class="amount-btn active" data-amount="2500">₹2,500</button>
+              <button class="amount-btn" data-amount="5000">₹5,000</button>
+            </div>
+
+            <div class="custom-amount">
+              <label for="custom">Or enter a custom amount (₹)</label>
+              <div class="input-wrap">
+                <span>₹</span>
+                <input type="number" id="custom" placeholder="Enter amount" min="100" />
+              </div>
+            </div>
+
+            <div class="freq">
+              <label class="radio">
+                <input type="radio" name="freq" value="once" checked />
+                <span>One-time</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="freq" value="monthly" />
+                <span>Monthly</span>
+              </label>
+            </div>
+
+            <!-- Replace with your real payment link -->
+            <a href="https://razorpay.me/your-link" class="btn-primary" id="donate-btn">
+              Donate ₹2,500
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+
+            <p class="secure">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Secure payment • Instant confirmation
+            </p>
+
+            <div class="alt-methods">
+              <p>Prefer another way?</p>
+              <div class="alt-links">
+                <a href="mailto:hello@digisoneglobal.com">Email us</a>
+                <span>•</span>
+                <a href="https://paypal.me/yourhandle" target="_blank" rel="noopener">PayPal</a>
+                <span>•</span>
+                <a href="/contact">Contact</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Thank You Strip -->
-    <section class="thanks">
-      <div class="container">
-        <p>
-          Already a supporter? <strong>Thank you.</strong> You make this work possible.
-        </p>
-      </div>
-    </section>
-  </main>
-</Layout>
+      <!-- Thank You Strip -->
+      <section class="thanks">
+        <div class="container">
+          <p>
+            Already a supporter? <strong>Thank you.</strong> You make this work possible.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
 
 <style>
   .donate-page {
     --blue: #2563eb;
     --blue-dark: #1d4ed8;
     --purple: #6366f1;
-    --rose: #e11d48;
     --slate-900: #0b1220;
     --slate-600: #475569;
     --slate-500: #64748b;
     --slate-400: #94a3b8;
-    --slate-100: #f1f5f9;
-    --white: #ffffff;
   }
 
   .container {
@@ -155,7 +173,6 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
     padding: 0 1.5rem;
   }
 
-  /* Hero */
   .hero {
     padding: 5.5rem 0 4rem;
     text-align: center;
@@ -201,7 +218,6 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
     line-height: 1.65;
   }
 
-  /* Content Grid */
   .content {
     padding: 2rem 0 5rem;
   }
@@ -220,7 +236,6 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
     }
   }
 
-  /* Why section */
   .why h2 {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 1.5rem;
@@ -285,7 +300,6 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
     color: var(--slate-900);
   }
 
-  /* Donation Card */
   .donate-card {
     background: white;
     border: 1px solid rgba(15, 23, 42, 0.08);
@@ -489,7 +503,6 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
     color: var(--slate-400);
   }
 
-  /* Thanks strip */
   .thanks {
     background: #f8fafc;
     border-top: 1px solid rgba(15, 23, 42, 0.06);
@@ -510,15 +523,13 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
 
 <script>
   const amountBtns = document.querySelectorAll('.amount-btn');
-  const customInput = document.getElementById('custom') as HTMLInputElement;
-  const donateBtn = document.getElementById('donate-btn') as HTMLAnchorElement;
+  const customInput = document.getElementById('custom');
+  const donateBtn = document.getElementById('donate-btn');
 
-  let selectedAmount = 2500;
-
-  function updateButton(amount: number) {
-    selectedAmount = amount;
+  function updateButton(amount) {
+    if (!donateBtn) return;
     donateBtn.innerHTML = `
-      Donate ₹${amount.toLocaleString('en-IN')}
+      Donate ₹${Number(amount).toLocaleString('en-IN')}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -529,19 +540,19 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
     btn.addEventListener('click', () => {
       amountBtns.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
-      customInput.value = '';
-      const amount = Number(btn.getAttribute('data-amount')) * 100; // converting demo units
-      // Actually using the displayed values
-      const text = btn.textContent?.replace('₹', '').replace(',', '') || '2500';
-      updateButton(Number(text));
+      if (customInput) customInput.value = '';
+      const amount = btn.getAttribute('data-amount') || '2500';
+      updateButton(amount);
     });
   });
 
-  customInput?.addEventListener('input', () => {
-    amountBtns.forEach((b) => b.classList.remove('active'));
-    const val = Number(customInput.value);
-    if (val >= 100) {
-      updateButton(val);
-    }
-  });
+  if (customInput) {
+    customInput.addEventListener('input', () => {
+      amountBtns.forEach((b) => b.classList.remove('active'));
+      const val = Number(customInput.value);
+      if (val >= 100) {
+        updateButton(val);
+      }
+    });
+  }
 </script>
