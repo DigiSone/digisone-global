@@ -45,18 +45,89 @@ function isActive(href: string) {
 
 <header class="site-header" id="site-header">
   <div class="header-inner">
-    <!-- Logo -->
-    <a href="/" class="logo" aria-label="DigiSone Global — Home">
-      <span class="logo-mark">
-        <span class="logo-mark-inner">D</span>
-      </span>
-      <span class="logo-text">
-        DigiSone<span class="logo-accent">Global</span>
-      </span>
-  </span>
-    <span class="logo-tagline">Origin Sonbhadra | Impact Global</span>
-  </span>
-    </a>
+/* ——— Logo ——— */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: #0b1220;
+  flex-shrink: 0;
+}
+
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb 0%, #6366f1 55%, #8b5cf6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 8px 22px rgba(37, 99, 235, 0.38);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  flex-shrink: 0;
+}
+
+.logo:hover .logo-mark {
+  transform: scale(1.06) rotate(-3deg);
+}
+
+.logo-mark-inner {
+  color: white;
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.logo-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.logo-text {
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.18rem;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.logo-accent {
+  background: linear-gradient(120deg, #2563eb, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-tagline {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Mobile pe thoda chhota */
+@media (max-width: 480px) {
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo-text {
+    font-size: 1.05rem;
+  }
+
+  .logo-tagline {
+    font-size: 0.62rem;
+  }
+}
 
     <!-- Desktop Nav -->
     <nav class="nav-desktop" aria-label="Primary">
