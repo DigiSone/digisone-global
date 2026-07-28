@@ -5,6 +5,7 @@ const navItems = [
   { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
   { href: '/categories', label: 'Categories' },
+  { href: '/resources', label: 'Resources' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -131,6 +132,17 @@ function isActive(href: string) {
         ))}
       </ul>
 
+      <!-- Donation Section (above social) -->
+      <div class="mobile-donation">
+        <p class="mobile-donation-label">Support Our Work</p>
+        <a href="/donate" class="btn-donate">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+          </svg>
+          <span>Donate Now</span>
+        </a>
+      </div>
+
       <div class="mobile-social">
         <p class="mobile-social-label">Follow @digisoneglobal</p>
         <div class="mobile-social-row">
@@ -164,23 +176,23 @@ function isActive(href: string) {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(248, 250, 252, 0.72);
-    backdrop-filter: blur(20px) saturate(1.4);
-    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(248, 250, 252, 0.78);
+    backdrop-filter: blur(22px) saturate(1.5);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
     border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   }
 
   .site-header.scrolled {
-    background: rgba(255, 255, 255, 0.88);
-    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
-    border-bottom-color: rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.07);
+    border-bottom-color: rgba(15, 23, 42, 0.09);
   }
 
   .header-inner {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 0.85rem 1.5rem;
+    padding: 0.9rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -199,35 +211,35 @@ function isActive(href: string) {
   }
 
   .logo:hover {
-    opacity: 0.9;
+    opacity: 0.92;
   }
 
   .logo-mark {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #2563eb 0%, #6366f1 55%, #8b5cf6 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-      0 8px 20px rgba(37, 99, 235, 0.35);
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+      0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+      0 8px 22px rgba(37, 99, 235, 0.38);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
   }
 
   .logo:hover .logo-mark {
-    transform: scale(1.06) rotate(-3deg);
+    transform: scale(1.07) rotate(-4deg);
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-      0 10px 28px rgba(37, 99, 235, 0.45);
+      0 0 0 1px rgba(255, 255, 255, 0.25) inset,
+      0 12px 30px rgba(37, 99, 235, 0.48);
   }
 
   .logo-mark-inner {
     color: white;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     letter-spacing: -0.04em;
     line-height: 1;
   }
@@ -235,7 +247,7 @@ function isActive(href: string) {
   .logo-text {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-weight: 700;
-    font-size: 1.18rem;
+    font-size: 1.2rem;
     letter-spacing: -0.035em;
   }
 
@@ -257,7 +269,7 @@ function isActive(href: string) {
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0.1rem;
   }
 
   .nav-link {
@@ -265,42 +277,42 @@ function isActive(href: string) {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem 0.95rem;
-    font-size: 0.92rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.915rem;
     font-weight: 600;
     color: #64748b;
-    border-radius: 10px;
+    border-radius: 11px;
     text-decoration: none;
     letter-spacing: -0.01em;
-    transition: color 0.2s ease, background 0.2s ease;
+    transition: color 0.22s ease, background 0.22s ease;
   }
 
   .nav-link:hover {
     color: #0b1220;
-    background: rgba(15, 23, 42, 0.04);
+    background: rgba(15, 23, 42, 0.045);
   }
 
   .nav-link.active {
     color: #2563eb;
-    background: rgba(37, 99, 235, 0.08);
+    background: rgba(37, 99, 235, 0.09);
   }
 
   .nav-indicator {
     position: absolute;
-    bottom: 4px;
+    bottom: 5px;
     left: 50%;
     width: 0;
     height: 2.5px;
     border-radius: 2px;
     background: linear-gradient(90deg, #2563eb, #6366f1);
     transform: translateX(-50%);
-    transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
     opacity: 0;
   }
 
   .nav-link:hover .nav-indicator,
   .nav-link.active .nav-indicator {
-    width: 18px;
+    width: 20px;
     opacity: 1;
   }
 
@@ -308,13 +320,13 @@ function isActive(href: string) {
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.6rem;
   }
 
   .social-desktop {
     display: none;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.25rem;
   }
 
   .social-btn {
@@ -328,19 +340,19 @@ function isActive(href: string) {
     background: transparent;
     border: 1px solid transparent;
     transition:
-      color 0.2s ease,
-      background 0.2s ease,
-      border-color 0.2s ease,
-      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.25s ease;
+      color 0.22s ease,
+      background 0.22s ease,
+      border-color 0.22s ease,
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.28s ease;
   }
 
   .social-btn:hover {
     color: #2563eb;
     background: rgba(37, 99, 235, 0.08);
-    border-color: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.14);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.14);
   }
 
   .actions-divider {
@@ -356,7 +368,7 @@ function isActive(href: string) {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    padding: 0.55rem 1.2rem;
+    padding: 0.58rem 1.25rem;
     border-radius: 12px;
     font-size: 0.88rem;
     font-weight: 600;
@@ -365,24 +377,24 @@ function isActive(href: string) {
     color: white;
     text-decoration: none;
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-      0 6px 18px rgba(37, 99, 235, 0.32);
+      0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+      0 6px 20px rgba(37, 99, 235, 0.34);
     transition:
-      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.25s ease;
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.28s ease;
   }
 
   .btn-cta:hover {
     transform: translateY(-2px);
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-      0 10px 26px rgba(37, 99, 235, 0.42);
+      0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+      0 12px 28px rgba(37, 99, 235, 0.44);
   }
 
   .btn-cta.mobile {
     display: flex;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 1.1rem;
     padding: 0.95rem 1.25rem;
     font-size: 0.95rem;
   }
@@ -399,14 +411,14 @@ function isActive(href: string) {
     background: white;
     cursor: pointer;
     padding: 0;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.045);
     transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .menu-toggle:hover {
     background: #f8fafc;
     border-color: rgba(15, 23, 42, 0.12);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
   }
 
   .hamburger {
@@ -422,7 +434,7 @@ function isActive(href: string) {
     width: 100%;
     background: #0b1220;
     border-radius: 2px;
-    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
     transform-origin: center;
   }
 
@@ -442,16 +454,16 @@ function isActive(href: string) {
   /* ——— Mobile panel ——— */
   .nav-mobile {
     border-top: 1px solid rgba(15, 23, 42, 0.06);
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    animation: slideDown 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    animation: slideDown 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   @keyframes slideDown {
     from {
       opacity: 0;
-      transform: translateY(-6px);
+      transform: translateY(-8px);
     }
     to {
       opacity: 1;
@@ -466,7 +478,7 @@ function isActive(href: string) {
   .nav-mobile nav {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 1rem 1.5rem 1.5rem;
+    padding: 1.1rem 1.5rem 1.6rem;
   }
 
   .nav-mobile ul {
@@ -480,8 +492,8 @@ function isActive(href: string) {
 
   .nav-link-mobile {
     display: block;
-    padding: 0.9rem 1rem;
-    font-size: 1.02rem;
+    padding: 0.92rem 1.05rem;
+    font-size: 1.03rem;
     font-weight: 600;
     color: #475569;
     border-radius: 12px;
@@ -500,6 +512,53 @@ function isActive(href: string) {
     color: #2563eb;
   }
 
+  /* ——— Donation (mobile) ——— */
+  .mobile-donation {
+    margin-top: 1.35rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .mobile-donation-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94a3b8;
+    margin: 0 0 0.75rem 0.25rem;
+  }
+
+  .btn-donate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border-radius: 13px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #be123c;
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    border: 1px solid rgba(225, 29, 72, 0.15);
+    text-decoration: none;
+    transition:
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .btn-donate:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+    box-shadow: 0 8px 22px rgba(225, 29, 72, 0.15);
+  }
+
+  .btn-donate svg {
+    color: #e11d48;
+  }
+
+  /* ——— Social (mobile) ——— */
   .mobile-social {
     margin-top: 1.25rem;
     padding-top: 1.25rem;
@@ -570,16 +629,16 @@ function isActive(href: string) {
 
   @media (max-width: 480px) {
     .header-inner {
-      padding: 0.75rem 1.15rem;
+      padding: 0.8rem 1.15rem;
     }
 
     .logo-text {
-      font-size: 1.05rem;
+      font-size: 1.08rem;
     }
 
     .logo-mark {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
     }
   }
 </style>
