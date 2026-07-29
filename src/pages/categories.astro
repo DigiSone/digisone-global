@@ -1,10 +1,22 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 
-const allCategories = [
+const posts = await getCollection('blog');
+
+function countByKeyword(keyword: string) {
+  const lower = keyword.toLowerCase();
+  return posts.filter((p) => {
+    const title = (p.data.title || '').toLowerCase();
+    const desc = (p.data.description || '').toLowerCase();
+    return title.includes(lower) || desc.includes(lower);
+  }).length;
+}
+
+const categories = [
   {
     slug: 'artificial-intelligence',
     name: 'Artificial Intelligence',
@@ -13,7 +25,6 @@ const allCategories = [
     description:
       'From foundation models and agents to enterprise adoption and governance — deep analysis on how AI is reshaping products, work, and strategy.',
     topics: ['Large Language Models', 'AI Agents', 'Automation', 'Responsible AI', 'Enterprise AI'],
-    keywords: ['artificial intelligence', 'ai', 'llm', 'agent', 'automation'],
     color: '#2563eb',
   },
   {
@@ -24,7 +35,6 @@ const allCategories = [
     description:
       'Frameworks, leadership lessons, and strategic insights for operators and executives navigating competitive markets and digital transformation.',
     topics: ['Competitive Strategy', 'Leadership', 'Digital Transformation', 'Operations', 'Go-to-Market'],
-    keywords: ['business', 'strategy', 'leadership'],
     color: '#0ea5e9',
   },
   {
@@ -33,9 +43,8 @@ const allCategories = [
     icon: '🚀',
     short: 'Funding, Product & Growth',
     description:
-      'Practical playbooks for founders — fundraising, product-market fit, scaling teams, and building durable companies.',
+      'Practical playbooks for founders — fundraising, product-market fit, scaling teams, and building durable companies in a noisy landscape.',
     topics: ['Fundraising', 'Product-Market Fit', 'Growth', 'Founder Lessons', 'Scaling'],
-    keywords: ['startup', 'founder', 'fundraising', 'growth'],
     color: '#8b5cf6',
   },
   {
@@ -44,9 +53,8 @@ const allCategories = [
     icon: '🔒',
     short: 'Security, Privacy & Risk',
     description:
-      'Threats, architecture patterns, zero-trust, privacy, and defending modern cloud and AI-powered systems.',
+      'Threats, architecture patterns, zero-trust, privacy, and the operational reality of defending modern cloud and AI-powered systems.',
     topics: ['Zero Trust', 'Cloud Security', 'Privacy', 'Threat Intelligence', 'Secure Architecture'],
-    keywords: ['cyber', 'security', 'privacy', 'threat'],
     color: '#ef4444',
   },
   {
@@ -55,9 +63,8 @@ const allCategories = [
     icon: '☁️',
     short: 'AWS, Azure, GCP & Platforms',
     description:
-      'Architecture, cost, reliability, and platform strategy across the major clouds.',
+      'Architecture, cost, reliability, and platform strategy across the major clouds — plus the patterns that actually work at scale.',
     topics: ['AWS', 'Azure', 'GCP', 'Architecture', 'Platform Engineering'],
-    keywords: ['cloud', 'aws', 'azure', 'gcp'],
     color: '#06b6d4',
   },
   {
@@ -66,9 +73,8 @@ const allCategories = [
     icon: '🌐',
     short: 'Teams, Tools & Culture',
     description:
-      'How AI, remote work, and new tooling are changing roles, productivity, and organizational design.',
+      'How AI, remote work, and new tooling are changing roles, productivity, and organizational design — with grounded takeaways.',
     topics: ['Remote Work', 'AI-Augmented Roles', 'Productivity', 'Culture', 'Talent'],
-    keywords: ['future of work', 'remote', 'productivity', 'talent'],
     color: '#10b981',
   },
   {
@@ -77,9 +83,8 @@ const allCategories = [
     icon: '🎥',
     short: 'Content, Audience & Monetization',
     description:
-      'Building audiences, monetizing expertise, and platforms powering independent creators.',
+      'Building audiences, monetizing expertise, and the platforms and models powering the next generation of independent creators and media.',
     topics: ['Audience Growth', 'Monetization', 'Platforms', 'Content Strategy', 'Personal Brand'],
-    keywords: ['creator', 'content', 'monetization', 'audience'],
     color: '#f59e0b',
   },
   {
@@ -88,124 +93,166 @@ const allCategories = [
     icon: '⚙️',
     short: 'Technology & Organizational Change',
     description:
-      'How organizations adopt new technology, modernize systems, and change operating models.',
+      'How established organizations adopt new technology, modernize systems, and change operating models without losing momentum.',
     topics: ['Modernization', 'Change Management', 'Legacy Systems', 'Operating Models', 'ROI'],
-    keywords: ['digital transformation', 'modernization', 'legacy'],
     color: '#6366f1',
   },
 ];
-
-export function getStaticPaths() {
-  return allCategories.map((cat) => ({
-    params: { slug: cat.slug },
-    props: { category: cat },
-  }));
-}
-
-const { category } = Astro.props;
-const posts = await getCollection('blog');
-
-const related = posts
-  .filter((p) => {
-    const hay = `${p.data.title} ${p.data.description}`.toLowerCase();
-    return category.keywords.some((k: string) => hay.includes(k.toLowerCase()));
-  })
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const title = `${category.name} — DigiSone Global`;
-const description = category.description;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title="Categories — DigiSone Global" description={SITE_DESCRIPTION} />
+    <!-- fonts + styles: tumhara existing CSS same rehne do -->
     <style>
-      :root {
-        --surface: #fff;
-        --text: #0b1220;
-        --muted: #475569;
-        --primary: #2563eb;
-        --border: rgba(15, 23, 42, 0.08);
-        --radius: 1.25rem;
-        --bg: #f1f5f9;
-        --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      /* ... apna pura pehle wala CSS yahan paste rakho ... */
+
+      /* topics ab links hain */
+      .topic-tag {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        padding: 0.28rem 0.6rem;
+        border-radius: 6px;
+        transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
       }
-      body {
-        margin: 0;
-        font-family: var(--font);
-        background: var(--bg);
-        color: var(--text);
+      a.topic-tag:hover {
+        color: var(--primary);
+        border-color: rgba(37, 99, 235, 0.25);
+        background: var(--primary-soft);
       }
-      main {
-        width: min(100% - 2rem, 52rem);
-        margin-inline: auto;
-        padding: 2.5rem 0 4rem;
-      }
-      a { color: var(--primary); text-decoration: none; }
-      h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.03em; margin: 0 0 0.5rem; }
-      .short { color: var(--primary); font-weight: 600; margin-bottom: 0.85rem; }
-      .lead { color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
-      .topics { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
-      .topics a {
-        font-size: 0.82rem; font-weight: 600;
-        padding: 0.35rem 0.75rem; border-radius: 999px;
-        background: #fff; border: 1px solid var(--border); color: var(--text);
-      }
-      .topics a:hover { border-color: rgba(37,99,235,.3); color: var(--primary); }
-      .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.85rem; }
-      .list a {
-        display: block; background: #fff; border: 1px solid var(--border);
-        border-radius: var(--radius); padding: 1.1rem 1.2rem; color: inherit;
-      }
-      .list a:hover { border-color: rgba(37,99,235,.25); }
-      .list h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
-      .list p { margin: 0; color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
-      .list time { font-size: 0.8rem; color: var(--muted); }
-      .back { display: inline-block; margin-bottom: 1.25rem; font-weight: 600; font-size: 0.92rem; }
-      .empty { color: var(--muted); padding: 1rem 0; }
     </style>
   </head>
   <body>
     <Header />
     <main>
-      <a class="back" href="/categories">← All categories</a>
-      <p style="font-size: 1.75rem; margin: 0 0 0.5rem;">{category.icon}</p>
-      <h1>{category.name}</h1>
-      <p class="short">{category.short}</p>
-      <p class="lead">{category.description}</p>
+      <section class="cat-hero">
+        <div class="badge">
+          <span class="dot"></span>
+          Explore by topic
+        </div>
+        <h1>
+          Categories that<br />
+          <span class="gradient">map the future</span>
+        </h1>
+        <p class="lead">
+          Dive into focused collections on AI, business strategy, startups,
+          security, cloud, and the future of work — written for founders,
+          operators, and technology leaders.
+        </p>
+        <div class="cat-stats">
+          <div class="cat-stat">
+            <strong>{categories.length}</strong>
+            <span>Core categories</span>
+          </div>
+          <div class="cat-stat">
+            <strong>{posts.length}+</strong>
+            <span>Articles published</span>
+          </div>
+          <div class="cat-stat">
+            <strong>Weekly</strong>
+            <span>New insights</span>
+          </div>
+        </div>
+      </section>
 
-      <div class="topics" aria-label="Topics in this category">
-        {category.topics.map((t: string) => (
-          <a href={`/blog?q=${encodeURIComponent(t)}`}>{t}</a>
-        ))}
-      </div>
+      <section class="section" style="margin-top: 1rem;">
+        <div class="categories-grid">
+          {categories.map((cat) => {
+            const count = countByKeyword(cat.name.split(' ')[0]);
+            return (
+              <article class="category-card" style={`--cat-color: ${cat.color}`}>
+                <div class="category-top">
+                  <a href={`/categories/${cat.slug}`} class="category-icon" aria-label={cat.name}>
+                    {cat.icon}
+                  </a>
+                  <span class="category-count">
+                    {count > 0 ? `\( {count} article \){count === 1 ? '' : 's'}` : 'Explore'}
+                  </span>
+                </div>
 
-      <h2 style="font-size: 1.15rem; margin-bottom: 0.85rem;">
-        Related articles ({related.length})
-      </h2>
+                <h2>
+                  <a href={`/categories/${cat.slug}`}>{cat.name}</a>
+                </h2>
+                <div class="category-short">
+                  <a href={`/categories/${cat.slug}`}>{cat.short}</a>
+                </div>
+                <p class="category-desc">{cat.description}</p>
 
-      {related.length > 0 ? (
-        <ul class="list">
-          {related.map((post) => (
-            <li>
-              <a href={`/blog/${post.id}/`}>
-                <time datetime={post.data.pubDate.toISOString()}>
-                  {post.data.pubDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </time>
-                <h2>{post.data.title}</h2>
-                <p>{post.data.description}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p class="empty">No matching articles yet. More coming soon.</p>
-      )}
+                <div class="topic-tags">
+                  {cat.topics.slice(0, 4).map((t) => (
+                    <a
+                      class="topic-tag"
+                      href={`/blog?q=${encodeURIComponent(t)}`}
+                    >
+                      {t}
+                    </a>
+                  ))}
+                </div>
+
+                <div class="category-footer">
+                  <a class="category-link" href={`/categories/${cat.slug}`}>
+                    View category
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="topics-strip">
+          <h2>Browse by topic</h2>
+          <p>Jump straight into the themes we cover most often.</p>
+          <div class="all-topics">
+            {[
+              'AI Agents',
+              'Large Language Models',
+              'Enterprise Automation',
+              'Fundraising',
+              'Product-Market Fit',
+              'Zero Trust',
+              'Cloud Architecture',
+              'AWS',
+              'Azure',
+              'GCP',
+              'Remote Work',
+              'Digital Transformation',
+              'Leadership',
+              'Cybersecurity',
+              'Creator Economy',
+              'Platform Engineering',
+              'Privacy',
+              'Growth Strategy',
+            ].map((topic) => (
+              <a href={`/blog?q=${encodeURIComponent(topic)}`}>{topic}</a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="cta">
+          <div class="cta-inner">
+            <h2>Never miss a new insight</h2>
+            <p>
+              Get the weekly technology briefing — curated analysis on AI,
+              strategy, security, and the future of work.
+            </p>
+            <div class="cta-buttons">
+              <a href="/subscribe" class="btn btn-primary">Subscribe to Briefing</a>
+              <a href="/blog" class="btn btn-secondary">Browse all articles</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
     <Footer />
   </body>
