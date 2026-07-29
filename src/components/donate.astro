@@ -1,189 +1,279 @@
 ---
-// src/pages/donate.astro
-import Layout from '../layouts/Layout.astro'; // adjust path if your layout is different
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Donate — DigiSone Global";
+const description = "Support independent research and writing at DigiSone Global. Multiple payment options available worldwide.";
 ---
 
-<Layout title="Donate — DigiSone Global" description="Support independent digital insights and research at DigiSone Global.">
-  <main class="donate-page">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-badge">Support Independent Work</div>
-        <h1>
-          Help us keep <span class="gradient-text">DigiSone Global</span> free & independent
-        </h1>
-        <p class="hero-sub">
-          Your contribution directly funds research, writing, tools, and the time it takes to bring
-          clear digital insights to thousands of readers every month.
-        </p>
-      </div>
-    </section>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-    <!-- Main Content -->
-    <section class="content">
-      <div class="container grid">
-        <!-- Left: Why Donate -->
-        <div class="why">
-          <h2>Where your support goes</h2>
-          <ul class="impact-list">
-            <li>
-              <div class="icon">🔍</div>
-              <div>
-                <strong>Independent Research</strong>
-                <span>Deep-dive articles and analysis free from ads and sponsored bias.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">✍️</div>
-              <div>
-                <strong>Quality Writing & Editing</strong>
-                <span>Hours spent researching, writing, and refining every piece.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🛠️</div>
-              <div>
-                <strong>Tools & Infrastructure</strong>
-                <span>Hosting, newsletters, analytics, and the tech that keeps the site running.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🌍</div>
-              <div>
-                <strong>Growing the Community</strong>
-                <span>Reaching more readers who care about thoughtful digital content.</span>
-              </div>
-            </li>
-          </ul>
+  <body>
+    <Header />
 
-          <div class="note">
-            <strong>100% independent.</strong> We don’t run ads or accept paid placements that
-            compromise editorial integrity. Your support is what makes this possible.
-          </div>
-        </div>
-
-        <!-- Right: Donation Card -->
-        <div class="donate-card">
-          <div class="card-header">
-            <h3>Make a Contribution</h3>
-            <p>Choose an amount or enter your own. Every bit helps.</p>
-          </div>
-
-          <div class="amount-grid">
-            <button class="amount-btn" data-amount="5">₹500</button>
-            <button class="amount-btn" data-amount="10">₹1,000</button>
-            <button class="amount-btn active" data-amount="25">₹2,500</button>
-            <button class="amount-btn" data-amount="50">₹5,000</button>
-          </div>
-
-          <div class="custom-amount">
-            <label for="custom">Or enter a custom amount (₹)</label>
-            <div class="input-wrap">
-              <span>₹</span>
-              <input type="number" id="custom" placeholder="Enter amount" min="100" />
-            </div>
-          </div>
-
-          <div class="freq">
-            <label class="radio">
-              <input type="radio" name="freq" value="once" checked />
-              <span>One-time</span>
-            </label>
-            <label class="radio">
-              <input type="radio" name="freq" value="monthly" />
-              <span>Monthly</span>
-            </label>
-          </div>
-
-          <!-- Replace these hrefs with your real payment links -->
-          <a href="https://razorpay.me/your-link" class="btn-primary" id="donate-btn">
-            Donate ₹2,500
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-
-          <p class="secure">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/>
-            </svg>
-            Secure payment • Instant confirmation
+    <main class="donate-page">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-badge">Support Independent Work</div>
+          <h1>
+            Help keep <span class="gradient-text">DigiSone Global</span> independent
+          </h1>
+          <p class="hero-sub">
+            Your contribution funds research, writing, tools, and the time it takes to publish
+            clear digital insights every month. Multiple payment methods available.
           </p>
+        </div>
+      </section>
 
-          <div class="alt-methods">
-            <p>Prefer another way?</p>
-            <div class="alt-links">
-              <a href="mailto:hello@digisoneglobal.com">Email us</a>
-              <span>•</span>
-              <a href="https://paypal.me/yourhandle" target="_blank" rel="noopener">PayPal</a>
-              <span>•</span>
-              <a href="/contact">Contact</a>
+      <!-- Content -->
+      <section class="content">
+        <div class="container grid">
+          <!-- Left: Why -->
+          <div class="why">
+            <h2>Where your support goes</h2>
+            <ul class="impact-list">
+              <li>
+                <div class="icon">🔍</div>
+                <div>
+                  <strong>Independent Research</strong>
+                  <span>Deep analysis without ads or sponsored bias.</span>
+                </div>
+              </li>
+              <li>
+                <div class="icon">✍️</div>
+                <div>
+                  <strong>Quality Writing</strong>
+                  <span>Time spent researching, writing, and editing every piece.</span>
+                </div>
+              </li>
+              <li>
+                <div class="icon">🛠️</div>
+                <div>
+                  <strong>Tools & Infrastructure</strong>
+                  <span>Hosting, newsletters, analytics, and site operations.</span>
+                </div>
+              </li>
+              <li>
+                <div class="icon">🌍</div>
+                <div>
+                  <strong>Growing Reach</strong>
+                  <span>Helping more readers access thoughtful digital content.</span>
+                </div>
+              </li>
+            </ul>
+
+            <div class="note">
+              <strong>100% independent.</strong> We don’t run ads or accept paid placements that
+              compromise editorial integrity. Your support makes this possible.
             </div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Thank You Strip -->
-    <section class="thanks">
-      <div class="container">
-        <p>
-          Already a supporter? <strong>Thank you.</strong> You make this work possible.
-        </p>
-      </div>
-    </section>
-  </main>
-</Layout>
+          <!-- Right: Donate Card -->
+          <div class="donate-card">
+            <div class="card-header">
+              <h3>Make a Contribution</h3>
+              <p>Choose an amount, then select your preferred payment method.</p>
+            </div>
+
+            <!-- Amount -->
+            <div class="amount-grid">
+              <button type="button" class="amount-btn" data-amount="500">₹500</button>
+              <button type="button" class="amount-btn" data-amount="1000">₹1,000</button>
+              <button type="button" class="amount-btn active" data-amount="2500">₹2,500</button>
+              <button type="button" class="amount-btn" data-amount="5000">₹5,000</button>
+            </div>
+
+            <div class="custom-amount">
+              <label for="custom">Custom amount</label>
+              <div class="input-wrap">
+                <span class="currency">₹</span>
+                <input type="number" id="custom" placeholder="Enter amount" min="100" />
+              </div>
+            </div>
+
+            <!-- Popular Methods -->
+            <div class="method-section">
+              <p class="method-title">Popular methods</p>
+              <div class="method-grid primary">
+                <a href="YOUR_RAZORPAY_LINK" class="method-card featured" id="main-donate-link">
+                  <span class="method-icon">🇮🇳</span>
+                  <div>
+                    <strong>UPI / GPay / PhonePe</strong>
+                    <span>Instant • India</span>
+                  </div>
+                </a>
+
+                <a href="YOUR_PAYPAL_LINK" target="_blank" rel="noopener" class="method-card">
+                  <span class="method-icon">🔵</span>
+                  <div>
+                    <strong>PayPal</strong>
+                    <span>International</span>
+                  </div>
+                </a>
+
+                <a href="YOUR_STRIPE_LINK" target="_blank" rel="noopener" class="method-card">
+                  <span class="method-icon">💳</span>
+                  <div>
+                    <strong>Card / Stripe</strong>
+                    <span>Visa, Mastercard</span>
+                  </div>
+                </a>
+
+                <a href="YOUR_KOFI_LINK" target="_blank" rel="noopener" class="method-card">
+                  <span class="method-icon">☕</span>
+                  <div>
+                    <strong>Ko-fi</strong>
+                    <span>One-time support</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- More Methods -->
+            <div class="method-section">
+              <p class="method-title">More ways</p>
+              <div class="method-grid secondary">
+                <a href="YOUR_PAYONEER_LINK" target="_blank" rel="noopener" class="method-card small">
+                  <strong>Payoneer</strong>
+                </a>
+                <a href="#bank-details" class="method-card small">
+                  <strong>Bank Transfer</strong>
+                </a>
+                <a href="mailto:hello@digisoneglobal.com?subject=Donation%20Support" class="method-card small">
+                  <strong>Email Us</strong>
+                </a>
+              </div>
+            </div>
+
+            <!-- Crypto -->
+            <div class="method-section">
+              <p class="method-title">Crypto</p>
+              <div class="crypto-list">
+                <div class="crypto-item">
+                  <div class="crypto-left">
+                    <span class="crypto-badge btc">BTC</span>
+                    <code class="crypto-address" id="btc-address">YOUR_BTC_ADDRESS</code>
+                  </div>
+                  <button type="button" class="copy-btn" data-copy="btc-address">Copy</button>
+                </div>
+
+                <div class="crypto-item">
+                  <div class="crypto-left">
+                    <span class="crypto-badge eth">ETH</span>
+                    <code class="crypto-address" id="eth-address">YOUR_ETH_ADDRESS</code>
+                  </div>
+                  <button type="button" class="copy-btn" data-copy="eth-address">Copy</button>
+                </div>
+
+                <div class="crypto-item">
+                  <div class="crypto-left">
+                    <span class="crypto-badge sol">SOL</span>
+                    <code class="crypto-address" id="sol-address">YOUR_SOL_ADDRESS</code>
+                  </div>
+                  <button type="button" class="copy-btn" data-copy="sol-address">Copy</button>
+                </div>
+
+                <div class="crypto-item">
+                  <div class="crypto-left">
+                    <span class="crypto-badge bnb">BNB</span>
+                    <code class="crypto-address" id="bnb-address">YOUR_BNB_ADDRESS</code>
+                  </div>
+                  <button type="button" class="copy-btn" data-copy="bnb-address">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bank -->
+            <div class="method-section bank-box" id="bank-details">
+              <p class="method-title">Bank Transfer</p>
+              <div class="bank-details">
+                <p><strong>Account Name:</strong> Your Name / DigiSone Global</p>
+                <p><strong>Account Number:</strong> XXXX XXXX XXXX</p>
+                <p><strong>IFSC:</strong> XXXX0000000</p>
+                <p><strong>Bank:</strong> Your Bank Name</p>
+                <p class="bank-note">After transfer, please email the receipt for confirmation.</p>
+              </div>
+            </div>
+
+            <p class="secure">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Multiple secure options • Choose what works for you
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Thanks -->
+      <section class="thanks">
+        <div class="container">
+          <p>Already a supporter? <strong>Thank you.</strong> You make this work possible.</p>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
 
 <style>
   .donate-page {
     --blue: #2563eb;
     --blue-dark: #1d4ed8;
     --purple: #6366f1;
-    --rose: #e11d48;
-    --slate-900: #0b1220;
-    --slate-600: #475569;
-    --slate-500: #64748b;
-    --slate-400: #94a3b8;
-    --slate-100: #f1f5f9;
-    --white: #ffffff;
+    --text: #0b1220;
+    --muted: #64748b;
+    --border: #e2e8f0;
   }
 
   .container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 1.25rem;
   }
 
   /* Hero */
   .hero {
-    padding: 5.5rem 0 4rem;
+    padding: 4.5rem 0 3.25rem;
     text-align: center;
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
   }
 
   .hero-badge {
     display: inline-block;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--blue);
     background: rgba(37, 99, 235, 0.08);
-    padding: 0.4rem 0.9rem;
+    padding: 0.35rem 0.85rem;
     border-radius: 999px;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.1rem;
   }
 
   .hero h1 {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
-    font-size: clamp(2rem, 5vw, 2.85rem);
+    font-size: clamp(1.85rem, 4.5vw, 2.6rem);
     font-weight: 700;
     letter-spacing: -0.03em;
-    color: var(--slate-900);
+    color: var(--text);
     line-height: 1.2;
-    max-width: 720px;
-    margin: 0 auto 1.25rem;
+    max-width: 680px;
+    margin: 0 auto 1rem;
   }
 
   .gradient-text {
@@ -194,144 +284,140 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
   }
 
   .hero-sub {
-    font-size: 1.1rem;
-    color: var(--slate-600);
-    max-width: 560px;
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 540px;
     margin: 0 auto;
     line-height: 1.65;
   }
 
-  /* Content Grid */
+  /* Grid */
   .content {
-    padding: 2rem 0 5rem;
+    padding: 1.5rem 0 4.5rem;
   }
 
   .grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   @media (min-width: 900px) {
     .grid {
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 4rem;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 3.5rem;
       align-items: start;
     }
   }
 
-  /* Why section */
+  /* Why */
   .why h2 {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    color: var(--slate-900);
-    margin: 0 0 1.75rem;
-    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 1.5rem;
   }
 
   .impact-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 2rem;
+    margin: 0 0 1.75rem;
     display: flex;
     flex-direction: column;
-    gap: 1.35rem;
+    gap: 1.15rem;
   }
 
   .impact-list li {
     display: flex;
-    gap: 1rem;
+    gap: 0.85rem;
     align-items: flex-start;
   }
 
   .impact-list .icon {
-    font-size: 1.35rem;
-    line-height: 1;
-    flex-shrink: 0;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.2rem;
+    height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #f1f5f9;
-    border-radius: 10px;
+    border-radius: 9px;
+    font-size: 1.15rem;
+    flex-shrink: 0;
   }
 
   .impact-list strong {
     display: block;
-    font-size: 1rem;
-    color: var(--slate-900);
-    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.15rem;
   }
 
   .impact-list span {
-    font-size: 0.92rem;
-    color: var(--slate-500);
-    line-height: 1.5;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.45;
   }
 
   .note {
     background: #f8fafc;
     border: 1px solid rgba(15, 23, 42, 0.06);
-    border-radius: 14px;
-    padding: 1.15rem 1.25rem;
-    font-size: 0.92rem;
-    color: var(--slate-600);
+    border-radius: 12px;
+    padding: 1rem 1.15rem;
+    font-size: 0.9rem;
+    color: #475569;
     line-height: 1.55;
   }
 
   .note strong {
-    color: var(--slate-900);
+    color: var(--text);
   }
 
-  /* Donation Card */
+  /* Card */
   .donate-card {
-    background: white;
+    background: #ffffff;
     border: 1px solid rgba(15, 23, 42, 0.08);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow:
-      0 4px 6px -1px rgba(15, 23, 42, 0.04),
-      0 20px 40px -12px rgba(15, 23, 42, 0.08);
+    border-radius: 18px;
+    padding: 1.6rem 1.35rem;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.04), 0 14px 36px -10px rgba(15, 23, 42, 0.08);
   }
 
   .card-header {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.35rem;
   }
 
   .card-header h3 {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: var(--slate-900);
-    margin: 0 0 0.35rem;
-    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 0.3rem;
   }
 
   .card-header p {
     margin: 0;
-    font-size: 0.92rem;
-    color: var(--slate-500);
+    font-size: 0.88rem;
+    color: var(--muted);
   }
 
+  /* Amount */
   .amount-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
-    margin-bottom: 1.25rem;
+    gap: 0.55rem;
+    margin-bottom: 1.1rem;
   }
 
   .amount-btn {
-    padding: 0.85rem;
-    border-radius: 12px;
-    border: 1.5px solid rgba(15, 23, 42, 0.1);
-    background: white;
-    font-size: 1rem;
+    padding: 0.75rem 0.5rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    font-size: 0.92rem;
     font-weight: 600;
-    color: var(--slate-600);
+    color: #475569;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.18s ease;
   }
 
   .amount-btn:hover {
@@ -340,208 +426,299 @@ import Layout from '../layouts/Layout.astro'; // adjust path if your layout is d
   }
 
   .amount-btn.active {
-    background: rgba(37, 99, 235, 0.08);
+    background: #eff6ff;
     border-color: var(--blue);
     color: var(--blue);
     box-shadow: 0 0 0 1px var(--blue);
   }
 
   .custom-amount {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.35rem;
   }
 
   .custom-amount label {
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--slate-500);
-    margin-bottom: 0.45rem;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
   }
 
   .input-wrap {
     display: flex;
     align-items: center;
-    border: 1.5px solid rgba(15, 23, 42, 0.12);
-    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
     overflow: hidden;
-    transition: border-color 0.2s ease;
+    background: #fff;
   }
 
   .input-wrap:focus-within {
     border-color: var(--blue);
   }
 
-  .input-wrap span {
-    padding: 0 0.9rem;
+  .input-wrap .currency {
+    padding: 0 0.8rem;
     font-weight: 600;
-    color: var(--slate-500);
+    color: var(--muted);
     background: #f8fafc;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    font-size: 0.92rem;
   }
 
   .input-wrap input {
     flex: 1;
     border: none;
-    padding: 0.85rem 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--slate-900);
-    outline: none;
-    background: transparent;
-  }
-
-  .freq {
-    display: flex;
-    gap: 1.25rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .radio {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
+    padding: 0.75rem 0.85rem;
     font-size: 0.92rem;
     font-weight: 600;
-    color: var(--slate-600);
+    color: var(--text);
+    outline: none;
+    background: transparent;
+    min-width: 0;
+  }
+
+  /* Methods */
+  .method-section {
+    margin-top: 1.25rem;
+  }
+
+  .method-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    margin: 0 0 0.6rem;
+  }
+
+  .method-grid {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .method-grid.primary {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 480px) {
+    .method-grid.primary {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .method-grid.secondary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .method-card {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: 11px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.15s ease;
+  }
+
+  .method-card:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+  }
+
+  .method-card.featured {
+    background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+    border-color: #bfdbfe;
+  }
+
+  .method-card.small {
+    justify-content: center;
+    padding: 0.65rem 0.4rem;
+    font-size: 0.82rem;
+  }
+
+  .method-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .method-card strong {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .method-card span {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+
+  /* Crypto */
+  .crypto-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .crypto-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.65rem 0.8rem;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .crypto-left {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
+  .crypto-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.18rem 0.4rem;
+    border-radius: 5px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .crypto-badge.btc { background: #f59e0b; }
+  .crypto-badge.eth { background: #6366f1; }
+  .crypto-badge.sol { background: #14b8a6; }
+  .crypto-badge.bnb { background: #eab308; color: #0f172a; }
+
+  .crypto-address {
+    font-size: 0.72rem;
+    color: #475569;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    padding: 0.32rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--blue);
     cursor: pointer;
   }
 
-  .radio input {
-    accent-color: var(--blue);
-    width: 1.05rem;
-    height: 1.05rem;
+  .copy-btn:hover {
+    background: #eff6ff;
   }
 
-  .btn-primary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 1rem 1.5rem;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
-    color: white;
-    font-size: 1.05rem;
-    font-weight: 600;
-    text-decoration: none;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-      0 8px 24px rgba(37, 99, 235, 0.35);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* Bank */
+  .bank-box {
+    padding-top: 0.25rem;
   }
 
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-      0 12px 32px rgba(37, 99, 235, 0.45);
+  .bank-details {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 0.95rem 1rem;
+    font-size: 0.86rem;
+    color: #334155;
+    line-height: 1.65;
+  }
+
+  .bank-details p {
+    margin: 0 0 0.3rem;
+  }
+
+  .bank-note {
+    margin-top: 0.5rem !important;
+    font-size: 0.78rem;
+    color: var(--muted);
   }
 
   .secure {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    margin: 1rem 0 0;
-    font-size: 0.8rem;
-    color: var(--slate-400);
+    gap: 0.35rem;
+    margin: 1.25rem 0 0;
+    font-size: 0.76rem;
+    color: #94a3b8;
   }
 
   .secure svg {
     color: #10b981;
+    flex-shrink: 0;
   }
 
-  .alt-methods {
-    margin-top: 1.75rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(15, 23, 42, 0.06);
-    text-align: center;
-  }
-
-  .alt-methods p {
-    font-size: 0.85rem;
-    color: var(--slate-500);
-    margin: 0 0 0.5rem;
-  }
-
-  .alt-links {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .alt-links a {
-    color: var(--blue);
-    text-decoration: none;
-  }
-
-  .alt-links a:hover {
-    text-decoration: underline;
-  }
-
-  .alt-links span {
-    color: var(--slate-400);
-  }
-
-  /* Thanks strip */
+  /* Thanks */
   .thanks {
     background: #f8fafc;
     border-top: 1px solid rgba(15, 23, 42, 0.06);
-    padding: 1.75rem 0;
+    padding: 1.5rem 0;
     text-align: center;
   }
 
   .thanks p {
     margin: 0;
-    font-size: 1rem;
-    color: var(--slate-600);
+    font-size: 0.95rem;
+    color: #475569;
   }
 
   .thanks strong {
-    color: var(--slate-900);
+    color: var(--text);
   }
 </style>
 
 <script>
+  // Amount buttons
   const amountBtns = document.querySelectorAll('.amount-btn');
-  const customInput = document.getElementById('custom') as HTMLInputElement;
-  const donateBtn = document.getElementById('donate-btn') as HTMLAnchorElement;
-
-  let selectedAmount = 2500;
-
-  function updateButton(amount: number) {
-    selectedAmount = amount;
-    donateBtn.innerHTML = `
-      Donate ₹${amount.toLocaleString('en-IN')}
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    `;
-  }
+  const customInput = document.getElementById('custom');
 
   amountBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       amountBtns.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
-      customInput.value = '';
-      const amount = Number(btn.getAttribute('data-amount')) * 100; // converting demo units
-      // Actually using the displayed values
-      const text = btn.textContent?.replace('₹', '').replace(',', '') || '2500';
-      updateButton(Number(text));
+      if (customInput) customInput.value = '';
     });
   });
 
-  customInput?.addEventListener('input', () => {
-    amountBtns.forEach((b) => b.classList.remove('active'));
-    const val = Number(customInput.value);
-    if (val >= 100) {
-      updateButton(val);
-    }
+  if (customInput) {
+    customInput.addEventListener('input', () => {
+      amountBtns.forEach((b) => b.classList.remove('active'));
+    });
+  }
+
+  // Copy crypto addresses
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-copy');
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      try {
+        await navigator.clipboard.writeText(el.textContent.trim());
+        const original = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(() => {
+          btn.textContent = original || 'Copy';
+        }, 1500);
+      } catch {
+        btn.textContent = 'Error';
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+        }, 1500);
+      }
+    });
   });
 </script>
