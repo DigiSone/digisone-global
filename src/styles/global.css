@@ -26,7 +26,7 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 1.7;
 }
 main {
@@ -78,10 +78,10 @@ p {
 }
 textarea {
 	width: 100%;
-	font-size: 14px;
+	font-size: 12px;
 }
 input {
-	font-size: 16px;
+	font-size: 12px;
 }
 table {
 	width: 100%;
@@ -107,7 +107,7 @@ blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0 0 0 20px;
 	margin: 0;
-	font-size: 1.333em;
+	font-size: 0.99975em;
 }
 hr {
 	border: none;
@@ -115,7 +115,7 @@ hr {
 }
 @media (max-width: 720px) {
 	body {
-		font-size: 16px;
+		font-size: 14px;
 	}
 	main {
 		padding: 1em;
