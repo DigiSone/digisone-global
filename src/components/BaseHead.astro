@@ -16,8 +16,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
 
-// Google Analytics 4 Measurement ID
+// IDs
 const GA_ID = 'G-H0KPNYR03Q';
+// AdSense client — approval ke baad fill karo (example: ca-pub-xxxxxxxxxxxxxxxx)
+const ADSENSE_CLIENT = ''; // e.g. 'ca-pub-1234567890123456'
 ---
 
 <!-- Global Metadata -->
@@ -43,6 +45,8 @@ const GA_ID = 'G-H0KPNYR03Q';
 <!-- Performance: third-party origins -->
 <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
 
 <!-- Fonts -->
 <Font cssVariable="--font-atkinson" preload />
@@ -71,12 +75,35 @@ const GA_ID = 'G-H0KPNYR03Q';
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- Google Analytics 4 — delayed load for better PageSpeed -->
+<!--
+  Google Consent Mode v2 — DEFAULT DENIED (must run before GA / Ads)
+  CookieConsent.astro later calls consent update on Accept / Save
+-->
+<script is:inline>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	window.gtag = gtag;
+
+	gtag('consent', 'default', {
+		ad_storage: 'denied',
+		ad_user_data: 'denied',
+		ad_personalization: 'denied',
+		analytics_storage: 'denied',
+		functionality_storage: 'granted',
+		security_storage: 'granted',
+		wait_for_update: 500,
+	});
+</script>
+
+<!-- Google Analytics 4 — only if user allowed Analytics -->
 <script is:inline define:vars={{ GA_ID }}>
 	window.dataLayer = window.dataLayer || [];
 	function gtag() {
 		dataLayer.push(arguments);
 	}
+	window.gtag = window.gtag || gtag;
 
 	function loadGA() {
 		if (window.__gaLoaded) return;
@@ -87,18 +114,86 @@ const GA_ID = 'G-H0KPNYR03Q';
 		s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
 		s.onload = function () {
 			gtag('js', new Date());
-			gtag('config', GA_ID, {
-				anonymize_ip: true,
-			});
+			gtag('config', GA_ID, { anonymize_ip: true });
 		};
 		document.head.appendChild(s);
 	}
 
+	function consentAllowsAnalytics() {
+		try {
+			var raw = localStorage.getItem('digisone_consent_v1');
+			if (!raw) return false;
+			var state = JSON.parse(raw);
+			return !!(state && state.analytics);
+		} catch (e) {
+			return false;
+		}
+	}
+
+	function tryLoadGA() {
+		if (consentAllowsAnalytics()) loadGA();
+	}
+
+	// After first paint / idle — still respects consent
 	if ('requestIdleCallback' in window) {
-		requestIdleCallback(loadGA, { timeout: 4000 });
+		requestIdleCallback(tryLoadGA, { timeout: 4000 });
 	} else {
 		window.addEventListener('load', function () {
-			setTimeout(loadGA, 1500);
+			setTimeout(tryLoadGA, 1500);
 		});
 	}
+
+	// When banner Accept / Save fires
+	window.addEventListener('digisone-consent', function (e) {
+		if (e.detail && e.detail.analytics) loadGA();
+	});
 </script>
+
+<!--
+  Google AdSense — ONLY after approval + fill ADSENSE_CLIENT
+  Loads when advertising consent is granted (or you can always load
+  non-personalized path later with Consent Mode)
+-->
+{
+	ADSENSE_CLIENT && (
+		<script is:inline define:vars={{ ADSENSE_CLIENT }}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			window.gtag = window.gtag || gtag;
+
+			function loadAds() {
+				if (window.__adsLoaded) return;
+				window.__adsLoaded = true;
+				var s = document.createElement('script');
+				s.async = true;
+				s.src =
+					'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
+					ADSENSE_CLIENT;
+				s.crossOrigin = 'anonymous';
+				document.head.appendChild(s);
+			}
+
+			function consentAllowsAds() {
+				try {
+					var raw = localStorage.getItem('digisone_consent_v1');
+					if (!raw) return false;
+					var state = JSON.parse(raw);
+					return !!(state && state.advertising);
+				} catch (e) {
+					return false;
+				}
+			}
+
+			function tryLoadAds() {
+				if (consentAllowsAds()) loadAds();
+			}
+
+			tryLoadAds();
+			window.addEventListener('digisone-consent', function (e) {
+				if (e.detail && e.detail.advertising) loadAds();
+			});
+		</script>
+	)
+}
