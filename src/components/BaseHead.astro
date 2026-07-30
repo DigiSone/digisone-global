@@ -1,6 +1,5 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
+// Global head used by every page via <BaseHead />
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
@@ -17,15 +16,22 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
 
-// Google Analytics 4 — apna real ID yahan
+// Google Analytics 4 Measurement ID
 const GA_ID = 'G-H0KPNYR03Q';
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#2563eb" />
+
+<!-- Icons -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/favicon.ico" />
+
+<!-- Sitemap & RSS -->
 <link rel="sitemap" href="/sitemap-0.xml" />
 <link
 	rel="alternate"
@@ -33,34 +39,66 @@ const GA_ID = 'G-H0KPNYR03Q';
 	title={SITE_TITLE}
 	href={new URL('rss.xml', Astro.site)}
 />
-<meta name="generator" content={Astro.generator} />
 
+<!-- Performance: third-party origins -->
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+
+<!-- Fonts -->
 <Font cssVariable="--font-atkinson" preload />
 
-<!-- Canonical URL -->
+<!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
+<!-- Primary Meta -->
 <title>{title}</title>
 <meta name="description" content={description} />
+<meta name="author" content="DigiSone Global" />
+<meta name="robots" content="index, follow" />
 
-<!-- Open Graph / Facebook -->
+<!-- Open Graph -->
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:locale" content="en_US" />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- Google Analytics 4 -->
-<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+<!-- Google Analytics 4 — delayed load for better PageSpeed -->
 <script is:inline define:vars={{ GA_ID }}>
 	window.dataLayer = window.dataLayer || [];
 	function gtag() {
 		dataLayer.push(arguments);
 	}
-	gtag('js', new Date());
-	gtag('config', GA_ID);
+
+	function loadGA() {
+		if (window.__gaLoaded) return;
+		window.__gaLoaded = true;
+
+		var s = document.createElement('script');
+		s.async = true;
+		s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+		s.onload = function () {
+			gtag('js', new Date());
+			gtag('config', GA_ID, {
+				anonymize_ip: true,
+			});
+		};
+		document.head.appendChild(s);
+	}
+
+	if ('requestIdleCallback' in window) {
+		requestIdleCallback(loadGA, { timeout: 4000 });
+	} else {
+		window.addEventListener('load', function () {
+			setTimeout(loadGA, 1500);
+		});
+	}
 </script>
