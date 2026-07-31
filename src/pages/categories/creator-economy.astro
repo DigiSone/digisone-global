@@ -3,9 +3,9 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 
-const title = 'Creator Economy Guide (2026): Beginner to Advanced | DigiSone Global';
+const title = 'Creator Economy Knowledge Gallery | DigiSone Global';
 const description =
-	'A practical guide to the creator economy - platforms, monetization, audience growth, rights, risks, and strategy.';
+	'A complete creator economy knowledge gallery — niches, formats, platforms, monetization, growth systems, rights, risks, and roadmaps from beginner to advanced.';
 ---
 
 <!doctype html>
@@ -15,31 +15,30 @@ const description =
 		<style>
 			:root {
 				--bg: #f1f5f9;
-				--surface: #ffffff;
+				--surface: #fff;
 				--text: #0b1220;
 				--muted: #475569;
 				--primary: #2563eb;
+				--accent: #6366f1;
 				--border: rgba(15, 23, 42, 0.08);
 				--radius: 1.15rem;
-				--font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+				--font: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
 			}
-			*,
-			*::before,
-			*::after {
+			* {
 				box-sizing: border-box;
 			}
 			body {
 				margin: 0;
 				font-family: var(--font);
-				color: var(--text);
 				background: var(--bg);
-				-webkit-font-smoothing: antialiased;
+				color: var(--text);
 				line-height: 1.7;
+				-webkit-font-smoothing: antialiased;
 			}
 			main {
-				width: min(100% - 2rem, 48rem);
+				width: min(100% - 2rem, 52rem);
 				margin-inline: auto;
-				padding: 2.5rem 0 4rem;
+				padding: 2.25rem 0 4rem;
 			}
 			a {
 				color: var(--primary);
@@ -48,99 +47,150 @@ const description =
 			a:hover {
 				text-decoration: underline;
 			}
-			h1 {
-				font-size: clamp(1.9rem, 4.5vw, 2.75rem);
-				letter-spacing: -0.03em;
-				line-height: 1.15;
-				margin: 0 0 0.85rem;
+			.back {
+				display: inline-block;
+				font-weight: 600;
+				font-size: 0.9rem;
+				margin-bottom: 1.25rem;
 			}
-			h2 {
-				font-size: 1.45rem;
-				letter-spacing: -0.02em;
-				margin: 2.5rem 0 0.85rem;
-			}
-			h3 {
-				font-size: 1.1rem;
-				margin: 1.5rem 0 0.55rem;
-			}
-			p {
-				margin: 0 0 1rem;
-				color: var(--text);
-			}
-			.lead {
-				font-size: 1.08rem;
-				color: var(--muted);
+			.hero {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 1.35rem;
+				padding: 1.75rem 1.5rem 1.5rem;
 				margin-bottom: 1.5rem;
 			}
-			.meta {
-				font-size: 0.88rem;
-				color: var(--muted);
-				margin-bottom: 1.75rem;
+			.eyebrow {
+				font-size: 0.8rem;
+				font-weight: 700;
+				letter-spacing: 0.04em;
+				text-transform: uppercase;
+				color: var(--accent);
+				margin: 0 0 0.5rem;
 			}
-			.card {
+			h1 {
+				font-size: clamp(1.85rem, 4.2vw, 2.55rem);
+				letter-spacing: -0.03em;
+				line-height: 1.15;
+				margin: 0 0 0.75rem;
+			}
+			.lead {
+				margin: 0;
+				color: var(--muted);
+				font-size: 1.05rem;
+			}
+			.meta-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-top: 1.1rem;
+			}
+			.pill {
+				font-size: 0.75rem;
+				font-weight: 600;
+				padding: 0.3rem 0.65rem;
+				border-radius: 999px;
+				background: #f8fafc;
+				border: 1px solid var(--border);
+				color: var(--muted);
+			}
+			.gallery-nav {
 				background: var(--surface);
 				border: 1px solid var(--border);
 				border-radius: var(--radius);
-				padding: 1.15rem 1.2rem;
-				margin: 1.15rem 0;
+				padding: 1.1rem 1.2rem;
+				margin-bottom: 2rem;
 			}
-			.card strong {
-				display: block;
-				margin-bottom: 0.25rem;
+			.gallery-nav h2 {
+				margin: 0 0 0.65rem;
+				font-size: 0.95rem;
+			}
+			.gallery-nav ol {
+				margin: 0;
+				padding-left: 1.2rem;
+			}
+			.gallery-nav li {
+				margin-bottom: 0.35rem;
+			}
+			section {
+				scroll-margin-top: 5rem;
+				margin: 2.35rem 0;
+			}
+			h2 {
+				font-size: 1.4rem;
+				letter-spacing: -0.02em;
+				margin: 0 0 0.75rem;
+			}
+			h3 {
+				font-size: 1.08rem;
+				margin: 1.35rem 0 0.5rem;
+			}
+			p {
+				margin: 0 0 1rem;
 			}
 			ul,
 			ol {
-				margin: 0 0 1.15rem;
+				margin: 0 0 1rem;
 				padding-left: 1.25rem;
 			}
 			li {
 				margin-bottom: 0.4rem;
 			}
-			.toc {
+			.grid-2 {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+				gap: 0.75rem;
+				margin: 1rem 0 1.25rem;
+			}
+			.tile {
 				background: var(--surface);
 				border: 1px solid var(--border);
 				border-radius: var(--radius);
-				padding: 1.15rem 1.25rem;
-				margin: 1.5rem 0 2rem;
+				padding: 1rem 1.05rem;
 			}
-			.toc h2 {
-				margin: 0 0 0.65rem;
-				font-size: 1rem;
+			.tile strong {
+				display: block;
+				margin-bottom: 0.3rem;
+				font-size: 0.95rem;
 			}
-			.toc ol {
-				margin: 0;
+			.tile span {
+				font-size: 0.88rem;
+				color: var(--muted);
 			}
-			.disclaimer {
+			.panel {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1.1rem 1.15rem;
+				margin: 1rem 0;
+			}
+			.callout {
+				border-radius: var(--radius);
+				padding: 1rem 1.1rem;
+				margin: 1.15rem 0;
+				font-size: 0.92rem;
+			}
+			.callout.warn {
 				background: #fff7ed;
 				border: 1px solid #fed7aa;
-				border-radius: var(--radius);
-				padding: 1rem 1.15rem;
-				font-size: 0.92rem;
 				color: #9a3412;
-				margin: 1.5rem 0;
 			}
-			.note {
+			.callout.info {
 				background: #eff6ff;
 				border: 1px solid #bfdbfe;
-				border-radius: var(--radius);
-				padding: 1rem 1.15rem;
-				font-size: 0.92rem;
 				color: #1e3a8a;
-				margin: 1.25rem 0;
 			}
 			table {
 				width: 100%;
 				border-collapse: collapse;
-				font-size: 0.92rem;
-				margin: 1rem 0 1.5rem;
+				font-size: 0.9rem;
+				margin: 0.85rem 0 1.25rem;
 				background: var(--surface);
-				border-radius: var(--radius);
-				overflow: hidden;
 			}
 			th,
 			td {
 				border: 1px solid var(--border);
-				padding: 0.65rem 0.75rem;
+				padding: 0.6rem 0.7rem;
 				text-align: left;
 				vertical-align: top;
 			}
@@ -148,418 +198,496 @@ const description =
 				background: #f8fafc;
 				font-weight: 600;
 			}
-			.back {
-				display: inline-block;
-				margin-bottom: 1.25rem;
-				font-weight: 600;
+			.footer-links {
+				margin-top: 2rem;
+				padding-top: 1.25rem;
+				border-top: 1px solid var(--border);
 				font-size: 0.92rem;
 			}
-			hr {
-				border: none;
-				border-top: 1px solid var(--border);
-				margin: 2.25rem 0;
+			@media (max-width: 600px) {
+				.hero {
+					padding: 1.35rem 1.15rem;
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<a class="back" href="/categories">← Categories</a>
+			<a class="back" href="/categories">← All categories</a>
 
-			<article>
-				<p class="meta">Educational guide · Updated July 2026 · DigiSone Global</p>
-				<h1>Creator Economy: A Practical Guide from Beginner to Advanced</h1>
+			<header class="hero">
+				<p class="eyebrow">Knowledge Gallery</p>
+				<h1>Creator Economy</h1>
 				<p class="lead">
-					The creator economy is not a shortcut to overnight wealth. It is a real, evolving industry
-					where people build audiences, publish useful work, and earn in ways that fit their skills —
-					if they treat it with patience, honesty, and clear systems.
+					A practical map of how independent creators build audiences, ship useful work, and earn —
+					without overnight-wealth promises or hype cycles.
 				</p>
-
-				<div class="disclaimer">
-					<strong>Important:</strong> This page is for education only. It is not financial, legal, or
-					tax advice. Income results vary widely. Platform rules change. Always verify policies on
-					official platform help centers and consult qualified professionals for legal, tax, or
-					business decisions.
+				<div class="meta-row">
+					<span class="pill">Beginner → Advanced</span>
+					<span class="pill">Audience · Craft · Systems</span>
+					<span class="pill">Updated 2026</span>
+					<span class="pill">Educational</span>
 				</div>
+			</header>
 
-				<nav class="toc" aria-label="Table of contents">
-					<h2>On this page</h2>
-					<ol>
-						<li><a href="#what">What the creator economy is</a></li>
-						<li><a href="#who">Who participates</a></li>
-						<li><a href="#beginner">Beginner foundation</a></li>
-						<li><a href="#platforms">Platforms and formats</a></li>
-						<li><a href="#monetization">Monetization models</a></li>
-						<li><a href="#intermediate">Intermediate growth</a></li>
-						<li><a href="#advanced">Advanced systems</a></li>
-						<li><a href="#rights">Rights, policies, and compliance</a></li>
-						<li><a href="#risks">Risks and common mistakes</a></li>
-						<li><a href="#roadmap">Practical roadmap</a></li>
-						<li><a href="#faq">FAQ</a></li>
-					</ol>
-				</nav>
+			<nav class="gallery-nav" aria-label="Gallery sections">
+				<h2>Browse the gallery</h2>
+				<ol>
+					<li><a href="#meaning">What the creator economy is</a></li>
+					<li><a href="#players">Who participates</a></li>
+					<li><a href="#beginner">Beginner foundation</a></li>
+					<li><a href="#formats">Formats and channels</a></li>
+					<li><a href="#platforms">Platforms as tools</a></li>
+					<li><a href="#monetization">Monetization map</a></li>
+					<li><a href="#growth">Growth systems</a></li>
+					<li><a href="#advanced">Advanced operating model</a></li>
+					<li><a href="#rights">Rights and compliance</a></li>
+					<li><a href="#risks">Risks and failure modes</a></li>
+					<li><a href="#roadmap">Stage roadmap</a></li>
+					<li><a href="#metrics">What to measure</a></li>
+					<li><a href="#faq">FAQ</a></li>
+				</ol>
+			</nav>
 
-				<h2 id="what">1. What the creator economy is</h2>
+			<section id="meaning">
+				<h2>1. What the creator economy is</h2>
 				<p>
-					The creator economy refers to the ecosystem of independent individuals and small teams who
-					produce digital content, products, or experiences and reach audiences directly through
-					platforms and their own channels. Creators can include writers, educators, developers,
-					designers, podcasters, video makers, newsletter authors, community builders, and subject
-					experts.
+					The creator economy is the ecosystem of individuals and small teams who produce digital
+					content, products, or experiences and reach audiences directly — through platforms and
+					owned channels. It includes educators, analysts, developers, designers, writers, video
+					makers, podcasters, newsletter authors, and community builders.
 				</p>
-				<p>
-					Unlike traditional media, distribution is often open: anyone can publish. Attention,
-					however, is limited. Sustainable work usually comes from consistent value, trust, and a
-					clear reason for people to return.
-				</p>
-
-				<div class="card">
-					<strong>In simple terms</strong>
-					You create something useful or meaningful, people find it, some of them stay, and over time
-					you may earn through ads, products, services, memberships, or partnerships — if the work
-					and audience fit.
+				<div class="grid-2">
+					<div class="tile">
+						<strong>It is</strong>
+						<span>Skill + consistency + trust, compounding over time.</span>
+					</div>
+					<div class="tile">
+						<strong>It is not</strong>
+						<span>A guaranteed income plan or a shortcut past craft.</span>
+					</div>
+					<div class="tile">
+						<strong>Durable path</strong>
+						<span>Clear niche, repeatable publishing, owned audience, honest offers.</span>
+					</div>
+					<div class="tile">
+						<strong>Fragile path</strong>
+						<span>Trend-chasing, rented reach only, opaque sponsorships, burnout volume.</span>
+					</div>
 				</div>
-
-				<h2 id="who">2. Who participates</h2>
-				<ul>
-					<li><strong>Creators</strong> — produce content, products, or services</li>
-					<li><strong>Audiences</strong> — follow, learn, buy, or share</li>
-					<li><strong>Platforms</strong> — host, distribute, recommend, and sometimes pay</li>
-					<li><strong>Brands and sponsors</strong> — pay for reach or collaboration when rules allow</li>
-					<li><strong>Tools and agencies</strong> — software, editors, managers, analytics</li>
-				</ul>
-				<p>
-					You do not need to be a celebrity. Many durable creators serve a specific niche with clear
-					problems and practical answers.
-				</p>
-
-				<h2 id="beginner">3. Beginner foundation</h2>
-				<p>
-					If you are starting, ignore vanity metrics for a while. Focus on clarity and habits.
-				</p>
-
-				<h3>Step A — Choose a useful niche</h3>
-				<p>A workable niche is usually:</p>
-				<ul>
-					<li>something you can explain better than average, or are willing to learn in public</li>
-					<li>something people already search for or discuss</li>
-					<li>narrow enough to stand out, wide enough to publish for months</li>
-				</ul>
-				<p>
-					Examples: “Cloud cost basics for startups,” “Career writing for developers,” “Personal
-					finance systems for freelancers” (educational only — not personalized advice).
-				</p>
-
-				<h3>Step B — Pick one primary format</h3>
-				<p>
-					Beginners often fail by posting everywhere with no depth. Choose one main format first:
-					long-form articles, short video, newsletter, or audio. Add a second channel only after the
-					first feels steady.
-				</p>
-
-				<h3>Step C — Publish on a schedule you can keep</h3>
-				<p>
-					Consistency beats intensity. One strong piece each week for six months teaches more than
-					daily posting for two weeks and quitting.
-				</p>
-
-				<h3>Step D — Build an owned list early</h3>
-				<p>
-					Platforms can change reach overnight. An email list or membership you control is a safety
-					net. Be transparent about what people receive and how often. Follow anti-spam and privacy
-					rules in your region.
-				</p>
-
-				<div class="note">
-					<strong>AdSense-relevant note for publishers:</strong> If you run a content site, Google
-					requires original value, clear navigation, honest claims, and compliance with their
-					program policies. Thin, copied, or misleading pages hurt users and approval chances.
+				<div class="callout warn">
+					<strong>Note:</strong> This gallery is educational. It is not financial, legal, or tax
+					advice. Results vary. Platform rules change. Verify policies on official help centers.
 				</div>
+			</section>
 
-				<h2 id="platforms">4. Platforms and formats</h2>
-				<p>
-					Platforms are distribution tools, not the business itself. Learn each platform’s current
-					policies before monetizing.
-				</p>
+			<section id="players">
+				<h2>2. Who participates</h2>
+				<div class="grid-2">
+					<div class="tile">
+						<strong>Creators</strong>
+						<span>Produce work and own the relationship with the audience.</span>
+					</div>
+					<div class="tile">
+						<strong>Audiences</strong>
+						<span>Follow, learn, share, subscribe, or buy when value is clear.</span>
+					</div>
+					<div class="tile">
+						<strong>Platforms</strong>
+						<span>Host, recommend, and sometimes pay — rules and reach can shift.</span>
+					</div>
+					<div class="tile">
+						<strong>Brands & sponsors</strong>
+						<span>Pay for fit and reach when disclosures and standards are met.</span>
+					</div>
+					<div class="tile">
+						<strong>Tooling</strong>
+						<span>Analytics, editors, email, commerce, and scheduling software.</span>
+					</div>
+					<div class="tile">
+						<strong>Agencies / editors</strong>
+						<span>Optional leverage once process and revenue support help.</span>
+					</div>
+				</div>
+			</section>
 
+			<section id="beginner">
+				<h2>3. Beginner foundation</h2>
+				<p>Early progress comes from clarity and habits, not from posting everywhere.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Step</th>
+							<th>Focus</th>
+							<th>Done looks like</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Niche</td>
+							<td>Problem you can explain well</td>
+							<td>You can describe the reader in one sentence</td>
+						</tr>
+						<tr>
+							<td>Format</td>
+							<td>One primary medium</td>
+							<td>Weekly cadence you can keep for months</td>
+						</tr>
+						<tr>
+							<td>Proof</td>
+							<td>Ship in public</td>
+							<td>A small library of useful pieces</td>
+						</tr>
+						<tr>
+							<td>Owned channel</td>
+							<td>Email or membership list</td>
+							<td>People opt in knowing what they get</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="callout info">
+					<strong>Publisher note:</strong> Sites that want advertising programs need original value,
+					clear navigation, honest claims, and real policies — not thin doorway pages.
+				</div>
+			</section>
+
+			<section id="formats">
+				<h2>4. Formats and channels</h2>
 				<table>
 					<thead>
 						<tr>
 							<th>Format</th>
 							<th>Strengths</th>
-							<th>Watch-outs</th>
+							<th>Trade-offs</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>Long-form writing / blogs</td>
-							<td>SEO, depth, evergreen traffic</td>
-							<td>Needs patience; quality standards matter</td>
+							<td>Long-form writing</td>
+							<td>Depth, search, evergreen library</td>
+							<td>Slower feedback; quality bar is visible</td>
 						</tr>
 						<tr>
 							<td>Short video</td>
 							<td>Discovery, personality, speed</td>
-							<td>Algorithm shifts; high volume pressure</td>
+							<td>High volume pressure; algorithm shifts</td>
 						</tr>
 						<tr>
-							<td>YouTube / long video</td>
-							<td>Search + recommendations, ads, trust</td>
+							<td>Long video</td>
+							<td>Trust, search + recommendations</td>
 							<td>Production time; policy enforcement</td>
 						</tr>
 						<tr>
-							<td>Newsletters</td>
+							<td>Newsletter</td>
 							<td>Direct access, high intent</td>
-							<td>Deliverability, list hygiene, fatigue</td>
+							<td>Deliverability; list fatigue</td>
 						</tr>
 						<tr>
-							<td>Communities / cohorts</td>
-							<td>Loyalty, feedback, premium pricing</td>
-							<td>Moderation load; support expectations</td>
-						</tr>
-						<tr>
-							<td>Podcasts</td>
+							<td>Podcast</td>
 							<td>Relationship, commute-friendly</td>
-							<td>Slower growth; editing effort</td>
+							<td>Slower growth; editing load</td>
+						</tr>
+						<tr>
+							<td>Community / cohort</td>
+							<td>Loyalty, feedback, premium pricing</td>
+							<td>Moderation and support cost</td>
 						</tr>
 					</tbody>
 				</table>
+			</section>
 
-				<h2 id="monetization">5. Monetization models (realistic view)</h2>
+			<section id="platforms">
+				<h2>5. Platforms as tools (not the business)</h2>
 				<p>
-					Earning usually comes after some proof of value. Mix models only when operations can handle
-					them.
+					Platforms distribute work. The business is the audience relationship and the offer. Learn
+					each platform’s current creator and monetization rules before relying on payouts.
 				</p>
-
-				<h3>Common paths</h3>
-				<ul>
-					<li>
-						<strong>Advertising</strong> — platform ads or site ads (for example ad networks with
-						eligibility rules, content standards, and traffic thresholds)
-					</li>
-					<li>
-						<strong>Affiliates</strong> — commissions for recommended tools; disclose relationships
-						clearly
-					</li>
-					<li>
-						<strong>Digital products</strong> — templates, courses, ebooks, toolkits you actually
-						support
-					</li>
-					<li>
-						<strong>Services</strong> — consulting, freelance work, done-for-you offers tied to your
-						expertise
-					</li>
-					<li>
-						<strong>Memberships / subscriptions</strong> — paid community, premium posts, office hours
-					</li>
-					<li>
-						<strong>Sponsorships & brand deals</strong> — only with honest fit and required
-						disclosures
-					</li>
-					<li>
-						<strong>Licensing or syndication</strong> — when you own rights and contracts are clear
-					</li>
-				</ul>
-
-				<div class="disclaimer">
-					<strong>Disclosure:</strong> Paid recommendations and sponsorships should be labeled in line
-					with advertising and consumer protection rules that apply to you (for example local
-					influencer disclosure guidance). Hidden advertising damages trust and can violate platform
-					or legal requirements.
+				<div class="grid-2">
+					<div class="tile">
+						<strong>Discovery platforms</strong>
+						<span>Help strangers find you; reach can change overnight.</span>
+					</div>
+					<div class="tile">
+						<strong>Owned properties</strong>
+						<span>Site, email, community — slower to build, harder to take away.</span>
+					</div>
+					<div class="tile">
+						<strong>Hybrid default</strong>
+						<span>Publish where people browse; invite them to a channel you control.</span>
+					</div>
+					<div class="tile">
+						<strong>Policy literacy</strong>
+						<span>Copyright, spam, disclosures, and restricted topics matter.</span>
+					</div>
 				</div>
+			</section>
 
-				<h2 id="intermediate">6. Intermediate growth</h2>
-				<p>Once you publish consistently, improve systems rather than only posting more.</p>
-				<ul>
-					<li>
-						<strong>Content pillars</strong> — 3–5 recurring themes so your library compounds
-					</li>
-					<li>
-						<strong>Repurposing with care</strong> — turn one deep piece into clips or threads without
-						spammy duplication
-					</li>
-					<li>
-						<strong>Collaboration</strong> — guest posts, podcast swaps, joint workshops with aligned
-						creators
-					</li>
-					<li>
-						<strong>Feedback loops</strong> — comments, surveys, search queries, and support questions
-						guide the next topics
-					</li>
-					<li>
-						<strong>Basic analytics</strong> — track what people finish, return to, or pay for — not
-						only likes
-					</li>
-				</ul>
-
-				<h3>Quality bar that ages well</h3>
-				<ul>
-					<li>accurate claims; correct mistakes publicly when needed</li>
-					<li>sources or lived experience clearly framed</li>
-					<li>readable structure: headings, examples, next steps</li>
-					<li>respect for the audience’s time</li>
-				</ul>
-
-				<h2 id="advanced">7. Advanced systems</h2>
-				<p>
-					Advanced creators operate more like small media or product businesses — still personal, but
-					structured.
-				</p>
-				<ul>
-					<li>
-						<strong>Owned properties</strong> — website, email, community with backups and
-						documentation
-					</li>
-					<li>
-						<strong>Product ladder</strong> — free useful content → low-ticket tools → higher-touch
-						offers, without pressure tactics
-					</li>
-					<li>
-						<strong>Team leverage</strong> — editor, designer, or VA only when revenue and process
-						support it
-					</li>
-					<li>
-						<strong>Brand partnerships</strong> — media kits, clear deliverables, brand-safety
-						alignment
-					</li>
-					<li>
-						<strong>IP discipline</strong> — contracts, licenses, trademark awareness for your brand
-						name
-					</li>
-					<li>
-						<strong>Risk management</strong> — diversified channels, emergency fund, policy change
-						scenarios
-					</li>
-				</ul>
-
-				<h2 id="rights">8. Rights, policies, and compliance (critical)</h2>
-				<p>
-					Ignoring rules is one of the fastest ways to lose monetization or accounts. This section is
-					general education — not a substitute for platform policy pages or a lawyer.
-				</p>
-
-				<h3>Content ownership</h3>
-				<ul>
-					<li>Prefer original writing, video, and media you have rights to use</li>
-					<li>Do not scrape or republish others’ work without permission</li>
-					<li>Use licensed stock or your own assets; keep records</li>
-				</ul>
-
-				<h3>Platform and ad policies</h3>
-				<ul>
-					<li>Read each platform’s creator and monetization terms before applying</li>
-					<li>
-						For websites seeking display advertising, maintain transparent ownership, contact
-						information, privacy disclosures, and substantial original content
-					</li>
-					<li>Avoid prohibited or deceptive categories defined by the networks you join</li>
-					<li>Do not use misleading titles, fake urgency, or cloaking</li>
-				</ul>
-
-				<h3>Privacy</h3>
-				<ul>
-					<li>Publish a clear privacy policy if you collect emails or analytics</li>
-					<li>Explain cookies and tracking in plain language where required</li>
-					<li>Honor unsubscribe requests promptly</li>
-				</ul>
-
-				<h3>Children and sensitive topics</h3>
-				<ul>
-					<li>Follow age-appropriate rules; do not target children with unsuitable monetization</li>
-					<li>Handle health, finance, and legal topics carefully; avoid guaranteeing outcomes</li>
-				</ul>
-
-				<div class="note">
-					<strong>For site publishers:</strong> Helpful navigation, about/contact pages, privacy and
-					terms, original articles, and a coherent topic focus support both users and program reviews.
-					Low-value doorways, copied material, or policy violations work against approval.
+			<section id="monetization">
+				<h2>6. Monetization map</h2>
+				<p>Earn after proof of value. Add models only when operations can support them.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Model</th>
+							<th>How it works</th>
+							<th>Needs</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Advertising</td>
+							<td>Platform or site ads</td>
+							<td>Scale, policy fit, acceptable UX</td>
+						</tr>
+						<tr>
+							<td>Affiliates</td>
+							<td>Commission on recommended tools</td>
+							<td>Honest fit + clear disclosure</td>
+						</tr>
+						<tr>
+							<td>Digital products</td>
+							<td>Templates, courses, kits</td>
+							<td>Support capacity; real usefulness</td>
+						</tr>
+						<tr>
+							<td>Services</td>
+							<td>Consulting, freelance, done-for-you</td>
+							<td>Expertise + delivery systems</td>
+						</tr>
+						<tr>
+							<td>Memberships</td>
+							<td>Paid community or premium posts</td>
+							<td>Consistent member value</td>
+						</tr>
+						<tr>
+							<td>Sponsorships</td>
+							<td>Brand deals</td>
+							<td>Audience trust; contract clarity</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="callout warn">
+					<strong>Disclosure:</strong> Paid recommendations and sponsorships should be labeled under
+					the advertising and consumer rules that apply to you. Hidden ads damage trust and can break
+					platform or legal requirements.
 				</div>
+			</section>
 
-				<h2 id="risks">9. Risks and common mistakes</h2>
+			<section id="growth">
+				<h2>7. Growth systems (intermediate)</h2>
+				<div class="grid-2">
+					<div class="tile">
+						<strong>Content pillars</strong>
+						<span>3–5 themes so the library compounds instead of scattering.</span>
+					</div>
+					<div class="tile">
+						<strong>Repurpose carefully</strong>
+						<span>One deep piece → clips or threads without spammy duplication.</span>
+					</div>
+					<div class="tile">
+						<strong>Collaboration</strong>
+						<span>Guests, swaps, joint workshops with aligned creators.</span>
+					</div>
+					<div class="tile">
+						<strong>Feedback loops</strong>
+						<span>Comments, searches, support questions shape the next topics.</span>
+					</div>
+				</div>
+				<div class="panel">
+					<strong>Quality bar that ages well</strong>
+					<ul>
+						<li>Accurate claims; correct mistakes in public when needed</li>
+						<li>Sources or lived experience clearly framed</li>
+						<li>Readable structure: headings, examples, next steps</li>
+						<li>Respect for the reader’s time</li>
+					</ul>
+				</div>
+			</section>
+
+			<section id="advanced">
+				<h2>8. Advanced operating model</h2>
+				<p>Advanced creators still sound human — but run clearer systems.</p>
 				<ul>
-					<li>Chasing trends with no expertise or follow-through</li>
-					<li>Buying fake followers or engagement</li>
-					<li>Copying competitors instead of documenting real learning</li>
-					<li>Depending on one platform for 100% of reach and income</li>
-					<li>Promising income results you cannot responsibly support</li>
-					<li>Ignoring taxes, invoices, and local business registration when required</li>
-					<li>Burnout from unsustainable posting volume</li>
+					<li><strong>Owned stack</strong> — site, email, backups, documentation</li>
+					<li><strong>Product ladder</strong> — free value → low-ticket → higher-touch, no pressure tactics</li>
+					<li><strong>Selective team help</strong> — editor or VA only when revenue supports it</li>
+					<li><strong>Partnership discipline</strong> — media kit, deliverables, brand-safety fit</li>
+					<li><strong>IP hygiene</strong> — contracts, licenses, brand name awareness</li>
+					<li><strong>Risk buffer</strong> — multi-channel reach, cash reserve, policy-change scenarios</li>
 				</ul>
+			</section>
 
-				<h2 id="roadmap">10. Practical roadmap</h2>
+			<section id="rights">
+				<h2>9. Rights and compliance gallery</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Area</th>
+							<th>Practice</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Ownership</td>
+							<td>Original work; licensed media; keep records</td>
+						</tr>
+						<tr>
+							<td>Platform terms</td>
+							<td>Read monetization and community rules before relying on payouts</td>
+						</tr>
+						<tr>
+							<td>Site advertising</td>
+							<td>Clear ownership, contact, privacy, substantial original content</td>
+						</tr>
+						<tr>
+							<td>Privacy</td>
+							<td>Explain tracking; honor unsubscribe; publish a real privacy policy</td>
+						</tr>
+						<tr>
+							<td>Sensitive topics</td>
+							<td>No outcome guarantees on health, finance, or legal advice</td>
+						</tr>
+						<tr>
+							<td>Children</td>
+							<td>Follow age rules; avoid unsuitable monetization targeting kids</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="risks">
+				<h2>10. Risks and failure modes</h2>
+				<div class="grid-2">
+					<div class="tile">
+						<strong>Trend hopping</strong>
+						<span>No expertise depth; audience never knows what you stand for.</span>
+					</div>
+					<div class="tile">
+						<strong>Fake metrics</strong>
+						<span>Bought followers destroy partner trust and learning signals.</span>
+					</div>
+					<div class="tile">
+						<strong>Single-platform dependence</strong>
+						<span>One policy or algorithm change can wipe distribution.</span>
+					</div>
+					<div class="tile">
+						<strong>Income theater</strong>
+						<span>Promising results you cannot responsibly support.</span>
+					</div>
+					<div class="tile">
+						<strong>Ops neglect</strong>
+						<span>Taxes, invoices, and contracts ignored until they hurt.</span>
+					</div>
+					<div class="tile">
+						<strong>Burnout volume</strong>
+						<span>Unsustainable posting that ends the project entirely.</span>
+					</div>
+				</div>
+			</section>
+
+			<section id="roadmap">
+				<h2>11. Stage roadmap</h2>
 				<table>
 					<thead>
 						<tr>
 							<th>Stage</th>
 							<th>Focus</th>
-							<th>Success signal</th>
+							<th>Signal you are ready to level up</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>0–3 months</td>
-							<td>Niche, format, weekly publishing, basic site or profile</td>
-							<td>You finish pieces; a few strangers engage honestly</td>
+							<td>Niche, format, weekly shipping</td>
+							<td>Strangers engage honestly; you finish work</td>
 						</tr>
 						<tr>
 							<td>3–9 months</td>
-							<td>Pillars, email list, improve bestsellers, first small offer or ads eligibility path</td>
+							<td>Pillars, email list, refine bestsellers</td>
 							<td>Repeat visitors; clear feedback on what helps</td>
 						</tr>
 						<tr>
 							<td>9–18 months</td>
-							<td>Systems, collaboration, product or service refinement</td>
-							<td>Income is irregular but real; process is documented</td>
+							<td>Systems, collabs, first real offer</td>
+							<td>Irregular but real income; process documented</td>
 						</tr>
 						<tr>
 							<td>18+ months</td>
-							<td>Diversified channels, team experiments, stronger brand deals or products</td>
-							<td>Business survives algorithm or platform changes</td>
+							<td>Diversified channels, selective team, stronger deals</td>
+							<td>Survives platform or algorithm shocks</td>
 						</tr>
 					</tbody>
 				</table>
+			</section>
 
-				<h2 id="faq">11. FAQ</h2>
+			<section id="metrics">
+				<h2>12. What to measure</h2>
+				<div class="grid-2">
+					<div class="tile">
+						<strong>Attention quality</strong>
+						<span>Saves, replies, return visits — not only raw views.</span>
+					</div>
+					<div class="tile">
+						<strong>Owned reach</strong>
+						<span>Email growth, open/click health, unsubscribe honesty.</span>
+					</div>
+					<div class="tile">
+						<strong>Offer health</strong>
+						<span>Conversion, refunds, support load, repeat purchases.</span>
+					</div>
+					<div class="tile">
+						<strong>Sustainability</strong>
+						<span>Hours worked vs output; energy over a full month.</span>
+					</div>
+				</div>
+			</section>
+
+			<section id="faq">
+				<h2>13. FAQ</h2>
 				<h3>Do I need a huge audience to earn?</h3>
 				<p>
-					Not always. Smaller, trusted audiences sometimes support products or services better than
-					large passive followings. Ads usually need more scale and policy eligibility.
+					Not always. Smaller trusted audiences often support products or services better than large
+					passive followings. Ads usually need more scale and policy eligibility.
 				</p>
-
-				<h3>Is the creator economy only for influencers?</h3>
+				<h3>Is this only for influencers?</h3>
 				<p>
-					No. Educators, analysts, engineers, and operators often build quieter but durable creator
+					No. Educators, engineers, operators, and analysts build quieter but durable creator
 					businesses around expertise.
 				</p>
-
-				<h3>How does this relate to a blog like DigiSone Global?</h3>
+				<h3>How does a publication like DigiSone fit?</h3>
 				<p>
-					Independent publishers are part of the same wider ecosystem: original research and
-					explainers, audience trust, optional subscriptions or ethical partnerships, and compliance
-					with hosting, privacy, and advertising rules.
+					Independent publishers are part of the same ecosystem: original explainers, audience trust,
+					optional subscriptions or ethical partnerships, and compliance with privacy and advertising
+					rules.
 				</p>
-
-				<h3>Can anyone guarantee AdSense approval?</h3>
+				<h3>Can anyone guarantee ad network approval?</h3>
 				<p>
-					No. Approval depends on Google’s review of your site content, traffic behavior, and policy
-					compliance. Focus on genuine usefulness and transparency rather than tricks.
+					No. Approval depends on each network’s review of content, behavior, and policies. Usefulness
+					and transparency beat tricks.
 				</p>
-
-				<hr />
-
-				<div class="disclaimer">
-					<strong>Final disclaimer:</strong> DigiSone Global publishes educational technology and
-					business insights. We do not promise rankings, revenue, or program acceptance. Platform
-					names are used for description only; we are not affiliated with or endorsed by those
-					platforms unless explicitly stated. For partnership or corrections, contact
-					<a href="mailto:info@digisone.com">info@digisone.com</a>.
-				</div>
-
+				<h3>Where next on DigiSone?</h3>
 				<p>
-					<a href="/categories/creator-economy">View Creator Economy category</a> ·
-					<a href="/blog">Browse articles</a> ·
-					<a href="/subscribe">Weekly briefing</a>
+					<a href="/categories">Categories</a>,
+					<a href="/categories/digital-transformation">Digital Transformation gallery</a>,
+					<a href="/resources">Tools directory</a>,
+					<a href="/blog">Articles</a>.
 				</p>
-			</article>
+			</section>
+
+			<div class="callout warn">
+				<strong>Disclaimer:</strong> DigiSone Global publishes educational technology and business
+				insights. We do not promise rankings, revenue, or program acceptance. Platform names are for
+				description only. Contact:
+				<a href="mailto:info@digisone.com">info@digisone.com</a>.
+			</div>
+
+			<p class="footer-links">
+				<a href="/categories">Categories</a> ·
+				<a href="/blog">Blog</a> ·
+				<a href="/resources">Resources</a> ·
+				<a href="/subscribe">Weekly briefing</a>
+			</p>
 		</main>
 		<Footer />
 	</body>
