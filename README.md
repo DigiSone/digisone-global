@@ -1,63 +1,145 @@
-# Astro Starter Kit: Blog
+# DigiSone Global
 
-```sh
-npm create astro@latest -- --template blog
-```
+**Premium insights on technology, business, and digital growth.**
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+DigiSone Global is an independent online publication for founders, operators, and technology leaders. We publish practical analysis on Artificial Intelligence, business strategy, startups, cybersecurity, cloud computing, the future of work, digital transformation, and the creator economy.
 
-Features:
+| | |
+| --- | --- |
+| **Website** | [https://digisone.com](https://digisone.com) |
+| **Contact** | [info@digisone.com](mailto:info@digisone.com) |
+| **Stack** | [Astro](https://astro.build) · Cloudflare Pages · GitHub |
+| **Feed** | [RSS](https://digisone.com/rss.xml) |
+| **Sitemap** | [sitemap-0.xml](https://digisone.com/sitemap-0.xml) |
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+---
 
-## 🚀 Project Structure
+## Mission
 
-Inside of your Astro project, you'll see the following folders and files:
+Deliver clear, actionable technology and business writing—beyond headlines—with frameworks, context, and honest caveats. Content is original, structured for humans first, and maintained with transparent policies suitable for a serious publisher.
+
+---
+
+## What’s on the site
+
+### Core pages
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Homepage — featured & latest posts, categories, newsletter CTA |
+| `/blog` | Full article index |
+| `/blog/[id]/` | Individual posts from the content collection |
+| `/categories` | Category directory with counts and topic links |
+| `/categories/[slug]` | Category landing (related articles) |
+| `/categories/creator-economy` | In-depth Creator Economy guide (example pillar page) |
+| `/resources` | Curated tools directory (AI, SEO, testing, IDEs, media, …) |
+| `/subscribe` | Newsletter signup |
+| `/about` | About DigiSone Global |
+| `/contact` | Contact |
+| `/privacy` | Privacy Policy |
+| `/terms` | Terms of Use |
+| `/donate` | Support (if enabled) |
+
+### Content pillars (categories)
+
+- Artificial Intelligence  
+- Business Strategy  
+- Startups  
+- Cybersecurity  
+- Cloud Computing  
+- Future of Work  
+- Creator Economy  
+- Digital Transformation  
+
+### Product features
+
+- **Blog** — Markdown/MDX via Astro Content Collections  
+- **SEO** — Canonical URLs, Open Graph, Twitter cards, robots meta, sitemap, RSS  
+- **Newsletter** — Dedicated subscribe UX; optional Cloudflare D1 + Pages Function API  
+- **Analytics** — Google Analytics 4 (`G-H0KPNYR03Q`), delayed / consent-aware loading  
+- **Cookie consent** — Accept all / Reject optional / Customize (Essential · Analytics · Advertising) with Consent Mode-style defaults  
+- **Performance** — Static HTML, scoped CSS, image optimization patterns (`astro:assets`)  
+- **Hosting** — Cloudflare Pages + custom domain `digisone.com`  
+- **Email** — Public address `info@digisone.com` (Cloudflare Email Routing → inbox)
+
+---
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Astro (static site generation) |
+| Content | Astro Content Collections + Zod schema |
+| Language | TypeScript / Astro / Markdown |
+| Styling | Scoped CSS, design tokens, responsive layout |
+| Images | `astro:assets` / WebP-friendly pipelines |
+| Hosting | Cloudflare Pages |
+| DNS / CDN | Cloudflare |
+| Repo | GitHub (`DigiSone/digisone-global`) |
+| Optional API | Cloudflare Pages Functions + D1 (newsletter) |
+| Search / discovery | Google Search Console + sitemap |
+| Analytics | Google Analytics 4 |
+
+---
+
+## Full project structure
 
 ```text
+digisone-global/
 ├── public/
+│   ├── favicon.svg
+│   ├── favicon.ico
+│   ├── robots.txt              # Allow + Sitemap URL
+│   └── llms.txt                # Optional agent-oriented site map
+│
 ├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
+│   ├── assets/                 # Source images for optimization
+│   │   └── blog-placeholder-*.jpg
+│   │
+│   ├── components/
+│   │   ├── BaseHead.astro      # Meta, OG, GA, consent defaults, AdSense hook
+│   │   ├── Header.astro        # Nav + logo (href="/")
+│   │   ├── Footer.astro        # Links + <CookieConsent />
+│   │   ├── CookieConsent.astro # Banner + preference center
+│   │   └── …                   # Shared UI pieces
+│   │
+│   ├── content/
+│   │   └── blog/               # Markdown posts
+│   │       ├── *.md
+│   │       └── …
+│   │
+│   ├── content.config.ts       # Collection schema (title, description, pubDate, heroImage)
+│   │
+│   ├── layouts/                # Optional shared layouts
+│   │
+│   ├── pages/
+│   │   ├── index.astro
+│   │   ├── about.astro
+│   │   ├── contact.astro
+│   │   ├── subscribe.astro
+│   │   ├── resources.astro
+│   │   ├── privacy.astro
+│   │   ├── terms.astro
+│   │   ├── donate.astro
+│   │   ├── categories.astro
+│   │   ├── categories/
+│   │   │   ├── [slug].astro
+│   │   │   └── creator-economy.astro   # Long-form guide (example)
+│   │   ├── blog/
+│   │   │   ├── index.astro
+│   │   │   └── [...slug].astro         # Theme-dependent post route
+│   │   └── rss.xml.js
+│   │
+│   ├── styles/
+│   │   └── global.css
+│   │
+│   └── consts.ts               # SITE_TITLE, SITE_DESCRIPTION, etc.
+│
+├── functions/                  # Cloudflare Pages Functions
+│   └── api/
+│       └── subscribe.ts        # POST /api/subscribe → D1
+│
+├── astro.config.mjs            # site: 'https://digisone.com', sitemap integration
 ├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+├── tsconfig.json
+└── README.md
