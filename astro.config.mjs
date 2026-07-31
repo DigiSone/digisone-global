@@ -8,7 +8,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://digisone.com',
   // Prefer one style and stick to it site-wide:
-  trailingSlash: 'always', // or 'ignore' / 'never' — pick one
+  trailingSlash: 'ignore', // or 'always' / 'never' — pick one
   integrations: [mdx(), sitemap()],
 	fonts: [
 		{
