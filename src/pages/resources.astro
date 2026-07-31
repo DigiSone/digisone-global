@@ -1,0 +1,499 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+const title = 'Resources — Tools Directory | DigiSone Global';
+const description =
+	'Curated directory of AI, SEO, testing, IDE, design, social, video, converter and image tools — with free, paid, open-source labels and official links.';
+
+type Tool = {
+	name: string;
+	url: string;
+	type: 'Free' | 'Paid' | 'Freemium' | 'Open Source';
+	blurb: string;
+	access: string; // device / a11y note
+};
+
+type Sub = { name: string; tools: Tool[] };
+type Cat = { id: string; title: string; intro: string; subs: Sub[] };
+
+const categories: Cat[] = [
+	{
+		id: 'ai',
+		title: 'AI Tools',
+		intro: 'Assistants, coding, image, research and automation — free tiers and open models included.',
+		subs: [
+			{
+				name: 'General assistants & chat',
+				tools: [
+					{ name: 'ChatGPT', url: 'https://chatgpt.com', type: 'Freemium', blurb: 'General-purpose AI assistant for writing, coding help and brainstorming.', access: 'Web, iOS, Android' },
+					{ name: 'Claude', url: 'https://claude.ai', type: 'Freemium', blurb: 'Long-context assistant strong at analysis and careful writing.', access: 'Web, iOS, Android' },
+					{ name: 'Google Gemini', url: 'https://gemini.google.com', type: 'Freemium', blurb: 'Google’s multimodal assistant with search integration.', access: 'Web, Android, iOS' },
+					{ name: 'Microsoft Copilot', url: 'https://copilot.microsoft.com', type: 'Freemium', blurb: 'Assistant integrated with Microsoft ecosystem and Bing.', access: 'Web, Windows, mobile' },
+					{ name: 'Perplexity', url: 'https://www.perplexity.ai', type: 'Freemium', blurb: 'Answer engine with citations for research-style queries.', access: 'Web, iOS, Android' },
+				],
+			},
+			{
+				name: 'Coding & developer AI',
+				tools: [
+					{ name: 'GitHub Copilot', url: 'https://github.com/features/copilot', type: 'Paid', blurb: 'AI pair programmer inside popular IDEs.', access: 'VS Code, JetBrains, Neovim' },
+					{ name: 'Cursor', url: 'https://cursor.com', type: 'Freemium', blurb: 'AI-first code editor built for agentic coding workflows.', access: 'Desktop (Win/Mac/Linux)' },
+					{ name: 'Continue', url: 'https://continue.dev', type: 'Open Source', blurb: 'Open-source autopilot for VS Code and JetBrains.', access: 'VS Code, JetBrains' },
+					{ name: 'Tabby', url: 'https://tabby.tabbyml.com', type: 'Open Source', blurb: 'Self-hosted coding assistant alternative.', access: 'Self-host / server' },
+					{ name: 'Ollama', url: 'https://ollama.com', type: 'Open Source', blurb: 'Run open models locally (Llama, Mistral, etc.).', access: 'Desktop / local' },
+				],
+			},
+			{
+				name: 'Image & media AI',
+				tools: [
+					{ name: 'Midjourney', url: 'https://www.midjourney.com', type: 'Paid', blurb: 'High-quality image generation via Discord/web.', access: 'Web / Discord' },
+					{ name: 'Stable Diffusion (Stability)', url: 'https://stability.ai', type: 'Freemium', blurb: 'Open ecosystem for image generation models.', access: 'Web APIs / local UIs' },
+					{ name: 'Automatic1111 WebUI', url: 'https://github.com/AUTOMATIC1111/stable-diffusion-webui', type: 'Open Source', blurb: 'Popular local UI for Stable Diffusion.', access: 'Desktop / local GPU' },
+					{ name: 'ComfyUI', url: 'https://github.com/comfyanonymous/ComfyUI', type: 'Open Source', blurb: 'Node-based workflow UI for diffusion models.', access: 'Desktop / local' },
+					{ name: 'Remove.bg', url: 'https://www.remove.bg', type: 'Freemium', blurb: 'Fast background removal for product and profile shots.', access: 'Web, API' },
+				],
+			},
+			{
+				name: 'Automation & agents',
+				tools: [
+					{ name: 'n8n', url: 'https://n8n.io', type: 'Open Source', blurb: 'Workflow automation; self-host or cloud.', access: 'Web / self-host' },
+					{ name: 'Activepieces', url: 'https://www.activepieces.com', type: 'Open Source', blurb: 'Open-source Zapier-style automation.', access: 'Web / self-host' },
+					{ name: 'Langflow', url: 'https://www.langflow.org', type: 'Open Source', blurb: 'Visual framework for building LLM flows.', access: 'Web / self-host' },
+					{ name: 'Dify', url: 'https://dify.ai', type: 'Open Source', blurb: 'LLM app platform with orchestration and RAG.', access: 'Web / self-host' },
+				],
+			},
+		],
+	},
+	{
+		id: 'web-testing',
+		title: 'Web Testing Tools',
+		intro: 'Functional, E2E, visual, performance and accessibility testing for modern websites.',
+		subs: [
+			{
+				name: 'E2E & browser automation',
+				tools: [
+					{ name: 'Playwright', url: 'https://playwright.dev', type: 'Open Source', blurb: 'Reliable E2E testing for Chromium, Firefox, WebKit.', access: 'Node / CI / all major OS' },
+					{ name: 'Cypress', url: 'https://www.cypress.io', type: 'Freemium', blurb: 'Developer-friendly E2E and component testing.', access: 'Desktop / CI' },
+					{ name: 'Selenium', url: 'https://www.selenium.dev', type: 'Open Source', blurb: 'Classic WebDriver standard for browser automation.', access: 'Multi-language / CI' },
+					{ name: 'Puppeteer', url: 'https://pptr.dev', type: 'Open Source', blurb: 'Headless Chrome automation by the Chrome team path.', access: 'Node' },
+				],
+			},
+			{
+				name: 'Performance',
+				tools: [
+					{ name: 'Lighthouse', url: 'https://developer.chrome.com/docs/lighthouse', type: 'Open Source', blurb: 'Audits performance, accessibility, SEO, best practices.', access: 'Chrome DevTools / CLI / CI' },
+					{ name: 'PageSpeed Insights', url: 'https://pagespeed.web.dev', type: 'Free', blurb: 'Lab + field metrics powered by Lighthouse/CrUX.', access: 'Web' },
+					{ name: 'WebPageTest', url: 'https://www.webpagetest.org', type: 'Freemium', blurb: 'Deep waterfall and real-browser performance tests.', access: 'Web' },
+					{ name: 'k6', url: 'https://k6.io', type: 'Open Source', blurb: 'Modern load testing for APIs and sites.', access: 'CLI / CI / cloud option' },
+				],
+			},
+			{
+				name: 'Accessibility (a11y)',
+				tools: [
+					{ name: 'axe DevTools', url: 'https://www.deque.com/axe/devtools/', type: 'Freemium', blurb: 'Industry-standard accessibility checks in browser.', access: 'Browser extension' },
+					{ name: 'WAVE', url: 'https://wave.webaim.org', type: 'Freemium', blurb: 'Visual feedback for accessibility issues.', access: 'Web + extension' },
+					{ name: 'Pa11y', url: 'https://pa11y.org', type: 'Open Source', blurb: 'CLI/CI accessibility testing.', access: 'CLI / CI' },
+					{ name: 'Accessibility Insights', url: 'https://accessibilityinsights.io', type: 'Free', blurb: 'Microsoft tools for automated + manual a11y tests.', access: 'Extension / Windows app' },
+				],
+			},
+		],
+	},
+	{
+		id: 'seo',
+		title: 'SEO Tools',
+		intro: 'Research, auditing, rank tracking and technical SEO — free and open options included.',
+		subs: [
+			{
+				name: 'Audit & inspection',
+				tools: [
+					{ name: 'Google Search Console', url: 'https://search.google.com/search-console', type: 'Free', blurb: 'Index coverage, queries, and sitemap status from Google.', access: 'Web' },
+					{ name: 'Bing Webmaster Tools', url: 'https://www.bing.com/webmasters', type: 'Free', blurb: 'Bing indexing and performance data.', access: 'Web' },
+					{ name: 'Lighthouse SEO category', url: 'https://developer.chrome.com/docs/lighthouse', type: 'Open Source', blurb: 'Quick on-page SEO checks with other audits.', access: 'Chrome / CLI' },
+					{ name: 'Screaming Frog SEO Spider', url: 'https://www.screamingfrog.co.uk/seo-spider/', type: 'Freemium', blurb: 'Desktop crawler for technical SEO audits.', access: 'Windows, Mac, Linux' },
+				],
+			},
+			{
+				name: 'Research & content',
+				tools: [
+					{ name: 'Google Keyword Planner', url: 'https://ads.google.com/home/lib/us/keyword-planner/', type: 'Free', blurb: 'Keyword ideas and volume ranges (Google Ads account).', access: 'Web' },
+					{ name: 'AlsoAsked', url: 'https://alsoasked.com', type: 'Freemium', blurb: 'People Also Ask style question maps.', access: 'Web' },
+					{ name: 'AnswerThePublic', url: 'https://answerthepublic.com', type: 'Freemium', blurb: 'Question and phrase mining around a topic.', access: 'Web' },
+					{ name: 'Ahrefs / free tools', url: 'https://ahrefs.com/free-seo-tools', type: 'Freemium', blurb: 'Limited free utilities; full suite is paid.', access: 'Web' },
+				],
+			},
+			{
+				name: 'Open-source SEO utilities',
+				tools: [
+					{ name: 'Open Source SEO Tools (list hub)', url: 'https://github.com/topics/seo', type: 'Open Source', blurb: 'Browse community SEO-related repos on GitHub.', access: 'GitHub' },
+					{ name: 'matomo', url: 'https://matomo.org', type: 'Open Source', blurb: 'Privacy-oriented analytics (self-host) for behavior data.', access: 'Self-host / cloud' },
+					{ name: 'Plausible', url: 'https://plausible.io', type: 'Open Source', blurb: 'Lightweight privacy-friendly analytics.', access: 'Cloud / self-host' },
+				],
+			},
+		],
+	},
+	{
+		id: 'app-testing',
+		title: 'App Testing Tools',
+		intro: 'Mobile and cross-platform testing — automation, device clouds and open frameworks.',
+		subs: [
+			{
+				name: 'Mobile automation',
+				tools: [
+					{ name: 'Appium', url: 'https://appium.io', type: 'Open Source', blurb: 'Cross-platform mobile UI automation (iOS/Android).', access: 'Desktop / CI' },
+					{ name: 'Espresso', url: 'https://developer.android.com/training/testing/espresso', type: 'Free', blurb: 'Official Android UI testing framework.', access: 'Android Studio' },
+					{ name: 'XCUITest', url: 'https://developer.apple.com/documentation/xctest', type: 'Free', blurb: 'Apple’s UI testing stack for iOS.', access: 'Xcode / macOS' },
+					{ name: 'Detox', url: 'https://wix.github.io/Detox/', type: 'Open Source', blurb: 'Gray-box E2E for React Native apps.', access: 'macOS / CI' },
+					{ name: 'Maestro', url: 'https://maestro.mobile.dev', type: 'Open Source', blurb: 'Simple YAML-based mobile UI flows.', access: 'CLI / desktop' },
+				],
+			},
+			{
+				name: 'Device & lab',
+				tools: [
+					{ name: 'Firebase Test Lab', url: 'https://firebase.google.com/products/test-lab', type: 'Freemium', blurb: 'Run tests on real Google-hosted devices.', access: 'Web / CI' },
+					{ name: 'BrowserStack App Live', url: 'https://www.browserstack.com/app-live', type: 'Paid', blurb: 'Real device cloud for manual + automated checks.', access: 'Web' },
+					{ name: 'Kobiton', url: 'https://kobiton.com', type: 'Paid', blurb: 'Mobile testing platform with real devices.', access: 'Web' },
+				],
+			},
+		],
+	},
+	{
+		id: 'theme-testing',
+		title: 'Theme & UI Testing Tools',
+		intro: 'Visual regression, cross-browser UI checks and design-quality tooling.',
+		subs: [
+			{
+				name: 'Visual regression',
+				tools: [
+					{ name: 'Lost Pixel', url: 'https://lost-pixel.com', type: 'Open Source', blurb: 'Visual regression for Storybook and pages.', access: 'CI / Node' },
+					{ name: 'BackstopJS', url: 'https://github.com/garris/BackstopJS', type: 'Open Source', blurb: 'Screenshot-based visual diffing.', access: 'Node / CI' },
+					{ name: 'Percy', url: 'https://percy.io', type: 'Freemium', blurb: 'Visual testing platform (BrowserStack).', access: 'CI / Web' },
+					{ name: 'Chromatic', url: 'https://www.chromatic.com', type: 'Freemium', blurb: 'Visual tests for Storybook UIs.', access: 'Web / CI' },
+				],
+			},
+			{
+				name: 'Cross-browser UI',
+				tools: [
+					{ name: 'BrowserStack Live', url: 'https://www.browserstack.com/live', type: 'Paid', blurb: 'Manual testing on real browsers/devices.', access: 'Web' },
+					{ name: 'LambdaTest', url: 'https://www.lambdatest.com', type: 'Freemium', blurb: 'Cross-browser testing cloud.', access: 'Web' },
+					{ name: 'Responsively App', url: 'https://responsively.app', type: 'Open Source', blurb: 'Multi-device preview for responsive layouts.', access: 'Desktop' },
+				],
+			},
+		],
+	},
+	{
+		id: 'ide',
+		title: 'App / Code IDE Tools',
+		intro: 'Editors and IDEs for web, mobile and general development.',
+		subs: [
+			{
+				name: 'General IDEs & editors',
+				tools: [
+					{ name: 'VS Code', url: 'https://code.visualstudio.com', type: 'Free', blurb: 'Most popular extensible code editor.', access: 'Win / Mac / Linux' },
+					{ name: 'VSCodium', url: 'https://vscodium.com', type: 'Open Source', blurb: 'Community builds of VS Code without Microsoft telemetry branding.', access: 'Win / Mac / Linux' },
+					{ name: 'JetBrains IntelliJ IDEA', url: 'https://www.jetbrains.com/idea/', type: 'Freemium', blurb: 'Powerful IDE especially for JVM and polyglot work.', access: 'Desktop' },
+					{ name: 'Eclipse', url: 'https://www.eclipse.org/ide/', type: 'Open Source', blurb: 'Long-running open IDE platform.', access: 'Desktop' },
+					{ name: 'Neovim', url: 'https://neovim.io', type: 'Open Source', blurb: 'Modern Vim-based modal editor.', access: 'Terminal / desktop' },
+				],
+			},
+			{
+				name: 'Mobile IDEs',
+				tools: [
+					{ name: 'Android Studio', url: 'https://developer.android.com/studio', type: 'Free', blurb: 'Official Android IDE.', access: 'Win / Mac / Linux' },
+					{ name: 'Xcode', url: 'https://developer.apple.com/xcode/', type: 'Free', blurb: 'Official IDE for Apple platforms.', access: 'macOS' },
+					{ name: 'Flutter (devtools + editors)', url: 'https://flutter.dev', type: 'Open Source', blurb: 'Cross-platform UI toolkit; works with VS Code/Android Studio.', access: 'Desktop toolchains' },
+				],
+			},
+		],
+	},
+	{
+		id: 'social',
+		title: 'Social Media Management Tools',
+		intro: 'Scheduling, analytics and open alternatives for multi-channel publishing.',
+		subs: [
+			{
+				name: 'Scheduling & publishing',
+				tools: [
+					{ name: 'Buffer', url: 'https://buffer.com', type: 'Freemium', blurb: 'Simple scheduling and analytics for social channels.', access: 'Web, iOS, Android' },
+					{ name: 'Hootsuite', url: 'https://www.hootsuite.com', type: 'Paid', blurb: 'Enterprise-oriented social management suite.', access: 'Web, mobile' },
+					{ name: 'Later', url: 'https://later.com', type: 'Freemium', blurb: 'Visual planner popular for Instagram-centric workflows.', access: 'Web, mobile' },
+					{ name: 'Meta Business Suite', url: 'https://business.facebook.com', type: 'Free', blurb: 'Official scheduling for Facebook & Instagram.', access: 'Web, mobile' },
+				],
+			},
+			{
+				name: 'Open-source / self-host',
+				tools: [
+					{ name: 'Postiz', url: 'https://postiz.com', type: 'Open Source', blurb: 'Open-source social scheduling platform.', access: 'Web / self-host' },
+					{ name: 'Mixpost', url: 'https://mixpost.app', type: 'Open Source', blurb: 'Self-hosted social scheduler.', access: 'Self-host' },
+					{ name: 'Ghost + native APIs', url: 'https://ghost.org', type: 'Open Source', blurb: 'Publishing platform; pairs with manual social distribution.', access: 'Cloud / self-host' },
+				],
+			},
+		],
+	},
+	{
+		id: 'video',
+		title: 'Video Generation & Creation Tools',
+		intro: 'Editing, recording and AI video helpers for creators and teams.',
+		subs: [
+			{
+				name: 'Editors',
+				tools: [
+					{ name: 'DaVinci Resolve', url: 'https://www.blackmagicdesign.com/products/davinciresolve', type: 'Freemium', blurb: 'Pro-grade color and NLE; strong free edition.', access: 'Win / Mac / Linux' },
+					{ name: 'Shotcut', url: 'https://shotcut.org', type: 'Open Source', blurb: 'Cross-platform open video editor.', access: 'Win / Mac / Linux' },
+					{ name: 'OpenShot', url: 'https://www.openshot.org', type: 'Open Source', blurb: 'Beginner-friendly open editor.', access: 'Win / Mac / Linux' },
+					{ name: 'CapCut', url: 'https://www.capcut.com', type: 'Freemium', blurb: 'Fast social-video editing with templates.', access: 'Desktop, mobile, web' },
+					{ name: 'OBS Studio', url: 'https://obsproject.com', type: 'Open Source', blurb: 'Recording and live streaming standard.', access: 'Win / Mac / Linux' },
+				],
+			},
+			{
+				name: 'AI video helpers',
+				tools: [
+					{ name: 'Runway', url: 'https://runwayml.com', type: 'Paid', blurb: 'AI video generation and editing tools.', access: 'Web' },
+					{ name: 'Pika', url: 'https://pika.art', type: 'Freemium', blurb: 'Text/image-to-video generation.', access: 'Web' },
+					{ name: 'HandBrake', url: 'https://handbrake.fr', type: 'Open Source', blurb: 'Reliable video transcoding (not generative).', access: 'Win / Mac / Linux' },
+					{ name: 'FFmpeg', url: 'https://ffmpeg.org', type: 'Open Source', blurb: 'Swiss-army CLI for media convert/stream.', access: 'CLI all platforms' },
+				],
+			},
+		],
+	},
+	{
+		id: 'converters',
+		title: 'Document Converter Tools',
+		intro: 'Office, PDF and markup conversion — privacy-friendly and open tools preferred where possible.',
+		subs: [
+			{
+				name: 'Office & PDF',
+				tools: [
+					{ name: 'LibreOffice', url: 'https://www.libreoffice.org', type: 'Open Source', blurb: 'Full office suite; export to many formats including PDF.', access: 'Win / Mac / Linux' },
+					{ name: 'OnlyOffice', url: 'https://www.onlyoffice.com', type: 'Open Source', blurb: 'Collaborative editors with solid format support.', access: 'Web / desktop / self-host' },
+					{ name: 'Pandoc', url: 'https://pandoc.org', type: 'Open Source', blurb: 'Universal document converter (Markdown, DOCX, HTML, PDF…).', access: 'CLI all platforms' },
+					{ name: 'Stirling-PDF', url: 'https://www.stirlingpdf.com', type: 'Open Source', blurb: 'Self-hosted PDF toolkit (merge, split, convert).', access: 'Self-host / web UI' },
+					{ name: 'Gotenberg', url: 'https://gotenberg.dev', type: 'Open Source', blurb: 'Docker API for HTML/Office to PDF.', access: 'Self-host / Docker' },
+				],
+			},
+			{
+				name: 'Online converters (use carefully)',
+				tools: [
+					{ name: 'CloudConvert', url: 'https://cloudconvert.com', type: 'Freemium', blurb: 'Many format pairs via API or web (privacy: review policy).', access: 'Web / API' },
+					{ name: 'Microsoft Word (export)', url: 'https://www.microsoft.com/microsoft-365', type: 'Freemium', blurb: 'Native export to PDF and other formats.', access: 'Desktop / web / mobile' },
+				],
+			},
+		],
+	},
+	{
+		id: 'image',
+		title: 'Image Processing Tools',
+		intro: 'Edit, compress, convert and batch-process images.',
+		subs: [
+			{
+				name: 'Editors',
+				tools: [
+					{ name: 'GIMP', url: 'https://www.gimp.org', type: 'Open Source', blurb: 'Full-featured raster editor.', access: 'Win / Mac / Linux' },
+					{ name: 'Krita', url: 'https://krita.org', type: 'Open Source', blurb: 'Painting-focused open editor.', access: 'Win / Mac / Linux' },
+					{ name: 'Photopea', url: 'https://www.photopea.com', type: 'Freemium', blurb: 'Browser Photoshop-like editor.', access: 'Web' },
+					{ name: 'Inkscape', url: 'https://inkscape.org', type: 'Open Source', blurb: 'Vector graphics (SVG) editor.', access: 'Win / Mac / Linux' },
+				],
+			},
+			{
+				name: 'Compress & optimize',
+				tools: [
+					{ name: 'Squoosh', url: 'https://squoosh.app', type: 'Free', blurb: 'Browser image compression by Google Chrome team demos.', access: 'Web' },
+					{ name: 'ImageOptim', url: 'https://imageoptim.com', type: 'Free', blurb: 'Lossless/lossy optimization on Mac.', access: 'macOS' },
+					{ name: 'Oxipng', url: 'https://github.com/shssoichiro/oxipng', type: 'Open Source', blurb: 'Lossless PNG compression CLI.', access: 'CLI' },
+					{ name: 'Sharp (library)', url: 'https://sharp.pixelplumbing.com', type: 'Open Source', blurb: 'High-performance Node image pipeline.', access: 'Node.js' },
+					{ name: 'ImageMagick', url: 'https://imagemagick.org', type: 'Open Source', blurb: 'Classic batch convert/resize toolkit.', access: 'CLI all platforms' },
+				],
+			},
+		],
+	},
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			:root {
+				--bg: #f1f5f9;
+				--surface: #fff;
+				--text: #0b1220;
+				--muted: #475569;
+				--primary: #2563eb;
+				--border: rgba(15, 23, 42, 0.08);
+				--radius: 1rem;
+				--font: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+			}
+			* { box-sizing: border-box; }
+			body {
+				margin: 0;
+				font-family: var(--font);
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.6;
+			}
+			main {
+				width: min(100% - 2rem, 56rem);
+				margin-inline: auto;
+				padding: 2.5rem 0 4rem;
+			}
+			h1 {
+				font-size: clamp(1.85rem, 4vw, 2.6rem);
+				letter-spacing: -0.03em;
+				margin: 0 0 0.6rem;
+			}
+			.lead { color: var(--muted); margin: 0 0 1.25rem; font-size: 1.05rem; }
+			.note {
+				background: #eff6ff;
+				border: 1px solid #bfdbfe;
+				color: #1e3a8a;
+				padding: 0.9rem 1rem;
+				border-radius: var(--radius);
+				font-size: 0.9rem;
+				margin-bottom: 1.75rem;
+			}
+			.toc {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1rem 1.15rem;
+				margin-bottom: 2rem;
+			}
+			.toc strong { display: block; margin-bottom: 0.5rem; }
+			.toc-links { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+			.toc-links a {
+				font-size: 0.8rem;
+				font-weight: 600;
+				padding: 0.3rem 0.65rem;
+				border-radius: 999px;
+				background: #f8fafc;
+				border: 1px solid var(--border);
+				color: var(--text);
+				text-decoration: none;
+			}
+			.toc-links a:hover { color: var(--primary); border-color: #93c5fd; }
+			section.cat { margin: 2.75rem 0; scroll-margin-top: 5rem; }
+			section.cat h2 {
+				font-size: 1.45rem;
+				margin: 0 0 0.4rem;
+				letter-spacing: -0.02em;
+			}
+			.cat-intro { color: var(--muted); margin: 0 0 1.1rem; }
+			.sub { margin: 1.35rem 0 0.5rem; font-size: 1.05rem; }
+			.tools { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.65rem; }
+			.tool {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 0.95rem 1rem;
+			}
+			.tool-top {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 0.45rem 0.65rem;
+				margin-bottom: 0.3rem;
+			}
+			.tool a.name {
+				font-weight: 700;
+				color: var(--primary);
+				text-decoration: none;
+			}
+			.tool a.name:hover { text-decoration: underline; }
+			.badge {
+				font-size: 0.68rem;
+				font-weight: 700;
+				padding: 0.15rem 0.45rem;
+				border-radius: 999px;
+				background: #f1f5f9;
+				color: var(--muted);
+				border: 1px solid var(--border);
+			}
+			.badge.os { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+			.badge.free { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+			.badge.paid { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+			.badge.freemium { background: #f5f3ff; color: #5b21b6; border-color: #ddd6fe; }
+			.blurb { margin: 0; font-size: 0.9rem; color: var(--text); }
+			.access { margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--muted); }
+			.disclaimer {
+				margin-top: 2.5rem;
+				font-size: 0.85rem;
+				color: var(--muted);
+				padding: 1rem;
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				background: var(--surface);
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Resources & tools directory</h1>
+			<p class="lead">
+				Curated AI, testing, SEO, IDE, social, video, converter and image tools — with official links,
+				pricing labels and device notes. Built for builders and operators.
+			</p>
+			<p class="note">
+				This is a living shortlist, not every tool on the internet. Always verify licenses, privacy
+				policies and pricing on the official site before use. DigiSone Global is not affiliated with
+				these products unless stated.
+			</p>
+
+			<nav class="toc" aria-label="Categories">
+				<strong>Jump to category</strong>
+				<div class="toc-links">
+					{categories.map((c) => (
+						<a href={`#${c.id}`}>{c.title}</a>
+					))}
+				</div>
+			</nav>
+
+			{categories.map((cat) => (
+				<section class="cat" id={cat.id}>
+					<h2>{cat.title}</h2>
+					<p class="cat-intro">{cat.intro}</p>
+					{cat.subs.map((sub) => (
+						<>
+							<h3 class="sub">{sub.name}</h3>
+							<ul class="tools">
+								{sub.tools.map((t) => (
+									<li class="tool">
+										<div class="tool-top">
+											<a class="name" href={t.url} target="_blank" rel="noopener noreferrer">
+												{t.name}
+											</a>
+											<span
+												class:list={[
+													'badge',
+													t.type === 'Open Source' && 'os',
+													t.type === 'Free' && 'free',
+													t.type === 'Paid' && 'paid',
+													t.type === 'Freemium' && 'freemium',
+												]}
+											>
+												{t.type}
+											</span>
+										</div>
+										<p class="blurb">{t.blurb}</p>
+										<p class="access">
+											<strong>Access:</strong> {t.access}
+										</p>
+									</li>
+								))}
+							</ul>
+						</>
+					))}
+				</section>
+			))}
+
+			<p class="disclaimer">
+				<strong>Disclaimer:</strong> Tool status (free/paid/open source) can change. “Access” describes
+				typical clients, not a full accessibility audit of each product. For product accessibility
+				conformance, check each vendor’s VPAT/ACR or documentation. Suggestions:
+				<a href="mailto:info@digisone.com">info@digisone.com</a>.
+			</p>
+		</main>
+		<Footer />
+	</body>
+</html>
