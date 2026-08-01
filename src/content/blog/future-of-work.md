@@ -2,6 +2,7 @@
 title: 'Future of Work: Complete Guide from Beginner to Advanced (2026)'
 description: 'A practical 2026 guide to the Future of Work — hybrid models, AI-augmented roles, skills strategy, productivity systems, culture, leadership and operating models from beginner to advanced.'
 pubDate: 'Jul 26 2026'
+author: 'Vikas Kumar Mishra'
 heroImage: '../../assets/blog-placeholder-futureofwork.jpg'
 ---
 
