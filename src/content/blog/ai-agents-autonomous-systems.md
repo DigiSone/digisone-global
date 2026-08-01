@@ -2,6 +2,7 @@
 title: 'AI Agents & Autonomous Systems: Complete Guide from Beginner to Advanced (2026)'
 description: 'A complete practical guide to AI agents and autonomous systems — from core concepts to production architecture, risks, governance and enterprise strategy in 2026.'
 pubDate: 'Jul 26 2026'
+author: 'Vikas Kumar Mishra'
 heroImage: '../../assets/blog-placeholder-aiagentshero.jpg'
 ---
 
