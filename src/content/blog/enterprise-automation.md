@@ -2,6 +2,7 @@
 title: 'Enterprise Automation: Complete Guide from Beginner to Advanced (2026)'
 description: 'A practical end-to-end guide to enterprise automation — from core concepts and RPA to AI-driven workflows, integration architecture, governance, ROI and scaling in 2026.'
 pubDate: 'Jul 26 2026'
+author: 'Vikas Kumar Mishra'
 heroImage: '../../assets/blog-placeholder-enterpriseautomation.jpg'
 ---
 
