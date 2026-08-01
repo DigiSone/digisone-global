@@ -2,6 +2,7 @@
 title: 'Top AI Tools in 2025: Complete Enterprise Guide for Businesses, Developers and Content Creators'
 description: 'Explore the most powerful AI tools of 2025 including ChatGPT, Claude, Gemini, Perplexity and AI automation platforms. A comprehensive enterprise-level guide for businesses and professionals.'
 pubDate: 'Jul 23 2025'
+author: 'Vikas Kumar Mishra'
 heroImage: '../../assets/blog-placeholder-aitools2025.jpg'
 ---
 
