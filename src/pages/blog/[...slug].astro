@@ -1,5 +1,9 @@
 ---
 import { sanityClient } from 'sanity:client';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
 
 const { slug } = Astro.params;
 
@@ -10,11 +14,70 @@ const post = await sanityClient.fetch(`
     body,
     publishedAt,
     "imageUrl": mainImage.asset->url,
-    author
+    "authorName": author->name
   }
 `, { slug });
 
 if (!post) {
   return Astro.redirect('/404');
 }
+
+const title = `${post.title} — ${SITE_TITLE}`;
 ---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={post.excerpt || post.title} />
+  </head>
+  <body>
+    <Header />
+    <main class="post-page">
+      <article>
+        <header>
+          <p class="date">{new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <h1>{post.title}</h1>
+          {post.authorName && <p class="author">By {post.authorName}</p>}
+          {post.imageUrl && (
+            <img src={post.imageUrl} alt={post.title} class="hero-image" />
+          )}
+        </header>
+
+        <div class="content">
+          <!-- Agar body Portable Text hai to yahan Portable Text component use karo -->
+          <!-- Abhi ke liye simple text dikha rahe hain -->
+          <p>{post.excerpt}</p>
+          <!-- Full body yahan render hoga -->
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .post-page {
+    width: min(100% - 2rem, 720px);
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+  }
+  .hero-image {
+    width: 100%;
+    border-radius: 1rem;
+    margin: 1.5rem 0;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.2;
+    margin: 0.5rem 0;
+  }
+  .date, .author {
+    color: #64748b;
+    font-size: 0.95rem;
+  }
+  .content {
+    margin-top: 2rem;
+    line-height: 1.75;
+    font-size: 1.1rem;
+  }
+</style>
