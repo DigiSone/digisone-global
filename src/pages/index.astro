@@ -366,7 +366,7 @@ const categories = [
 				{
 					latestPosts.length > 0 ? (
 						<ul class="grid">
-							{latestPosts.map((post, i) => (
+							{latestPosts.map((post: any, i:number) => (
 								<li class={`card reveal reveal-delay-${Math.min(i + 1, 5)}`}>
 									<a href={`/blog/${post.slug.current}/`} aria-label={post.title}>
 										{post.imageUrl && (

@@ -1,20 +1,79 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import { sanityClient } from 'sanity:client';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 
+// 1. Sanity से सभी पोस्ट्स के Slug मंगाकर पेजेस जनरेट करना
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<'blog'>;
+  const posts = await sanityClient.fetch(`*[_type == "post" && defined(slug.current)]`);
 
-const post = Astro.props;
-const { Content } = await render(post);
+  // यहाँ post के आगे : any लगा दिया है
+  return posts.map((post: any) => {
+    return {
+      params: { slug: post.slug.current },
+      props: { post },
+    };
+  });
+}
+
+// 2. TypeScript को बता दिया कि post खाली (never) नहीं है, बल्कि any टाइप का है
+const { post } = Astro.props as { post: any };
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={post.title} description={post.excerpt} />
+    <style>
+      main {
+        width: min(100% - 2rem, 72rem);
+        margin-inline: auto;
+        padding-block: 3rem 4rem;
+      }
+      .article-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        color: #0b1220;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+      }
+      .date {
+        color: #475569;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+      .content {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: #334155;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <article class="article-container">
+        <h1 class="title">{post.title}</h1>
+        
+        <p class="date">
+          {post._createdAt && new Date(post._createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </p>
+
+        <div class="content">
+          <p><em>(यहाँ आपके आर्टिकल का पूरा कंटेंट आएगा। एक बार यह पेज लोड हो जाए, फिर हम कंटेंट रेंडर करना सीखेंगे!)</em></p>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
