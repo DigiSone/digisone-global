@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 
 const posts = await sanityClient.fetch(`
-  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+  *[_type == "post"] | order(publishedAt desc) {
     title,
     "slug": slug.current,
     excerpt,
