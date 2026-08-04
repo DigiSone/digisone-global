@@ -1,14 +1,14 @@
 ---
 import { sanityClient } from 'sanity:client';
+// 1. Sanity के कंटेंट को रेंडर करने के लिए PortableText मंगाया
+import { PortableText } from 'astro-portabletext'; 
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-// 1. Sanity से सभी पोस्ट्स के Slug मंगाकर पेजेस जनरेट करना
 export async function getStaticPaths() {
   const posts = await sanityClient.fetch(`*[_type == "post" && defined(slug.current)]`);
 
-  // यहाँ post के आगे : any लगा दिया है
   return posts.map((post: any) => {
     return {
       params: { slug: post.slug.current },
@@ -17,7 +17,6 @@ export async function getStaticPaths() {
   });
 }
 
-// 2. TypeScript को बता दिया कि post खाली (never) नहीं है, बल्कि any टाइप का है
 const { post } = Astro.props as { post: any };
 ---
 
@@ -36,22 +35,54 @@ const { post } = Astro.props as { post: any };
         margin: 0 auto;
       }
       .title {
-        font-size: clamp(2rem, 4vw, 3rem);
+        font-size: clamp(2rem, 4vw, 3.2rem);
         font-weight: 700;
         color: #0b1220;
         margin-bottom: 1rem;
-        line-height: 1.2;
+        line-height: 1.15;
         letter-spacing: -0.03em;
       }
       .date {
         color: #475569;
         font-size: 1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.1);
       }
+      
+      /* प्रीमियम आर्टिकल टाइपोग्राफी (Premium Typography) */
       .content {
         font-size: 1.15rem;
         line-height: 1.8;
         color: #334155;
+      }
+      .content p {
+        margin-bottom: 1.5em;
+      }
+      .content h2, .content h3 {
+        color: #0b1220;
+        margin-top: 2em;
+        margin-bottom: 1em;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .content h2 { font-size: 2rem; }
+      .content h3 { font-size: 1.5rem; }
+      .content ul, .content ol {
+        margin-bottom: 1.5em;
+        padding-left: 1.5em;
+      }
+      .content li {
+        margin-bottom: 0.5em;
+      }
+      .content blockquote {
+        border-left: 4px solid #2563eb;
+        background: #f8fafc;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+        color: #1e293b;
+        border-radius: 0 0.5rem 0.5rem 0;
       }
     </style>
   </head>
@@ -70,7 +101,8 @@ const { post } = Astro.props as { post: any };
         </p>
 
         <div class="content">
-          <p><em>(यहाँ आपके आर्टिकल का पूरा कंटेंट आएगा। एक बार यह पेज लोड हो जाए, फिर हम कंटेंट रेंडर करना सीखेंगे!)</em></p>
+          <!-- 2. यहाँ आपका असली Sanity कंटेंट रेंडर होगा -->
+          {post.body ? <PortableText value={post.body} /> : <p>Content is coming soon...</p>}
         </div>
       </article>
     </main>
