@@ -683,7 +683,7 @@ const description = "Support independent research and writing at DigiSone Global
 <script>
   // Amount buttons
   const amountBtns = document.querySelectorAll('.amount-btn');
-  const customInput = document.getElementById('custom');
+  const customInput = document.getElementById('custom') as HTMLInputElement |null;
 
   amountBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -703,6 +703,7 @@ const description = "Support independent research and writing at DigiSone Global
   document.querySelectorAll('.copy-btn').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-copy');
+      if (!id) return;
       const el = document.getElementById(id);
       if (!el) return;
 
