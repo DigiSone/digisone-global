@@ -146,16 +146,20 @@ function isActive(href: string) {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(248, 250, 252, 0.85);
+    /* Changes background to 85% transparent deep black */
+    background: rgba(0, 0, 0, 0.85); 
     backdrop-filter: blur(18px) saturate(1.3);
     -webkit-backdrop-filter: blur(18px) saturate(1.3);
-    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    /* Changes bottom border to a subtle white tint for dark mode separation */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
     transition: background 0.3s ease, box-shadow 0.3s ease;
   }
 
   .site-header.scrolled {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+    /* Changes scrolled state background to 95% solid black */
+    background: rgba(15, 15, 15, 0.95);
+    /* Changes shadow to dark mode styling */
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5); 
   }
 
   .header-inner {
