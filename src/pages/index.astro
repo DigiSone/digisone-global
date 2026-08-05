@@ -8,7 +8,6 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 // 2. Sanity से सारे पब्लिश्ड पोस्ट्स मंगवाने की क्वेरी (ताज़ा पोस्ट सबसे ऊपर)
-// हम title, slug, excerpt (description के लिए), publishedAt और mainImage मंगा रहे हैं
 const posts = await sanityClient.fetch(`
   *[_type == "post" && defined(slug.current)] | order(_createdAt desc) {
     _id,
@@ -24,30 +23,29 @@ const featuredPost = posts[0];
 const latestPosts = posts.slice(1, 7);
 
 const trendingTopics = [
-	'AI Agents & Autonomous Systems',
-	'Enterprise Automation',
-	'Future of Work',
-	'Cybersecurity & Privacy',
-	'Cloud Infrastructure',
-	'Startup Growth Strategies',
+	'The Evolution of Digital Products',
+	'Autonomous AI & Smart Workflows',
+	'Scaling Modern Tech Ventures',
+	'Cybersecurity & Data Privacy',
+	'Cloud Architecture & Scale',
+	'Modern Leadership & Strategy',
 ];
 
 const categories = [
-	{ icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Automation', href: '/categories/artificial-intelligence/' },
-	{ icon: '📈', title: 'Business Strategy', desc: 'Leadership & Growth', href: '/categories/business-strategy/' },
-	{ icon: '🚀', title: 'Startups', desc: 'Funding & Scale', href: '/categories/startups/' },
-	{ icon: '🔒', title: 'Cybersecurity', desc: 'Security & Privacy', href: '/categories/cybersecurity/' },
-	{ icon: '☁️', title: 'Cloud', desc: 'AWS, Azure & GCP', href: '/categories/cloud-computing/' },
-	{ icon: '🌐', title: 'Future of Work', desc: 'Teams, Tools & Culture', href: '/categories/future-of-work/' },
+	{ icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Smart Automation', href: '/categories/artificial-intelligence/' },
+	{ icon: '📈', title: 'Business Strategy', desc: 'Leadership, Growth & Execution', href: '/categories/business-strategy/' },
+	{ icon: '🚀', title: 'Startups & Ventures', desc: 'Funding, Scaling & Product Vision', href: '/categories/startups/' },
+	{ icon: '🔒', title: 'Cybersecurity', desc: 'Security, Privacy & Trust', href: '/categories/cybersecurity/' },
+	{ icon: '☁️', title: 'Cloud Infrastructure', desc: 'AWS, Azure, GCP & Architecture', href: '/categories/cloud-computing/' },
+	{ icon: '🌐', title: 'Digital Culture', desc: 'Future of Work, Teams & Tools', href: '/categories/future-of-work/' },
 ];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title="DigiSone Global" description="DigiSone Global delivers premium insights on Artificial Intelligence, business strategy, startups, cybersecurity, cloud, and the future of work." />
+		<BaseHead title="DigiSone Global — Authored by Vikas Mishra" description="DigiSone Global is an elite independent publication by Vikas Mishra, offering deep insights into technology, digital strategy, startups, and modern innovation." />
 		<style>
-			/* CSS बिल्कुल वैसा ही रखा गया है, कोई बदलाव नहीं */
 			:root {
 				--bg: #f1f5f9;
 				--surface: #ffffff;
@@ -108,11 +106,6 @@ const categories = [
 				to { opacity: 1; transform: translateY(0); }
 			}
 
-			@keyframes fade-in {
-				from { opacity: 0; }
-				to { opacity: 1; }
-			}
-
 			@keyframes scale-in {
 				from { opacity: 0; transform: scale(0.97); }
 				to { opacity: 1; transform: scale(1); }
@@ -165,6 +158,7 @@ const categories = [
 				50% { background-position: 100% center; }
 			}
 			.hero-lead { color: #334155; font-size: 1.1rem; max-width: 36rem; }
+			.hero-lead strong { color: var(--text); }
 
 			.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
 			.btn {
@@ -197,6 +191,61 @@ const categories = [
 			.trending li:hover { background: var(--primary-soft); color: var(--primary); transform: translateX(4px); }
 			.trending .num { width: 1.4rem; height: 1.4rem; border-radius: 0.4rem; background: var(--primary-soft); color: var(--primary); font-size: 0.7rem; font-weight: 700; display: grid; place-items: center; flex-shrink: 0; transition: transform 0.25s var(--ease); }
 			.trending li:hover .num { transform: scale(1.08); }
+
+			/* Author Portfolio Card */
+			.author-spotlight {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				padding: 2.5rem;
+				box-shadow: var(--shadow);
+				display: grid;
+				grid-template-columns: auto 1fr;
+				gap: 2rem;
+				align-items: center;
+				margin-top: 4rem;
+				position: relative;
+				overflow: hidden;
+			}
+			.author-spotlight::before {
+				content: '';
+				position: absolute;
+				top: 0; left: 0; width: 4px; height: 100%;
+				background: linear-gradient(180deg, #2563eb, #6366f1);
+			}
+			.author-avatar {
+				width: 6rem;
+				height: 6rem;
+				border-radius: 50%;
+				background: linear-gradient(135deg, #2563eb, #1d4ed8);
+				color: #fff;
+				display: grid;
+				place-items: center;
+				font-size: 1.85rem;
+				font-weight: 800;
+				box-shadow: 0 0.5rem 1.5rem rgba(37, 99, 235, 0.35);
+				flex-shrink: 0;
+			}
+			.author-content h2 {
+				font-size: 1.4rem;
+				margin-bottom: 0.35rem;
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				flex-wrap: wrap;
+			}
+			.author-tagline {
+				color: var(--primary);
+				font-weight: 600;
+				font-size: 0.92rem;
+				margin-bottom: 0.85rem;
+			}
+			.author-bio {
+				color: var(--muted);
+				font-size: 0.98rem;
+				line-height: 1.75;
+				max-width: 46rem;
+			}
 
 			.featured a { display: grid; grid-template-columns: 1.15fr 1fr; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease); min-height: 20rem; }
 			.featured a:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
@@ -251,6 +300,8 @@ const categories = [
 
 			@media (max-width: 900px) {
 				.hero { grid-template-columns: 1fr; gap: 2rem; }
+				.author-spotlight { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+				.author-content h2 { justify-content: center; }
 				.featured a { grid-template-columns: 1fr; }
 				.why-grid, .categories { grid-template-columns: 1fr; }
 			}
@@ -272,16 +323,15 @@ const categories = [
 				<div>
 					<div class="hero-badge reveal">
 						<span class="dot" aria-hidden="true"></span>
-						Trusted by founders, operators & technology leaders
+						Independent Publication & Writings by Vikas Mishra
 					</div>
 					<h1 class="reveal reveal-delay-1">The Future of <span>Technology, Business & AI</span></h1>
 					<p class="hero-lead reveal reveal-delay-2">
-						DigiSone Global delivers premium insights on Artificial Intelligence, business strategy,
-						startups, cybersecurity, cloud, and the future of work.
+						Welcome to <strong>DigiSone Global</strong>. Founded and curated by <strong>Vikas Mishra</strong>, this publication delivers enterprise-grade insights on deep technology, business strategy, startups, and digital transformation.
 					</p>
 					<div class="actions reveal reveal-delay-3">
-						<a class="btn btn-primary" href="/blog/">Read Latest Insights</a>
-						<a class="btn btn-secondary" href="#newsletter">Get Weekly Briefing</a>
+						<a class="btn btn-primary" href="/blog/">Explore Articles</a>
+						<a class="btn btn-secondary" href="#author-profile">About Vikas Mishra</a>
 					</div>
 					<div class="trust reveal reveal-delay-4" aria-label="Platform stats">
 						<div>
@@ -317,14 +367,13 @@ const categories = [
 				</aside>
 			</section>
 
-			<!-- Featured (अब Sanity से आ रहा है) -->
+			<!-- Featured (Sanity से आ रहा है) -->
 			<section class="section featured reveal" aria-label="Featured article">
 				{
 					featuredPost ? (
 						<article>
 							<a href={`/blog/${featuredPost.slug.current}/`} aria-label={`Read: ${featuredPost.title}`}>
 								<div class="featured-media">
-									{/* अगर Sanity में इमेज है तो वो दिखेगी, वरना डार्क ब्लू बैकग्राउंड दिखेगा */}
 									{featuredPost.imageUrl && (
 										<img
 											src={featuredPost.imageUrl}
@@ -334,7 +383,7 @@ const categories = [
 									)}
 								</div>
 								<div class="body">
-									<div class="label">Featured Story</div>
+									<div class="label">Featured Story • Handpicked by Vikas Mishra</div>
 									<p class="date">
 										<time datetime={featuredPost._createdAt}>
 											{new Date(featuredPost._createdAt).toLocaleDateString('en-US', {
@@ -356,7 +405,7 @@ const categories = [
 				}
 			</section>
 
-			<!-- Latest (अब Sanity से आ रहा है) -->
+			<!-- Latest Articles (Sanity से आ रहा है) -->
 			<section class="section" aria-label="Latest articles">
 				<div class="section-header reveal">
 					<h2>Latest Articles</h2>
@@ -399,6 +448,18 @@ const categories = [
 				}
 			</section>
 
+			<!-- Author Portfolio Spotlight -->
+			<section class="author-spotlight reveal" id="author-profile" aria-label="About the author">
+				<div class="author-avatar" aria-hidden="true">VM</div>
+				<div class="author-content">
+					<h2>Vikas Mishra <span style="font-size: 0.9rem; font-weight: 600; color: var(--primary); background: var(--primary-soft); padding: 0.2rem 0.6rem; border-radius: 999px;">Founder & Editor-in-Chief</span></h2>
+					<p class="author-tagline">Tech Strategist, Author & Digital Product Architect</p>
+					<p class="author-bio">
+						As the mind behind DigiSone Global, I am dedicated to breaking down complex tech paradigms, strategic digital growth patterns, and modern enterprise innovations. My goal is to build an authoritative knowledge hub where founders, creators, and technology leaders find crystal-clear clarity to make high-impact decisions.
+					</p>
+				</div>
+			</section>
+
 			<!-- Categories -->
 			<section class="section" aria-label="Categories">
 				<div class="section-header reveal">
@@ -429,26 +490,26 @@ const categories = [
 					<div class="why-card reveal reveal-delay-1">
 						<div class="why-icon" aria-hidden="true">🔍</div>
 						<h3>Deep Analysis</h3>
-						<p>Practical insights beyond headlines and breaking news.</p>
+						<p>Practical insights beyond breaking headlines, meticulously researched and published by Vikas Mishra.</p>
 					</div>
 					<div class="why-card reveal reveal-delay-2">
 						<div class="why-icon" aria-hidden="true">🧠</div>
 						<h3>Expert Perspectives</h3>
-						<p>Technology, leadership and innovation from industry operators.</p>
+						<p>Actionable technology, startup scaling, and innovation frameworks from industry operators.</p>
 					</div>
 					<div class="why-card reveal reveal-delay-3">
 						<div class="why-icon" aria-hidden="true">⚡</div>
 						<h3>Actionable Takeaways</h3>
-						<p>Frameworks, lessons and strategies you can apply immediately.</p>
+						<p>Strategic playbooks and mental models you can apply immediately to your career and ventures.</p>
 					</div>
 				</div>
 			</section>
 
 			<section class="newsletter" id="newsletter" aria-label="Newsletter signup">
 				<h2>Get the Weekly Technology Briefing</h2>
-				<p>Actionable insights on AI, strategy, security, and digital transformation.</p>
-				<a class="newsletter-btn" href="/subscribe/">Subscribe</a>
-				<p class="note">No spam. Unsubscribe anytime.</p>
+				<p>Actionable insights on AI, strategy, security, and digital transformation delivered straight to your inbox by Vikas Mishra.</p>
+				<a class="newsletter-btn" href="/subscribe/">Subscribe Now</a>
+				<p class="note">No spam. Unsubscribe anytime with a single click.</p>
 			</section>
 		</main>
 		<Footer />
