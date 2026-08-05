@@ -1,13 +1,13 @@
 ---
 import { Image } from 'astro:assets';
-// 1. Astro के getCollection की जगह हम Sanity client इस्तेमाल करेंगे
+// 1. Sanity client for fetching blog posts
 import { sanityClient } from 'sanity:client';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-// 2. Sanity से सारे पब्लिश्ड पोस्ट्स मंगवाने की क्वेरी (ताज़ा पोस्ट सबसे ऊपर)
+// 2. Fetching published posts from Sanity
 const posts = await sanityClient.fetch(`
   *[_type == "post" && defined(slug.current)] | order(_createdAt desc) {
     _id,
@@ -23,58 +23,58 @@ const featuredPost = posts[0];
 const latestPosts = posts.slice(1, 7);
 
 const trendingTopics = [
-	'The Evolution of Digital Products',
-	'Autonomous AI & Smart Workflows',
-	'Scaling Modern Tech Ventures',
-	'Cybersecurity & Data Privacy',
-	'Cloud Architecture & Scale',
-	'Modern Leadership & Strategy',
+	'Next-Gen AI & Autonomous Agents',
+	'Modern Frontend & Astro Architecture',
+	'Scaling Micro-SaaS Startups',
+	'Cloud Infrastructure & DevOps',
+	'Cybersecurity in the AI Era',
+	'Productivity & Deep Work',
 ];
 
 const categories = [
-	{ icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Smart Automation', href: '/categories/artificial-intelligence/' },
-	{ icon: '📈', title: 'Business Strategy', desc: 'Leadership, Growth & Execution', href: '/categories/business-strategy/' },
-	{ icon: '🚀', title: 'Startups & Ventures', desc: 'Funding, Scaling & Product Vision', href: '/categories/startups/' },
-	{ icon: '🔒', title: 'Cybersecurity', desc: 'Security, Privacy & Trust', href: '/categories/cybersecurity/' },
-	{ icon: '☁️', title: 'Cloud Infrastructure', desc: 'AWS, Azure, GCP & Architecture', href: '/categories/cloud-computing/' },
-	{ icon: '🌐', title: 'Digital Culture', desc: 'Future of Work, Teams & Tools', href: '/categories/future-of-work/' },
+	{ icon: '🤖', title: 'Artificial Intelligence', desc: 'Models, Agents & Workflows', href: '/categories/artificial-intelligence/' },
+	{ icon: '📈', title: 'Business & Growth', desc: 'Startup Strategies & Scaling', href: '/categories/business-strategy/' },
+	{ icon: '🚀', title: 'Tech & Products', desc: 'Software, Code & Architecture', href: '/categories/startups/' },
+	{ icon: '🔒', title: 'Cybersecurity', desc: 'Data Privacy & Security', href: '/categories/cybersecurity/' },
+	{ icon: '☁️', title: 'Cloud & DevOps', desc: 'AWS, GCP & Scale', href: '/categories/cloud-computing/' },
+	{ icon: '🌐', title: 'Digital Culture', desc: 'Future of Work & Teams', href: '/categories/future-of-work/' },
+];
+
+const socialLinks = [
+	{ platform: 'Twitter / X', handle: '@vikasmishra', icon: '𝕏', href: 'https://twitter.com', color: '#000000', bg: '#f8fafc' },
+	{ platform: 'LinkedIn', handle: 'Vikas Mishra', icon: '💼', href: 'https://linkedin.com', color: '#0a66c2', bg: '#eff6ff' },
+	{ platform: 'GitHub', handle: 'vikasmishra', icon: '🐙', href: 'https://github.com', color: '#24292e', bg: '#f1f5f9' },
+	{ platform: 'YouTube', handle: 'Vikas Tech', icon: '▶', href: 'https://youtube.com', color: '#ff0000', bg: '#fef2f2' },
 ];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title="DigiSone Global — Authored by Vikas Mishra" description="DigiSone Global is an elite independent publication by Vikas Mishra, offering deep insights into technology, digital strategy, startups, and modern innovation." />
+		<BaseHead title="Vikas Mishra — Creator, Tech Author & Builder" description="Official digital sanctuary of Vikas Mishra. Premium insights on AI, software engineering, startups, and modern digital ecosystems." />
 		<style>
 			:root {
-				--bg: #f1f5f9;
-				--surface: #ffffff;
-				--text: #0b1220;
-				--muted: #475569;
-				--muted-2: #94a3b8;
-				--primary: #2563eb;
-				--primary-dark: #1d4ed8;
-				--primary-soft: rgba(37, 99, 235, 0.1);
-				--accent: #6366f1;
-				--border: rgba(15, 23, 42, 0.08);
+				--bg: #07090e;
+				--surface: #111622;
+				--surface-hover: #171f33;
+				--text: #f8fafc;
+				--muted: #94a3b8;
+				--muted-2: #64748b;
+				--primary: #3b82f6;
+				--primary-glow: rgba(59, 130, 246, 0.25);
+				--accent: #8b5cf6;
+				--border: rgba(255, 255, 255, 0.08);
+				--border-hover: rgba(59, 130, 246, 0.4);
 				--radius: 1.25rem;
 				--radius-lg: 1.75rem;
-				--shadow-xs: 0 0.15rem 0.5rem rgba(15, 23, 42, 0.04);
-				--shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
-				--shadow-lg: 0 1.75rem 4rem rgba(15, 23, 42, 0.12);
-				--font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+				--shadow: 0 1rem 3rem rgba(0, 0, 0, 0.4);
+				--shadow-glow: 0 0 35px rgba(59, 130, 246, 0.15);
+				--font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 				--ease: cubic-bezier(0.22, 1, 0.36, 1);
 			}
 
-			*,
-			*::before,
-			*::after {
-				box-sizing: border-box;
-			}
-
-			html {
-				scroll-behavior: smooth;
-			}
+			*, *::before, *::after { box-sizing: border-box; }
+			html { scroll-behavior: smooth; }
 
 			body {
 				margin: 0;
@@ -82,283 +82,416 @@ const categories = [
 				color: var(--text);
 				background: var(--bg);
 				-webkit-font-smoothing: antialiased;
+				overflow-x: hidden;
 			}
 
+			/* Ambient Background Glow */
 			body::before {
 				content: '';
 				position: fixed;
 				inset: 0;
 				z-index: -1;
 				pointer-events: none;
-				background:
-					radial-gradient(ellipse 80% 50% at 10% -10%, rgba(37, 99, 235, 0.12), transparent 55%),
-					radial-gradient(ellipse 60% 40% at 90% 0%, rgba(99, 102, 241, 0.1), transparent 50%);
-				animation: ambient-shift 18s ease-in-out infinite alternate;
+				background: 
+					radial-gradient(circle 600px at 15% 10%, rgba(59, 130, 246, 0.08), transparent 70%),
+					radial-gradient(circle 700px at 85% 85%, rgba(139, 92, 246, 0.07), transparent 70%);
 			}
 
-			@keyframes ambient-shift {
-				from { opacity: 0.85; transform: scale(1); }
-				to { opacity: 1; transform: scale(1.04); }
+			@keyframes float {
+				0%, 100% { transform: translateY(0); }
+				50% { transform: translateY(-8px); }
+			}
+
+			@keyframes pulse-glow {
+				0%, 100% { opacity: 0.4; }
+				50% { opacity: 0.8; }
 			}
 
 			@keyframes fade-up {
-				from { opacity: 0; transform: translateY(18px); }
+				from { opacity: 0; transform: translateY(24px); }
 				to { opacity: 1; transform: translateY(0); }
 			}
 
-			@keyframes scale-in {
-				from { opacity: 0; transform: scale(0.97); }
-				to { opacity: 1; transform: scale(1); }
-			}
-
-			.reveal { animation: fade-up 0.7s var(--ease) both; }
-			.reveal-delay-1 { animation-delay: 0.08s; }
-			.reveal-delay-2 { animation-delay: 0.16s; }
-			.reveal-delay-3 { animation-delay: 0.24s; }
-			.reveal-delay-4 { animation-delay: 0.32s; }
-			.reveal-delay-5 { animation-delay: 0.4s; }
+			.reveal { animation: fade-up 0.8s var(--ease) both; }
+			.reveal-delay-1 { animation-delay: 0.1s; }
+			.reveal-delay-2 { animation-delay: 0.2s; }
+			.reveal-delay-3 { animation-delay: 0.3s; }
 
 			main {
-				width: min(100% - 2rem, 72rem);
+				width: min(100% - 2rem, 74rem);
 				margin-inline: auto;
-				padding-block: 1.5rem 4rem;
+				padding-block: 2rem 5rem;
 			}
 
 			a { color: inherit; text-decoration: none; }
 			h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.03em; }
-			p { margin: 0; line-height: 1.7; }
+			p { margin: 0; line-height: 1.7; color: var(--muted); }
 
-			.section { margin-top: 4rem; }
+			.section { margin-top: 5rem; }
 			.section-header {
-				display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.35rem; flex-wrap: wrap;
+				display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
 			}
-			.section-header h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+			.section-header h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); color: #fff; }
 			.section-header a {
-				color: var(--primary); font-weight: 600; font-size: 0.95rem; transition: gap 0.25s var(--ease), color 0.2s ease, transform 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;
+				color: var(--primary); font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.3s var(--ease);
 			}
-			.section-header a:hover { color: var(--primary-dark); gap: 0.55rem; transform: translateX(2px); }
+			.section-header a:hover { gap: 0.7rem; }
 
-			.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr); gap: 2.5rem; align-items: center; padding: 2.75rem 0 2rem; }
-			.hero-badge {
-				display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.95rem 0.45rem 0.65rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-xs); font-size: 0.84rem; font-weight: 600; margin-bottom: 1.1rem;
+			/* --- HERO SECTION (Bento Modern Style) --- */
+			.hero-grid {
+				display: grid;
+				grid-template-columns: 1.25fr 0.75fr;
+				gap: 1.5rem;
+				align-items: stretch;
 			}
-			.hero-badge .dot {
-				width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2); animation: pulse 2.2s ease-in-out infinite;
-			}
-			@keyframes pulse {
-				0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); }
-				50% { box-shadow: 0 0 0 7px rgba(34, 197, 94, 0.08); }
-			}
-			.hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); max-width: 14ch; margin-bottom: 1rem; }
-			.hero h1 span {
-				background: linear-gradient(120deg, #2563eb, #6366f1 55%, #8b5cf6); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: gradient-move 6s ease infinite;
-			}
-			@keyframes gradient-move {
-				0%, 100% { background-position: 0% center; }
-				50% { background-position: 100% center; }
-			}
-			.hero-lead { color: #334155; font-size: 1.1rem; max-width: 36rem; }
-			.hero-lead strong { color: var(--text); }
 
-			.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
-			.btn {
-				display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 2.75rem; padding: 0.7rem 1.2rem; border-radius: 0.75rem; font-weight: 600; font-size: 0.95rem; border: 1px solid transparent; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.2s ease, border-color 0.2s ease;
-			}
-			.btn:hover { transform: translateY(-3px); }
-			.btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; box-shadow: 0 0.5rem 1.25rem rgba(37, 99, 235, 0.3); }
-			.btn-primary:hover { box-shadow: 0 0.85rem 1.75rem rgba(37, 99, 235, 0.45); }
-			.btn-secondary { background: var(--surface); border-color: var(--border); color: var(--text); }
-			.btn-secondary:hover { border-color: rgba(37, 99, 235, 0.25); box-shadow: var(--shadow); }
-
-			.trust { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-			.trust strong { display: block; font-size: 1.25rem; letter-spacing: -0.02em; }
-			.trust span { font-size: 0.8rem; color: #475569; font-weight: 500; }
-
-			.trending {
-				background: rgba(255, 255, 255, 0.8); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 1.35rem; box-shadow: var(--shadow); position: relative; overflow: hidden; animation: scale-in 0.7s var(--ease) both; animation-delay: 0.15s; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-			}
-			.trending:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-			.trending::before {
-				content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #2563eb, #6366f1, #8b5cf6); background-size: 200% 100%; animation: gradient-move 4s linear infinite;
-			}
-			.trending-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-			.trending-header h2 { font-size: 1rem; }
-			.live { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #15803d; background: rgba(34, 197, 94, 0.12); padding: 0.2rem 0.45rem; border-radius: 0.35rem; animation: live-glow 2s ease-in-out infinite; }
-			@keyframes live-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } 50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12); } }
-			
-			.trending ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
-			.trending li { display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem 0.55rem; border-radius: 0.65rem; color: var(--muted); font-size: 0.92rem; font-weight: 500; transition: background 0.2s ease, color 0.2s ease, transform 0.25s var(--ease); }
-			.trending li:hover { background: var(--primary-soft); color: var(--primary); transform: translateX(4px); }
-			.trending .num { width: 1.4rem; height: 1.4rem; border-radius: 0.4rem; background: var(--primary-soft); color: var(--primary); font-size: 0.7rem; font-weight: 700; display: grid; place-items: center; flex-shrink: 0; transition: transform 0.25s var(--ease); }
-			.trending li:hover .num { transform: scale(1.08); }
-
-			/* Author Portfolio Card */
-			.author-spotlight {
+			.hero-main-card {
 				background: var(--surface);
 				border: 1px solid var(--border);
 				border-radius: var(--radius-lg);
-				padding: 2.5rem;
+				padding: 3rem 2.5rem;
 				box-shadow: var(--shadow);
+				position: relative;
+				overflow: hidden;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			.hero-main-card::before {
+				content: '';
+				position: absolute;
+				top: 0; left: 0; right: 0; height: 3px;
+				background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+			}
+
+			.creator-tag {
+				display: inline-flex; align-items: center; gap: 0.6rem;
+				padding: 0.4rem 1rem; border-radius: 999px;
+				background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);
+				font-size: 0.85rem; font-weight: 600; color: #60a5fa; margin-bottom: 1.25rem;
+				width: fit-content;
+			}
+			.creator-tag span { width: 6px; height: 6px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+
+			.hero-main-card h1 {
+				font-size: clamp(2.5rem, 5vw, 4rem);
+				color: #fff;
+				margin-bottom: 1.25rem;
+				font-weight: 800;
+			}
+			.hero-main-card h1 span {
+				background: linear-gradient(135deg, #60a5fa, #c084fc);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+
+			.hero-lead {
+				font-size: 1.1rem;
+				max-width: 38rem;
+				margin-bottom: 2rem;
+			}
+
+			.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+			.btn {
+				display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+				min-height: 3rem; padding: 0.75rem 1.5rem; border-radius: 0.85rem;
+				font-weight: 600; font-size: 0.95rem; border: 1px solid transparent;
+				transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s ease;
+				cursor: pointer; text-decoration: none;
+			}
+			.btn:hover { transform: translateY(-3px); }
+			.btn-primary {
+				background: linear-gradient(135deg, #3b82f6, #2563eb);
+				color: #fff;
+				box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+			}
+			.btn-primary:hover { box-shadow: 0 12px 35px rgba(59, 130, 246, 0.6); }
+			.btn-secondary {
+				background: rgba(255, 255, 255, 0.04);
+				border-color: var(--border);
+				color: #fff;
+			}
+			.btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); }
+
+			/* Trending & Live Widget Card */
+			.hero-side-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				padding: 2rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				box-shadow: var(--shadow);
+			}
+			.side-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+			.side-header h3 { font-size: 1.05rem; color: #fff; }
+			.live-badge {
+				font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+				color: #22c55e; background: rgba(34, 197, 94, 0.12); padding: 0.2rem 0.6rem; border-radius: 999px;
+				animation: pulse-glow 2s infinite;
+			}
+			.trending-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+			.trending-item {
+				display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem;
+				border-radius: 0.75rem; background: rgba(255, 255, 255, 0.02); border: 1px solid transparent;
+				font-size: 0.9rem; color: var(--muted); font-weight: 500;
+				transition: all 0.25s var(--ease);
+			}
+			.trending-item:hover {
+				background: rgba(59, 130, 246, 0.08);
+				border-color: rgba(59, 130, 246, 0.2);
+				color: #fff;
+				transform: translateX(4px);
+			}
+			.trending-num {
+				width: 1.5rem; height: 1.5rem; border-radius: 0.4rem; background: rgba(59, 130, 246, 0.15);
+				color: #60a5fa; font-size: 0.75rem; font-weight: 700; display: grid; place-items: center;
+			}
+
+			/* --- SOCIAL MEDIA CHANNELS GRID (New Modern Section) --- */
+			.social-grid {
+				display: grid;
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				gap: 1rem;
+				margin-top: 2rem;
+			}
+			.social-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1.25rem 1.5rem;
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				transition: all 0.3s var(--ease);
+				box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+			}
+			.social-card:hover {
+				transform: translateY(-5px);
+				border-color: var(--border-hover);
+				background: var(--surface-hover);
+				box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+			}
+			.social-icon {
+				width: 2.75rem; height: 2.75rem; border-radius: 0.75rem;
+				display: grid; place-items: center; font-size: 1.25rem;
+				background: rgba(255, 255, 255, 0.05); flex-shrink: 0;
+			}
+			.social-info h4 { font-size: 0.95rem; color: #fff; margin-bottom: 0.1rem; }
+			.social-info span { font-size: 0.8rem; color: var(--muted); }
+
+			/* --- FEATURED STORY --- */
+			.featured-article {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				overflow: hidden;
+				box-shadow: var(--shadow);
+				transition: transform 0.35s var(--ease), border-color 0.35s ease;
+			}
+			.featured-article:hover {
+				transform: translateY(-6px);
+				border-color: var(--border-hover);
+			}
+			.featured-grid {
+				display: grid;
+				grid-template-columns: 1.2fr 1fr;
+			}
+			.featured-media {
+				background: #111;
+				min-height: 18rem;
+				overflow: hidden;
+			}
+			.featured-media img {
+				width: 100%; height: 100%; object-fit: cover; display: block;
+				transition: transform 0.6s var(--ease);
+			}
+			.featured-article:hover .featured-media img { transform: scale(1.05); }
+			.featured-content {
+				padding: 2.5rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			.badge-pill {
+				font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+				color: #60a5fa; background: rgba(59, 130, 246, 0.1); padding: 0.3rem 0.75rem;
+				border-radius: 999px; width: fit-content; margin-bottom: 1rem;
+			}
+			.article-date { font-size: 0.88rem; color: var(--muted-2); margin-bottom: 0.5rem; }
+			.featured-content h3 {
+				font-size: clamp(1.4rem, 2.5vw, 1.9rem); color: #fff; margin-bottom: 0.75rem;
+				transition: color 0.2s ease;
+			}
+			.featured-article:hover .featured-content h3 { color: #60a5fa; }
+			.article-excerpt { font-size: 0.98rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; }
+
+			/* --- LATEST POSTS GRID --- */
+			.posts-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1.5rem;
+				list-style: none; margin: 0; padding: 0;
+			}
+			.post-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				overflow: hidden;
+				display: flex;
+				flex-direction: column;
+				transition: all 0.35s var(--ease);
+				box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+			}
+			.post-card:hover {
+				transform: translateY(-6px);
+				border-color: var(--border-hover);
+				box-shadow: 0 15px 40px rgba(59, 130, 246, 0.15);
+			}
+			.post-thumb {
+				width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block;
+				background: #111; transition: transform 0.5s var(--ease);
+			}
+			.post-card:hover .post-thumb { transform: scale(1.05); }
+			.post-body { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+			.post-date { font-size: 0.82rem; color: var(--muted-2); margin-bottom: 0.4rem; }
+			.post-card h3 { font-size: 1.15rem; color: #fff; margin-bottom: 0.6rem; }
+			.post-card:hover h3 { color: #60a5fa; }
+			.post-desc { font-size: 0.91rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: auto; }
+
+			/* --- CREATOR PORTFOLIO SPOTLIGHT (Vikas Mishra) --- */
+			.creator-spotlight {
+				background: linear-gradient(145deg, var(--surface), #151d30);
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				padding: 3rem;
 				display: grid;
 				grid-template-columns: auto 1fr;
-				gap: 2rem;
+				gap: 2.5rem;
 				align-items: center;
-				margin-top: 4rem;
+				box-shadow: var(--shadow);
+				position: relative;
+				overflow: hidden;
+				margin-top: 5rem;
+			}
+			.creator-spotlight::before {
+				content: '';
+				position: absolute;
+				top: 0; right: 0; width: 250px; height: 250px;
+				background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+				pointer-events: none;
+			}
+			.creator-avatar {
+				width: 6.5rem; height: 6.5rem; border-radius: 50%;
+				background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+				color: #fff; display: grid; place-items: center;
+				font-size: 2.2rem; font-weight: 800;
+				box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+				flex-shrink: 0;
+				border: 3px solid rgba(255, 255, 255, 0.1);
+			}
+			.creator-details h2 { font-size: 1.6rem; color: #fff; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+			.creator-role { color: #60a5fa; font-weight: 600; font-size: 0.95rem; margin-bottom: 1rem; display: block; }
+			.creator-bio { color: var(--muted); font-size: 1.02rem; max-width: 48rem; line-height: 1.8; }
+
+			/* --- CATEGORIES BENTO --- */
+			.categories-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1.25rem;
+			}
+			.category-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1.5rem;
+				transition: all 0.3s var(--ease);
+				box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+			}
+			.category-card:hover {
+				transform: translateY(-5px);
+				border-color: var(--border-hover);
+				background: var(--surface-hover);
+				box-shadow: 0 10px 30px rgba(59, 130, 246, 0.12);
+			}
+			.cat-icon-box {
+				width: 3rem; height: 3rem; border-radius: 0.85rem;
+				display: grid; place-items: center; font-size: 1.35rem;
+				background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.15);
+				margin-bottom: 1rem; transition: transform 0.3s var(--ease);
+			}
+			.category-card:hover .cat-icon-box { transform: scale(1.1) rotate(-5deg); }
+			.category-card h3 { font-size: 1.1rem; color: #fff; margin-bottom: 0.3rem; }
+			.category-card p { font-size: 0.88rem; }
+
+			/* --- NEWSLETTER MODERN BANNER --- */
+			.newsletter-banner {
+				margin-top: 5rem;
+				padding: 3.5rem 2rem;
+				background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+				border: 1px solid rgba(59, 130, 246, 0.2);
+				border-radius: var(--radius-lg);
+				text-align: center;
+				box-shadow: var(--shadow-glow);
 				position: relative;
 				overflow: hidden;
 			}
-			.author-spotlight::before {
-				content: '';
-				position: absolute;
-				top: 0; left: 0; width: 4px; height: 100%;
-				background: linear-gradient(180deg, #2563eb, #6366f1);
-			}
-			.author-avatar {
-				width: 6rem;
-				height: 6rem;
-				border-radius: 50%;
-				background: linear-gradient(135deg, #2563eb, #1d4ed8);
-				color: #fff;
-				display: grid;
-				place-items: center;
-				font-size: 1.85rem;
-				font-weight: 800;
-				box-shadow: 0 0.5rem 1.5rem rgba(37, 99, 235, 0.35);
-				flex-shrink: 0;
-			}
-			.author-content h2 {
-				font-size: 1.4rem;
-				margin-bottom: 0.35rem;
-				display: flex;
-				align-items: center;
-				gap: 0.6rem;
-				flex-wrap: wrap;
-			}
-			.author-tagline {
-				color: var(--primary);
-				font-weight: 600;
-				font-size: 0.92rem;
-				margin-bottom: 0.85rem;
-			}
-			.author-bio {
-				color: var(--muted);
-				font-size: 0.98rem;
-				line-height: 1.75;
-				max-width: 46rem;
+			.newsletter-banner h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); color: #fff; margin-bottom: 0.75rem; }
+			.newsletter-banner p { max-width: 34rem; margin: 0 auto 2rem; font-size: 1.05rem; }
+			.newsletter-note { margin-top: 1rem; font-size: 0.82rem; color: var(--muted-2); }
+
+			.empty-state {
+				padding: 3rem; text-align: center; background: var(--surface);
+				border: 1px dashed var(--border); border-radius: var(--radius); color: var(--muted);
 			}
 
-			.featured a { display: grid; grid-template-columns: 1.15fr 1fr; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease); min-height: 20rem; }
-			.featured a:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-			.featured-media { background: linear-gradient(145deg, #1e3a8a, #312e81); min-height: 14rem; overflow: hidden; }
-			.featured-media img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 2 / 1; transition: transform 0.6s var(--ease); }
-			.featured a:hover .featured-media img { transform: scale(1.04); }
-			.featured .body { padding: 1.75rem 1.75rem; display: flex; flex-direction: column; justify-content: center; }
-			.featured .label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.45rem; }
-			.featured .date { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.55rem; }
-			.featured h3 { font-size: clamp(1.35rem, 2.5vw, 1.85rem); margin-bottom: 0.55rem; transition: color 0.2s ease; }
-			.featured a:hover h3 { color: var(--primary-dark); }
-			.featured .desc { color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.1rem; }
-			.featured .btn { align-self: flex-start; }
-
-			.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
-			.card a { display: grid; gap: 0; height: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.25s ease; position: relative; }
-			.card a::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); opacity: 0; transition: opacity 0.25s ease; }
-			.card a:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: rgba(37, 99, 235, 0.15); }
-			.card a:hover::after { opacity: 1; }
-			.card img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; display: block; background: #312e81; transition: transform 0.5s var(--ease); }
-			.card a:hover img { transform: scale(1.05); }
-			.card .body { padding: 1rem 1.05rem 1.15rem; display: grid; gap: 0.35rem; }
-			.card .date { color: var(--muted); font-size: 0.85rem; }
-			.card h3 { font-size: 1.08rem; transition: color 0.2s ease; }
-			.card a:hover h3 { color: var(--primary); }
-			.card .desc { color: var(--muted); font-size: 0.92rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-			.categories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-			.category { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.35rem 1.2rem; box-shadow: var(--shadow-xs); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.25s ease; }
-			.category:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: rgba(37, 99, 235, 0.14); }
-			.category-icon { width: 2.6rem; height: 2.6rem; border-radius: 0.75rem; display: grid; place-items: center; font-size: 1.2rem; margin-bottom: 0.85rem; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1)); transition: transform 0.3s var(--ease); }
-			.category:hover .category-icon { transform: scale(1.08) rotate(-4deg); }
-			.category h3 { font-size: 1rem; margin-bottom: 0.25rem; }
-			.category p { font-size: 0.85rem; color: var(--muted); }
-
-			.why-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-			.why-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.35rem; box-shadow: var(--shadow-xs); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
-			.why-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-			.why-icon { width: 2.75rem; height: 2.75rem; border-radius: 0.8rem; display: grid; place-items: center; font-size: 1.2rem; margin-bottom: 1rem; background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.12)); transition: transform 0.3s var(--ease); }
-			.why-card:hover .why-icon { transform: scale(1.1); }
-			.why-card h3 { font-size: 1.08rem; margin-bottom: 0.4rem; }
-			.why-card p { color: var(--muted); font-size: 0.94rem; }
-
-			.newsletter { margin-top: 4rem; padding: 2.75rem 1.5rem; border-radius: var(--radius-lg); background: #ffffff; color: var(--text); text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border); }
-			.newsletter h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.5rem; color: var(--text); }
-			.newsletter > p { color: var(--muted); max-width: 32rem; margin: 0 auto 1.35rem; }
-			.newsletter-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 2.85rem; padding: 0.75rem 1.75rem; border-radius: 0.75rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff !important; font-weight: 700; font-size: 0.98rem; border: none; box-shadow: 0 0.5rem 1.25rem rgba(37, 99, 235, 0.3); transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
-			.newsletter-btn:hover { transform: translateY(-2px); box-shadow: 0 0.75rem 1.5rem rgba(37, 99, 235, 0.4); color: #fff !important; }
-			.newsletter .note { margin-top: 0.85rem; font-size: 0.8rem; color: var(--muted); }
-
-			.empty { padding: 2rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); color: var(--muted); text-align: center; }
-
-			@media (max-width: 900px) {
-				.hero { grid-template-columns: 1fr; gap: 2rem; }
-				.author-spotlight { grid-template-columns: 1fr; text-align: center; justify-items: center; }
-				.author-content h2 { justify-content: center; }
-				.featured a { grid-template-columns: 1fr; }
-				.why-grid, .categories { grid-template-columns: 1fr; }
+			/* --- RESPONSIVE MEDIA QUERIES --- */
+			@media (max-width: 1024px) {
+				.hero-grid { grid-template-columns: 1fr; }
+				.social-grid { grid-template-columns: repeat(2, 1fr); }
+				.featured-grid { grid-template-columns: 1fr; }
+				.posts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 			}
-			@media (max-width: 720px) {
-				.grid { grid-template-columns: 1fr; }
-				.categories { grid-template-columns: 1fr 1fr; }
-				.actions { flex-direction: column; }
+			@media (max-width: 768px) {
+				.posts-grid, .categories-grid { grid-template-columns: 1fr; }
+				.social-grid { grid-template-columns: 1fr; }
+				.creator-spotlight { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+				.creator-details h2 { justify-content: center; }
+				.hero-actions { flex-direction: column; }
 				.btn { width: 100%; }
 			}
-			@media (max-width: 480px) { .categories { grid-template-columns: 1fr; } }
-			@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<!-- Hero + Trending -->
-			<section class="hero" aria-label="Introduction">
-				<div>
-					<div class="hero-badge reveal">
-						<span class="dot" aria-hidden="true"></span>
-						Independent Publication & Writings by Vikas Mishra
+			<!-- HERO & TRENDING WIDGET -->
+			<section class="hero-grid" aria-label="Hero Introduction">
+				<div class="hero-main-card reveal">
+					<div class="creator-tag">
+						<span></span> Curated & Authored by Vikas Mishra
 					</div>
-					<h1 class="reveal reveal-delay-1">The Future of <span>Technology, Business & AI</span></h1>
-					<p class="hero-lead reveal reveal-delay-2">
-						Welcome to <strong>DigiSone Global</strong>. Founded and curated by <strong>Vikas Mishra</strong>, this publication delivers enterprise-grade insights on deep technology, business strategy, startups, and digital transformation.
+					<h1>Architecting the <span>Future of Tech & AI</span></h1>
+					<p class="hero-lead">
+						Welcome to my independent digital sanctuary. I decode cutting-edge shifts in artificial intelligence, modern software systems, startups, and elite digital strategy.
 					</p>
-					<div class="actions reveal reveal-delay-3">
-						<a class="btn btn-primary" href="/blog/">Explore Articles</a>
-						<a class="btn btn-secondary" href="#author-profile">About Vikas Mishra</a>
-					</div>
-					<div class="trust reveal reveal-delay-4" aria-label="Platform stats">
-						<div>
-							<strong>{posts.length}</strong>
-							<span>Published articles</span>
-						</div>
-						<div>
-							<strong>12k+</strong>
-							<span>Monthly readers</span>
-						</div>
-						<div>
-							<strong>4.9★</strong>
-							<span>Reader rating</span>
-						</div>
+					<div class="hero-actions">
+						<a class="btn btn-primary" href="/blog/">Explore Writings →</a>
+						<a class="btn btn-secondary" href="#creator-profile">Meet Vikas Mishra</a>
 					</div>
 				</div>
 
-				<aside class="trending" aria-label="Trending topics">
-					<div class="trending-header">
-						<h2>Trending Topics</h2>
-						<span class="live">Live</span>
+				<aside class="hero-side-card reveal reveal-delay-1" aria-label="Trending topics">
+					<div class="side-header">
+						<h3>Trending Focus</h3>
+						<span class="live-badge">Live Index</span>
 					</div>
-					<ol>
+					<ol class="trending-list">
 						{
 							trendingTopics.map((topic, i) => (
-								<li>
-									<span class="num">{String(i + 1).padStart(2, '0')}</span>
+								<li class="trending-item">
+									<span class="trending-num">{String(i + 1).padStart(2, '0')}</span>
 									{topic}
 								</li>
 							))
@@ -367,112 +500,113 @@ const categories = [
 				</aside>
 			</section>
 
-			<!-- Featured (Sanity से आ रहा है) -->
-			<section class="section featured reveal" aria-label="Featured article">
+			<!-- SOCIAL MEDIA CHANNELS BAR -->
+			<section aria-label="Social media channels" class="reveal reveal-delay-2">
+				<div class="social-grid">
+					{
+						socialLinks.map((social) => (
+							<a href={social.href} target="_blank" rel="noopener noreferrer" class="social-card">
+								<div class="social-icon" style={`color: ${social.color};`}>{social.icon}</div>
+								<div class="social-info">
+									<h4>{social.platform}</h4>
+									<span>{social.handle}</span>
+								</div>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- FEATURED ARTICLE (Sanity CMS) -->
+			<section class="section reveal" aria-label="Featured article">
 				{
 					featuredPost ? (
-						<article>
+						<article class="featured-article">
 							<a href={`/blog/${featuredPost.slug.current}/`} aria-label={`Read: ${featuredPost.title}`}>
-								<div class="featured-media">
-									{featuredPost.imageUrl && (
-										<img
-											src={featuredPost.imageUrl}
-											alt={featuredPost.title}
-											loading="eager"
-										/>
-									)}
-								</div>
-								<div class="body">
-									<div class="label">Featured Story • Handpicked by Vikas Mishra</div>
-									<p class="date">
-										<time datetime={featuredPost._createdAt}>
-											{new Date(featuredPost._createdAt).toLocaleDateString('en-US', {
-												year: 'numeric',
-												month: 'long',
-												day: 'numeric',
-											})}
-										</time>
-									</p>
-									<h3>{featuredPost.title}</h3>
-									<p class="desc">{featuredPost.excerpt}</p>
-									<span class="btn btn-primary">Read Article</span>
+								<div class="featured-grid">
+									<div class="featured-media">
+										{featuredPost.imageUrl && (
+											<img src={featuredPost.imageUrl} alt={featuredPost.title} loading="eager" />
+										)}
+									</div>
+									<div class="featured-content">
+										<div class="badge-pill">Editor's Choice • By Vikas Mishra</div>
+										<p class="article-date">
+											<time datetime={featuredPost._createdAt}>
+												{new Date(featuredPost._createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+											</time>
+										</p>
+										<h3>{featuredPost.title}</h3>
+										<p class="article-excerpt">{featuredPost.excerpt}</p>
+										<span class="btn btn-primary" style="width: fit-content; min-height: 2.5rem; padding: 0.5rem 1.2rem; font-size: 0.88rem;">Read Full Story</span>
+									</div>
 								</div>
 							</a>
 						</article>
 					) : (
-						<div class="empty">No posts yet. Go to Sanity Studio to add some!</div>
+						<div class="empty-state">No articles published yet. Add posts via Sanity Studio.</div>
 					)
 				}
 			</section>
 
-			<!-- Latest Articles (Sanity से आ रहा है) -->
+			<!-- LATEST ARTICLES GRID -->
 			<section class="section" aria-label="Latest articles">
 				<div class="section-header reveal">
-					<h2>Latest Articles</h2>
-					<a href="/blog/">View all →</a>
+					<h2>Latest Masterclasses & Articles</h2>
+					<a href="/blog/">Browse All Archive →</a>
 				</div>
 
 				{
 					latestPosts.length > 0 ? (
-						<ul class="grid">
-							{latestPosts.map((post: any, i:number) => (
-								<li class={`card reveal reveal-delay-${Math.min(i + 1, 5)}`}>
-									<a href={`/blog/${post.slug.current}/`} aria-label={post.title}>
+						<ul class="posts-grid">
+							{latestPosts.map((post: any, i: number) => (
+								<li class={`post-card reveal reveal-delay-${Math.min(i + 1, 3)}`}>
+									<a href={`/blog/${post.slug.current}/`} aria-label={post.title} style="display: flex; flex-direction: column; height: 100%;">
 										{post.imageUrl && (
-											<img
-												src={post.imageUrl}
-												alt={post.title}
-												loading="lazy"
-											/>
+											<img class="post-thumb" src={post.imageUrl} alt={post.title} loading="lazy" />
 										)}
-										<div class="body">
-											<p class="date">
+										<div class="post-body">
+											<p class="post-date">
 												<time datetime={post._createdAt}>
-													{new Date(post._createdAt).toLocaleDateString('en-US', {
-														year: 'numeric',
-														month: 'short',
-														day: 'numeric',
-													})}
+													{new Date(post._createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
 												</time>
 											</p>
 											<h3>{post.title}</h3>
-											<p class="desc">{post.excerpt}</p>
+											<p class="post-desc">{post.excerpt}</p>
 										</div>
 									</a>
 								</li>
 							))}
 						</ul>
 					) : (
-						<div class="empty">More articles coming soon.</div>
+						<div class="empty-state">More articles coming soon. Stay tuned!</div>
 					)
 				}
 			</section>
 
-			<!-- Author Portfolio Spotlight -->
-			<section class="author-spotlight reveal" id="author-profile" aria-label="About the author">
-				<div class="author-avatar" aria-hidden="true">VM</div>
-				<div class="author-content">
-					<h2>Vikas Mishra <span style="font-size: 0.9rem; font-weight: 600; color: var(--primary); background: var(--primary-soft); padding: 0.2rem 0.6rem; border-radius: 999px;">Founder & Editor-in-Chief</span></h2>
-					<p class="author-tagline">Tech Strategist, Author & Digital Product Architect</p>
-					<p class="author-bio">
-						As the mind behind DigiSone Global, I am dedicated to breaking down complex tech paradigms, strategic digital growth patterns, and modern enterprise innovations. My goal is to build an authoritative knowledge hub where founders, creators, and technology leaders find crystal-clear clarity to make high-impact decisions.
+			<!-- CREATOR / AUTHOR SPOTLIGHT (Vikas Mishra) -->
+			<section class="creator-spotlight reveal" id="creator-profile" aria-label="About Vikas Mishra">
+				<div class="creator-avatar" aria-hidden="true">VM</div>
+				<div class="creator-details">
+					<h2>Vikas Mishra <span style="font-size: 0.85rem; font-weight: 600; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 0.2rem 0.7rem; border-radius: 999px;">Founder & Lead Architect</span></h2>
+					<span class="creator-role">Tech Author, Creator & Digital Ecosystem Builder</span>
+					<p class="creator-bio">
+						I’m Vikas Mishra. Through DigiSone Global, I curate deep insights, rigorous technological analysis, and modern digital strategies. My mission is to empower founders, engineers, and innovators with high-signal frameworks to build market-defining ventures.
 					</p>
 				</div>
 			</section>
 
-			<!-- Categories -->
+			<!-- EXPLORE CATEGORIES -->
 			<section class="section" aria-label="Categories">
 				<div class="section-header reveal">
-					<h2>Explore Categories</h2>
-					<a href="/categories/">Browse all →</a>
+					<h2>Explore by Knowledge Domain</h2>
+					<a href="/categories/">All Topics →</a>
 				</div>
-				<div class="categories">
+				<div class="categories-grid">
 					{
 						categories.map((cat, i) => (
-							<a href={cat.href} class={`category reveal reveal-delay-${Math.min(i + 1, 5)}`}>
-								<div class="category-icon" aria-hidden="true">
-									{cat.icon}
-								</div>
+							<a href={cat.href} class={`category-card reveal reveal-delay-${Math.min(i + 1, 3)}`}>
+								<div class="cat-icon-box" aria-hidden="true">{cat.icon}</div>
 								<h3>{cat.title}</h3>
 								<p>{cat.desc}</p>
 							</a>
@@ -481,35 +615,12 @@ const categories = [
 				</div>
 			</section>
 
-			<!-- Why -->
-			<section class="section" aria-label="Why professionals read DigiSone Global">
-				<div class="section-header reveal">
-					<h2>Why Professionals Read DigiSone Global</h2>
-				</div>
-				<div class="why-grid">
-					<div class="why-card reveal reveal-delay-1">
-						<div class="why-icon" aria-hidden="true">🔍</div>
-						<h3>Deep Analysis</h3>
-						<p>Practical insights beyond breaking headlines, meticulously researched and published by Vikas Mishra.</p>
-					</div>
-					<div class="why-card reveal reveal-delay-2">
-						<div class="why-icon" aria-hidden="true">🧠</div>
-						<h3>Expert Perspectives</h3>
-						<p>Actionable technology, startup scaling, and innovation frameworks from industry operators.</p>
-					</div>
-					<div class="why-card reveal reveal-delay-3">
-						<div class="why-icon" aria-hidden="true">⚡</div>
-						<h3>Actionable Takeaways</h3>
-						<p>Strategic playbooks and mental models you can apply immediately to your career and ventures.</p>
-					</div>
-				</div>
-			</section>
-
-			<section class="newsletter" id="newsletter" aria-label="Newsletter signup">
-				<h2>Get the Weekly Technology Briefing</h2>
-				<p>Actionable insights on AI, strategy, security, and digital transformation delivered straight to your inbox by Vikas Mishra.</p>
-				<a class="newsletter-btn" href="/subscribe/">Subscribe Now</a>
-				<p class="note">No spam. Unsubscribe anytime with a single click.</p>
+			<!-- NEWSLETTER SUBSCRIPTION BANNER -->
+			<section class="newsletter-banner reveal" id="newsletter" aria-label="Newsletter">
+				<h2>Get the Weekly Tech & Strategy Briefing</h2>
+				<p>Hand-crafted insights on AI, cloud architecture, and modern product scaling delivered directly to your inbox every Sunday by Vikas Mishra.</p>
+				<a class="btn btn-primary" href="/subscribe/">Join 12,000+ Subscribers</a>
+				<p class="newsletter-note">Zero spam. Unsubscribe with a single click anytime.</p>
 			</section>
 		</main>
 		<Footer />
