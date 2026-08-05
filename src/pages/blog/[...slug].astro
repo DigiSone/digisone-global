@@ -5,92 +5,151 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { SITE_TITLE } from '../../consts';
 
-// 1. Yeh function zaroori hai static build ke liye
 export async function getStaticPaths() {
-  const posts = await sanityClient.fetch(`
-    *[_type == "post" && defined(slug.current)] {
-      "slug": slug.current
-    }
-  `);
+    const posts = await sanityClient.fetch(`
+        *[_type == "post" && defined(slug.current)] {
+                "slug": slug.current
+        }
+          `);
 
-  return posts.map((post: {slug: string }) => ({
-    params: { slug: post.slug },
-  }));
+            return posts.map((post: { slug: string }) => ({
+                  params: { slug: post.slug },
+            }));
 }
 
 const { slug } = Astro.params;
 
-// 2. Current post ka data lao
 const post = await sanityClient.fetch(`
   *[_type == "post" && slug.current == $slug][0] {
-    title,
-    excerpt,
-    body,
-    publishedAt,
-    "imageUrl": mainImage.asset->url,
-    "authorName": author->name
+        title,
+            excerpt,
+                body,
+                    publishedAt,
+                        "imageUrl": mainImage.asset->url,
+                            "authorName": author->name
   }
-`, { slug });
+  `, { slug });
 
-if (!post) {
-  return Astro.redirect('/404');
+  if (!post) {
+      return Astro.redirect('/404');
+  }
+
+  const pageTitle = `${post.title} — ${SITE_TITLE}`;
+  ---
+
+  <!doctype html>
+  <html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={post.excerpt || post.title} />
+            <style>
+                  .post-container {
+                            width: min(100% - 2rem, 720px);
+                                    margin: 0 auto;
+                                            padding: 2.5rem 0 5rem;
+                  }
+                        .post-header {
+                                  margin-bottom: 2rem;
+                        }
+                              .post-date {
+                                        color: #64748b;
+                                                font-size: 0.95rem;
+                                                        margin-bottom: 0.6rem;
+                              }
+                                    .post-title {
+                                              font-size: clamp(1.9rem, 5vw, 2.7rem);
+                                                      line-height: 1.2;
+                                                              margin: 0 0 0.8rem;
+                                                                      font-weight: 700;
+                                    }
+                                          .post-author {
+                                                    color: #64748b;
+                                                            font-size: 0.95rem;
+                                          }
+                                                .post-image {
+                                                          width: 100%;
+                                                                  border-radius: 1rem;
+                                                                          margin: 1.8rem 0 2.2rem;
+                                                }
+                                                      .post-content {
+                                                                font-size: 1.125rem;
+                                                                        line-height: 1.8;
+                                                                                color: #1e293b;
+                                                      }
+                                                            .post-content p {
+                                                                      margin-bottom: 1.4rem;
+                                                            }
+                                                                  .back-link {
+                                                                            display: inline-block;
+                                                                                    margin-bottom: 2rem;
+                                                                                            color: #2563eb;
+                                                                                                    font-weight: 500;
+                                                                                                            text-decoration: none;
+                                                                  }
+                                                                        .back-link:hover {
+                                                                                  text-decoration: underline;
+                                                                        }
+                                                                            </style>
+                                                                              </head>
+                                                                                <body>
+                                                                                    <Header />
+
+                                                                                        <main class="post-container">
+                                                                                              <a href="/blog/" class="back-link">← Back to Blog</a>
+
+                                                                                                    <article>
+                                                                                                            <header class="post-header">
+                                                                                                                      <p class="post-date">
+                                                                                                                                  {post.publishedAt 
+                                                                                                                                                ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                                                                                                                                                                    year: 'numeric',
+                                                                                                                                                                                      month: 'long',
+                                                                                                                                                                                                        day: 'numeric',
+                                                                                                                                                })
+                                                                                                                                                              : 'August 4, 2026'}
+                                                                                                                                                                        </p>
+
+                                                                                                                                                                                  <h1 class="post-title">{post.title}</h1>
+
+                                                                                                                                                                                            {post.authorName && (
+                                                                                                                                                                                                          <p class="post-author">By {post.authorName}</p>
+                                                                                                                                                                                            )}
+                                                                                                                                                                                                    </header>
+
+                                                                                                                                                                                                            {post.imageUrl && (
+                                                                                                                                                                                                                        <img 
+                                                                                                                                                                                                                                    src={post.imageUrl} 
+                                                                                                                                                                                                                                                alt={post.title} 
+                                                                                                                                                                                                                                                            class="post-image"
+                                                                                                                                                                                                                                                                      />
+                                                                                                                                                                                                            )}
+
+                                                                                                                                                                                                                    <div class="post-content">
+                                                                                                                                                                                                                              {post.excerpt && <p><strong>{post.excerpt}</strong></p>}
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                  <!-- Yahan baad mein Portable Text aayega -->
+                                                                                                                                                                                                                                                            <p>Full article content will appear here once Portable Text is properly set up.</p>
+                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                          </article>
+                                                                                                                                                                                                                                                                              </main>
+
+                                                                                                                                                                                                                                                                                  <Footer />
+                                                                                                                                                                                                                                                                                    </body>
+                                                                                                                                                                                                                                                                                    </html>
+                                                                                                                                                                                                            )}
+                                                                                                                                                                                            )}
+                                                                                                                                                })}
+                                                                        }
+                                                                  }
+                                                            }
+                                                      }
+                                                }
+                                          }
+                                    }
+                              }
+                        }
+                  }
+  }
+  })
+            }))
+        })
 }
-
-const pageTitle = `${post.title} — ${SITE_TITLE}`;
----
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={pageTitle} description={post.excerpt || post.title} />
-  </head>
-  <body>
-    <Header />
-    
-    <main style="width: min(100% - 2rem, 720px); margin: 0 auto; padding: 2.5rem 0 4rem;">
-      <article>
-        <header style="margin-bottom: 2rem;">
-          <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 0.5rem;">
-            {new Date(post.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </p>
-          
-          <h1 style="font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin: 0 0 0.75rem;">
-            {post.title}
-          </h1>
-          
-          {post.authorName && (
-            <p style="color: #64748b; font-size: 0.95rem;">
-              By {post.authorName}
-            </p>
-          )}
-        </header>
-
-        {post.imageUrl && (
-          <img 
-            src={post.imageUrl} 
-            alt={post.title}
-            style="width: 100%; border-radius: 1rem; margin-bottom: 2rem;"
-          />
-        )}
-
-        <div style="line-height: 1.75; font-size: 1.1rem; color: #1e293b;">
-          <!-- Yahan aap Portable Text render kar sakte ho baad mein -->
-          <p>{post.excerpt}</p>
-          
-          <!-- Temporary: body ko simple text ki tarah dikha rahe hain -->
-          {typeof post.body === 'string' ? (
-            <div set:html={post.body} />
-          ) : (
-            <p>Full content will be rendered here.</p>
-          )}
-        </div>
-      </article>
-    </main>
-
-    <Footer />
-  </body>
-</html>
