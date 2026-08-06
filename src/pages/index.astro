@@ -1,26 +1,26 @@
 ---
-import { Image } from 'astro:assets';
-// 1. Sanity client for fetching blog posts
 import { sanityClient } from 'sanity:client';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+// ... बाकी imports
 
-// 2. Fetching published posts from Sanity with safe image projection
 const posts = await sanityClient.fetch(`
-  *[_type == "post" && defined(slug.current)] | order(_createdAt desc) {
-    _id,
+  *[_type == "post"] | order(publishedAt desc) {
     title,
-    slug,
+    "slug": slug.current,
     excerpt,
-    _createdAt,
-    "imageUrl": mainImage.asset->url
+    publishedAt,
+    "imageUrl": mainImage.asset->url,
+    "imageAlt": mainImage.alt,
+    "authorName": author->name,
+    "categories": categories[]->title,
+    "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),
+    featured
   }
 `);
 
-const featuredPost = posts[0];
-const latestPosts = posts.slice(1, 7);
+// Featured post अलग निकालो
+const featuredPost = posts.find((p: any) => p.featured) || posts[0];
+const latestPosts = posts.filter((p: any) => p._id !== featuredPost?._id).slice(0, 6);
+---
 
 const trendingTopics = [
 	'⚡ Next-Gen AI & Autonomous Agents',
