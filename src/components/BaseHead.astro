@@ -66,7 +66,7 @@ const ADSENSE_CLIENT = ''; // e.g. 'ca-pub-1234567890123456'
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-meta property="og:image" content=(new URL(image.src, Astro.ur1)31>
+<meta property="og:image" content=(new URL(image.src, Astro.ur1)31>
 <meta property="og:locale" content="en_US" />
 
 
@@ -74,7 +74,62 @@ meta property="og:image" content=(new URL(image.src, Astro.ur1)31>
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-meta name="twitter:image" content=fnew URL(image.src, Astro.ur1)11>
+<meta name="twitter:image" content=fnew URL(image.src, Astro.ur1)11>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DigiSone Global",
+  "url": "https://digisone.com",
+  "description": "Premium insights on AI, business strategy, startups and technology",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DigiSone Global"
+  }
+}
+</script>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "DigiSone Global",
+  "url": "https://digisone.com",
+  "logo": "https://digisone.com/favicon.svg",
+  "sameAs": [
+    "https://x.com/digisoneglobal",
+    "https://youtube.com/@digisoneglobal",
+    "https://linkedin.com/company/digisoneglobal"
+  ]
+}
+</script>
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to make money online in 2027?",
+  "datePublished": "2026-08-04",
+  "author": {
+    "@type": "Person",
+    "name": "Vikas Mishra"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "DigiSone Global"
+  }
+}
+</script>
+
+
+
 
 <!--
   Google Consent Mode v2 — DEFAULT DENIED (must run before GA / Ads)
