@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 
 const posts = await sanityClient.fetch(`
-  *[_type == "post"] | order(publishedAt desc) {
+  *[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) {
     title,
     "slug": slug.current,
     excerpt,
@@ -24,8 +24,12 @@ const posts = await sanityClient.fetch(`
 const title = `Blog — ${SITE_TITLE}`;
 
 const allCategories = Array.from(
-  new Set(posts.flatMap((p: any) => p.categories || []).filter(Boolean))
-).sort();
+  new Set(
+    (posts || [])
+      .flatMap((p: any) => p.categories || [])
+      .filter(Boolean)
+  )
+).sort() as string[];
 
 function getReadingTime(post: any): string {
   if (post.estimatedReadingTime && post.estimatedReadingTime > 0) {
