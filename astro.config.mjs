@@ -41,7 +41,7 @@ export default defineConfig({
                         src: ['./src/assets/fonts/atkinson-bold.woff'],
                         weight: 700,
                         style: 'normal',
-                        display: 'swap',
+                        display: 'swap', 
                     },
                 ],
             },
