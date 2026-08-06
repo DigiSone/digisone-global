@@ -10,10 +10,11 @@ const posts = await sanityClient.fetch(`
     title,
     "slug": slug.current,
     excerpt,
-    "publishedAt": coalesce(publishedAt, _createdAt),
+    publishedAt,
     "imageUrl": mainImage.asset->url,
-    "authorName": author->name,
-    "categories": categories[]->title,
+    "imageAlt": mainImage.alt,
+    author,
+    categories,
     "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180)
   }
 `);
@@ -29,14 +30,12 @@ function getReadingTime(post: any): string {
     return `${post.estimatedReadingTime} min read`;
   }
   const words = (post.excerpt || '').split(/\s+/).length;
-  const mins = Math.max(1, Math.ceil(words / 40));
+  const mins = Math.max(1, Math.ceil(words / 35));
   return `${mins} min read`;
 }
 
-// Read initial filters from URL (for server-like behavior + shareable links)
-const url = Astro.url;
-const initialCategory = url.searchParams.get('category') || 'all';
-const initialQuery = url.searchParams.get('q') || '';
+const initialCategory = Astro.url.searchParams.get('category') || 'all';
+const initialQuery = Astro.url.searchParams.get('q') || '';
 ---
 
 <!doctype html>
@@ -62,7 +61,6 @@ const initialQuery = url.searchParams.get('q') || '';
         padding: 3.5rem 0 6.5rem;
       }
 
-      /* Hero */
       .blog-hero {
         margin-bottom: 2.25rem;
         padding-bottom: 2rem;
@@ -106,10 +104,7 @@ const initialQuery = url.searchParams.get('q') || '';
         line-height: 1.55;
       }
 
-      /* ===== Search + Filters ===== */
-      .controls {
-        margin-bottom: 2rem;
-      }
+      .controls { margin-bottom: 2rem; }
 
       .search-wrapper {
         position: relative;
@@ -128,9 +123,7 @@ const initialQuery = url.searchParams.get('q') || '';
         transition: border-color 0.2s, box-shadow 0.2s;
       }
 
-      .search-input::placeholder {
-        color: #94a3b8;
-      }
+      .search-input::placeholder { color: #94a3b8; }
 
       .search-input:focus {
         border-color: var(--accent);
@@ -164,7 +157,6 @@ const initialQuery = url.searchParams.get('q') || '';
         border-radius: 999px;
         cursor: pointer;
         transition: all 0.18s ease;
-        line-height: 1.3;
       }
 
       .filter-btn:hover {
@@ -186,7 +178,6 @@ const initialQuery = url.searchParams.get('q') || '';
         font-weight: 500;
       }
 
-      /* Posts + Transitions */
       .posts {
         list-style: none;
         padding: 0;
@@ -214,9 +205,7 @@ const initialQuery = url.searchParams.get('q') || '';
         pointer-events: none;
       }
 
-      .post-card.is-hidden {
-        display: none;
-      }
+      .post-card.is-hidden { display: none; }
 
       .post-card:hover {
         border-color: var(--border-hover);
@@ -245,9 +234,7 @@ const initialQuery = url.searchParams.get('q') || '';
         transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      .post-card:hover .post-image img {
-        transform: scale(1.05);
-      }
+      .post-card:hover .post-image img { transform: scale(1.05); }
 
       .post-image-placeholder {
         width: 100%;
@@ -255,7 +242,7 @@ const initialQuery = url.searchParams.get('q') || '';
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
         color: #94a3b8;
         font-size: 1.8rem;
       }
@@ -295,9 +282,7 @@ const initialQuery = url.searchParams.get('q') || '';
         transition: color 0.2s ease;
       }
 
-      .post-card:hover .post-title {
-        color: var(--accent);
-      }
+      .post-card:hover .post-title { color: var(--accent); }
 
       .post-excerpt {
         color: var(--text-secondary);
@@ -319,18 +304,15 @@ const initialQuery = url.searchParams.get('q') || '';
 
       .tag {
         display: inline-flex;
-        align-items: center;
         padding: 0.22rem 0.65rem;
         font-size: 0.72rem;
         font-weight: 600;
-        letter-spacing: 0.02em;
         color: var(--accent);
         background: var(--accent-soft);
         border-radius: 999px;
         border: 1px solid #dbeafe;
       }
 
-      /* Empty / No results */
       .empty, .no-results {
         text-align: center;
         padding: 5rem 1.5rem;
@@ -369,32 +351,12 @@ const initialQuery = url.searchParams.get('q') || '';
         opacity: 1;
       }
 
-      /* Responsive */
       @media (max-width: 700px) {
-        .blog-page {
-          padding: 2.75rem 0 5rem;
-        }
-
-        .post-card a {
-          grid-template-columns: 1fr;
-        }
-
-        .post-image {
-          height: 200px;
-        }
-
-        .post-content {
-          padding: 1.35rem 1.4rem 1.5rem;
-        }
-
-        .post-title {
-          font-size: 1.18rem;
-        }
-
-        .filter-btn {
-          font-size: 0.78rem;
-          padding: 0.35rem 0.8rem;
-        }
+        .blog-page { padding: 2.75rem 0 5rem; }
+        .post-card a { grid-template-columns: 1fr; }
+        .post-image { height: 200px; }
+        .post-content { padding: 1.35rem 1.4rem 1.5rem; }
+        .post-title { font-size: 1.18rem; }
       }
     </style>
   </head>
@@ -417,7 +379,6 @@ const initialQuery = url.searchParams.get('q') || '';
       ) : (
         <>
           <div class="controls">
-            <!-- Search -->
             <div class="search-wrapper">
               <span class="search-icon">⌕</span>
               <input
@@ -430,19 +391,12 @@ const initialQuery = url.searchParams.get('q') || '';
               />
             </div>
 
-            <!-- Category Filters -->
             <div class="filter-bar" id="filterBar">
-              <button
-                class={`filter-btn ${initialCategory === 'all' ? 'active' : ''}`}
-                data-filter="all"
-              >
+              <button class={`filter-btn ${initialCategory === 'all' ? 'active' : ''}`} data-filter="all">
                 All
               </button>
               {allCategories.map((cat) => (
-                <button
-                  class={`filter-btn ${initialCategory === cat ? 'active' : ''}`}
-                  data-filter={cat}
-                >
+                <button class={`filter-btn ${initialCategory === cat ? 'active' : ''}`} data-filter={cat}>
                   {cat}
                 </button>
               ))}
@@ -466,7 +420,7 @@ const initialQuery = url.searchParams.get('q') || '';
                     {post.imageUrl ? (
                       <img
                         src={`${post.imageUrl}?w=480&h=320&fit=crop&auto=format`}
-                        alt={post.title}
+                        alt={post.imageAlt || post.title}
                         loading="lazy"
                         width="210"
                         height="160"
@@ -489,10 +443,10 @@ const initialQuery = url.searchParams.get('q') || '';
                       </span>
                       <span class="dot"></span>
                       <span>{getReadingTime(post)}</span>
-                      {post.authorName && (
+                      {post.author && (
                         <>
                           <span class="dot"></span>
-                          <span>{post.authorName}</span>
+                          <span>{post.author}</span>
                         </>
                       )}
                     </div>
@@ -500,7 +454,7 @@ const initialQuery = url.searchParams.get('q') || '';
                     <h2 class="post-title">{post.title}</h2>
                     {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
 
-                    {post.categories && post.categories.length > 0 && (
+                    {post.categories?.length > 0 && (
                       <div class="post-tags">
                         {post.categories.slice(0, 3).map((cat: string) => (
                           <span class="tag">{cat}</span>
@@ -537,12 +491,8 @@ const initialQuery = url.searchParams.get('q') || '';
 
       function updateURL() {
         const params = new URLSearchParams();
-        if (currentCategory && currentCategory !== 'all') {
-          params.set('category', currentCategory);
-        }
-        if (currentQuery.trim()) {
-          params.set('q', currentQuery.trim());
-        }
+        if (currentCategory !== 'all') params.set('category', currentCategory);
+        if (currentQuery.trim()) params.set('q', currentQuery.trim());
         const newUrl = params.toString()
           ? `\( {window.location.pathname}? \){params.toString()}`
           : window.location.pathname;
@@ -560,36 +510,25 @@ const initialQuery = url.searchParams.get('q') || '';
 
           const matchesCategory =
             currentCategory === 'all' || categories.split(',').includes(currentCategory);
-
-          const matchesSearch =
-            !query || title.includes(query) || excerpt.includes(query);
-
+          const matchesSearch = !query || title.includes(query) || excerpt.includes(query);
           const shouldShow = matchesCategory && matchesSearch;
 
           if (shouldShow) {
             card.classList.remove('is-hidden');
-            // Trigger reflow then fade in
-            requestAnimationFrame(() => {
-              card.classList.remove('is-hiding');
-            });
+            requestAnimationFrame(() => card.classList.remove('is-hiding'));
             visibleCount++;
           } else {
             card.classList.add('is-hiding');
-            // After fade out, fully hide
             setTimeout(() => {
-              if (card.classList.contains('is-hiding')) {
-                card.classList.add('is-hidden');
-              }
+              if (card.classList.contains('is-hiding')) card.classList.add('is-hidden');
             }, 280);
           }
         });
 
-        // Update count
         if (filterCount) {
           filterCount.textContent = `Showing \( {visibleCount} article \){visibleCount !== 1 ? 's' : ''}`;
         }
 
-        // No results
         if (noResults && postsList) {
           if (visibleCount === 0) {
             postsList.style.display = 'none';
@@ -601,7 +540,6 @@ const initialQuery = url.searchParams.get('q') || '';
         }
       }
 
-      // Category buttons
       filterButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
           filterButtons.forEach((b) => b.classList.remove('active'));
@@ -612,7 +550,6 @@ const initialQuery = url.searchParams.get('q') || '';
         });
       });
 
-      // Search with debounce
       let debounceTimer: number;
       searchInput?.addEventListener('input', () => {
         clearTimeout(debounceTimer);
@@ -623,7 +560,6 @@ const initialQuery = url.searchParams.get('q') || '';
         }, 220);
       });
 
-      // Initial apply (for URL params)
       applyFilters();
     </script>
   </body>
