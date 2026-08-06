@@ -23,7 +23,6 @@ const posts = await sanityClient.fetch(`
 `);
 
 const title = `Blog — ${SITE_TITLE}`;
----
 
 const allCategories = Array.from(
   new Set(posts.flatMap((p: any) => p.categories || []).filter(Boolean))
