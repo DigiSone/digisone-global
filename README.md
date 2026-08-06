@@ -5,7 +5,7 @@
 [![Cloudflare Pages](https://img.shields.io/badge/deploy-Cloudflare_Pages-f38020)](https://pages.cloudflare.com)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 
-**Premium insights on technology, business, and digital growth.**
+**Premium insights on Ai, Business Strategy, Startups, technology, & digital growth.**
 
 DigiSone Global is an independent online publication for founders, operators, and technology leaders. We publish practical analysis on Artificial Intelligence, business strategy, startups, cybersecurity, cloud computing, the future of work, digital transformation, and the creator economy.
 
