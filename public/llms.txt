@@ -1,15 +1,19 @@
 # DigiSone Global
+> Premium insights on AI, business strategy, startups, cybersecurity, cloud & future of work.
 
-> Premium insights on Artificial Intelligence, business strategy, startups, cybersecurity, cloud, and the future of work.
-
-## Site
+## Main Pages
 - [Home](https://digisone.com/)
 - [Blog](https://digisone.com/blog/)
 - [Categories](https://digisone.com/categories/)
 - [Resources](https://digisone.com/resources/)
 - [About](https://digisone.com/about/)
 - [Contact](https://digisone.com/contact/)
+- [Subscribe](https://digisone.com/subscribe/)
 
 ## Policies
 - [Privacy](https://digisone.com/privacy/)
 - [Terms](https://digisone.com/terms/)
+
+## Feeds
+- [RSS](https://digisone.com/rss.xml)
+- [Sitemap](https://digisone.com/sitemap-0.xml)
