@@ -3,13 +3,13 @@
 > Premium insights on Artificial Intelligence, business strategy, startups, cybersecurity, cloud, and the future of work.
 
 ## Site
-- [Home](https://digisone.com/)
-- [Blog](https://digisone.com/blog/)
-- [Categories](https://digisone.com/categories/)
-- [Resources](https://digisone.com/resources/)
-- [About](https://digisone.com/about/)
-- [Contact](https://digisone.com/contact/)
+- [Home](https://digisone-global.pages.dev/)
+- [Blog](https://digisone-global.pages.dev/blog/)
+- [Categories](https://digisone-global.pages.dev/categories/)
+- [Resources](https://digisone-global.pages.dev/resources/)
+- [About](https://digisone-global.pages.dev/about/)
+- [Contact](https://digisone-global.pages.dev/contact/)
 
 ## Policies
-- [Privacy](https://digisone.com/privacy/)
-- [Terms](https://digisone.com/terms/)
+- [Privacy](https://digisone-global.pages.dev/privacy/)
+- [Terms](https://digisone-global.pages.dev/terms/)
