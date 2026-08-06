@@ -68,13 +68,13 @@ const ADSENSE_CLIENT = ''; // e.g. 'ca-pub-1234567890123456'
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image.src, Astro.url)} />
 <meta property="og:locale" content="en_US" />
+<meta property="og:image" content={post.mainImageUrl} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image.src, Astro.url)} />
-
+<meta name="twitter:image" content={post.mainImageUrl} />
 <!--
   Google Consent Mode v2 — DEFAULT DENIED (must run before GA / Ads)
   CookieConsent.astro later calls consent update on Accept / Save
