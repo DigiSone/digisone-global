@@ -66,7 +66,7 @@ const ADSENSE_CLIENT = ''; // e.g. 'ca-pub-1234567890123456'
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={post.mainImageUrl} />
+meta property="og:image" content=(new URL(image.src, Astro.ur1)31>
 <meta property="og:locale" content="en_US" />
 
 
@@ -74,7 +74,7 @@ const ADSENSE_CLIENT = ''; // e.g. 'ca-pub-1234567890123456'
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={post.mainImageUrl} />
+meta name="twitter:image" content=fnew URL(image.src, Astro.ur1)11>
 
 <!--
   Google Consent Mode v2 — DEFAULT DENIED (must run before GA / Ads)
