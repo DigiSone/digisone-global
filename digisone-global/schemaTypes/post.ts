@@ -221,7 +221,8 @@ export default defineType({
     date: 'publishedAt',
     featured: 'featured',
   },
-  prepare({ title, author, media, date, featured }) {
+  prepare(selection) {
+    const { title, author, media, date, featured } = selection;
     const dateStr = date
       ? new Date(date).toLocaleDateString('en-IN', {
           year: 'numeric',
@@ -237,3 +238,4 @@ export default defineType({
     };
   },
 }
+
