@@ -21,10 +21,36 @@ const posts = await sanityClient.fetch(`
   }
 `);
 
-const featuredPost = posts?.find((p: any) => p.featured) || posts?.[0] || null;
-const latestPosts = (posts || [])
+const safePosts = posts || [];
+const featuredPost = safePosts.find((p: any) => p.featured) || safePosts[0] || null;
+const latestPosts = safePosts
   .filter((p: any) => p._id !== featuredPost?._id)
   .slice(0, 6);
+
+function formatDate(dateStr: string | null | undefined) {
+  if (!dateStr) return 'Recently';
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function formatShortDate(dateStr: string | null | undefined) {
+  if (!dateStr) return 'Recently';
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+function getReadingTime(post: any): string {
+  if (post?.estimatedReadingTime && post.estimatedReadingTime > 0) {
+    return `${post.estimatedReadingTime} min read`;
+  }
+  return '5 min read';
+}
 
 const trendingTopics = [
   '⚡ Next-Gen AI & Autonomous Agents',
@@ -45,32 +71,34 @@ const categories = [
 ];
 
 const socialLinks = [
-  { 
-    platform: 'Twitter / X', 
-    handle: '@digisoneglobal', 
-    href: 'https://twitter.com/digisoneglobal', 
-    svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>' 
+  {
+    platform: 'Twitter / X',
+    handle: '@digisoneglobal',
+    href: 'https://twitter.com/digisoneglobal',
+    svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>',
   },
   {
-		platform: 'LinkedIn', 
-		handle: '@digisoneglobal', 
-		href: 'https://linkedin.com/company/digisoneglobal', 
-		svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>' 
-	},
-	{ 
-		platform: 'GitHub', 
-		handle: '@digisoneglobal', 
-		href: 'https://github.com/digisone/digisone-global', 
-		svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>' 
-	},
-	{ 
-		platform: 'YouTube', 
-		handle: '@digisoneglobal', 
-		href: 'https://youtube.com/@digisoneglobal', 
-		svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor"></polygon></svg>' 
-	},
+    platform: 'LinkedIn',
+    handle: '@digisoneglobal',
+    href: 'https://linkedin.com/company/digisoneglobal',
+    svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>',
+  },
+  {
+    platform: 'GitHub',
+    handle: '@digisoneglobal',
+    href: 'https://github.com/DigiSone/digisone-global',
+    svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>',
+  },
+  {
+    platform: 'YouTube',
+    handle: '@digisoneglobal',
+    href: 'https://youtube.com/@digisoneglobal',
+    svg: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor"></polygon></svg>',
+  },
 ];
 ---
+
+
 
 <!doctype html>
 <html lang="en">
@@ -624,21 +652,41 @@ const socialLinks = [
 				{
 					featuredPost ? (
 						<article class="featured-article">
-							<a href={`/blog/${featuredPost.slug.current}/`} aria-label={`Read: ${featuredPost.title}`}>
-								<div class="featured-grid">
-									<div class="featured-media">
-										{featuredPost.imageUrl ? (
-											<img src={featuredPost.imageUrl} alt={featuredPost.title} loading="eager" />
-										) : (
-											<div class="featured-fallback">Featured Story Image</div>
-										)}
-									</div>
-									<div class="featured-content">
-										<div class="badge-pill">Editor's Choice • By Vikas Mishra</div>
-										<p class="article-date">
-											<time datetime={featuredPost._createdAt}>
-												{new Date(featuredPost._createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-											</time>
+{latestPosts.map((post: any, i: number) => (
+  <li class={`post-card reveal reveal-delay-${Math.min(i + 1, 2)}`}>
+    <a
+      href={post.slug ? `/blog/${post.slug}/` : '/blog/'}
+      aria-label={post.title}
+      style="display: flex; flex-direction: column; height: 100%;"
+    >
+      <div class="post-thumb-wrapper">
+        {post.imageUrl ? (
+          <img
+            class="post-thumb"
+            src={`${post.imageUrl}?w=600&h=340&fit=crop&auto=format`}
+            alt={post.imageAlt || post.title}
+            loading="lazy"
+          />
+        ) : (
+          <div style="display:grid; place-items:center; height:100%; color:var(--muted); font-size:0.85rem;">
+            Article Preview
+          </div>
+        )}
+      </div>
+      <div class="post-body">
+        <p class="post-date">
+          <time datetime={post.publishedAt || ''}>
+            {formatShortDate(post.publishedAt)}
+          </time>
+          {' · '}
+          {getReadingTime(post)}
+        </p>
+        <h3>{post.title}</h3>
+        <p class="post-desc">{post.excerpt}</p>
+      </div>
+    </a>
+  </li>
+))}
 										</p>
 										<h3>{featuredPost.title}</h3>
 										<p class="article-excerpt">{featuredPost.excerpt}</p>
