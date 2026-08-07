@@ -134,22 +134,6 @@ export default defineType({
             }),
           ],
         },
-        {
-          type: 'code',
-          options: {
-            language: 'typescript',
-            languageAlternatives: [
-              { title: 'TypeScript', value: 'typescript' },
-              { title: 'JavaScript', value: 'javascript' },
-              { title: 'HTML', value: 'html' },
-              { title: 'CSS', value: 'css' },
-              { title: 'JSON', value: 'json' },
-              { title: 'Bash', value: 'bash' },
-              { title: 'Python', value: 'python' },
-            ],
-            withFilename: true,
-          },
-        },
       ],
     }),
 
@@ -160,7 +144,8 @@ export default defineType({
       type: 'reference',
       to: [{ type: 'author' }],
       group: 'meta',
-      validation: (Rule) => Rule.required(),
+      // पहले Author document बना लो, फिर required कर सकते हो
+      // validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'categories',
@@ -168,7 +153,8 @@ export default defineType({
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'category' }] }],
       group: 'meta',
-      validation: (Rule) => Rule.min(1).error('Select at least one category'),
+      // पहले Category documents बना लो
+      // validation: (Rule) => Rule.min(1).error('Select at least one category'),
     }),
     defineField({
       name: 'publishedAt',
@@ -243,8 +229,9 @@ export default defineType({
             day: 'numeric',
           })
         : 'No date'
+
       return {
-        title: `\( {featured ? '⭐ ' : ''} \){title}`,
+        title: `\( {featured ? '⭐ ' : ''} \){title || 'Untitled'}`,
         subtitle: `${author || 'No author'} • ${dateStr}`,
         media,
       }
