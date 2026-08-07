@@ -647,50 +647,49 @@ const socialLinks = [
 				</div>
 			</section>
 
-			<!-- FEATURED ARTICLE (Sanity CMS) -->
+<!-- FEATURED ARTICLE (Sanity CMS) -->
 			<section class="section reveal" aria-label="Featured article">
 				{
 					featuredPost ? (
 						<article class="featured-article">
-{latestPosts.map((post: any, i: number) => (
-  <li class={`post-card reveal reveal-delay-${Math.min(i + 1, 2)}`}>
-    <a
-      href={post.slug ? `/blog/${post.slug}/` : '/blog/'}
-      aria-label={post.title}
-      style="display: flex; flex-direction: column; height: 100%;"
-    >
-      <div class="post-thumb-wrapper">
-        {post.imageUrl ? (
-          <img
-            class="post-thumb"
-            src={`${post.imageUrl}?w=600&h=340&fit=crop&auto=format`}
-            alt={post.imageAlt || post.title}
-            loading="lazy"
-          />
-        ) : (
-          <div style="display:grid; place-items:center; height:100%; color:var(--muted); font-size:0.85rem;">
-            Article Preview
-          </div>
-        )}
-      </div>
-      <div class="post-body">
-        <p class="post-date">
-          <time datetime={post.publishedAt || ''}>
-            {formatShortDate(post.publishedAt)}
-          </time>
-          {' · '}
-          {getReadingTime(post)}
-        </p>
-        <h3>{post.title}</h3>
-        <p class="post-desc">{post.excerpt}</p>
-      </div>
-    </a>
-  </li>
-))}
+							<a
+								href={featuredPost.slug ? `/blog/${featuredPost.slug}/` : '/blog/'}
+								aria-label={`Read: ${featuredPost.title}`}
+							>
+								<div class="featured-grid">
+									<div class="featured-media">
+										{featuredPost.imageUrl ? (
+											<img
+												src={`${featuredPost.imageUrl}?w=900&h=600&fit=crop&auto=format`}
+												alt={featuredPost.imageAlt || featuredPost.title}
+												width="900"
+												height="600"
+												loading="eager"
+												decoding="async"
+											/>
+										) : (
+											<div class="featured-fallback">Featured Story Image</div>
+										)}
+									</div>
+									<div class="featured-content">
+										<div class="badge-pill">
+											Editor's Choice • By {featuredPost.authorName || 'Vikas Mishra'}
+										</div>
+										<p class="article-date">
+											<time datetime={featuredPost.publishedAt || ''}>
+												{formatDate(featuredPost.publishedAt)}
+											</time>
+											{' · '}
+											{getReadingTime(featuredPost)}
 										</p>
 										<h3>{featuredPost.title}</h3>
 										<p class="article-excerpt">{featuredPost.excerpt}</p>
-										<span class="btn btn-primary" style="width: fit-content; min-height: 2.5rem; padding: 0.5rem 1.2rem; font-size: 0.88rem;">Read Full Story</span>
+										<span
+											class="btn btn-primary"
+											style="width: fit-content; min-height: 2.5rem; padding: 0.5rem 1.2rem; font-size: 0.88rem;"
+										>
+											Read Full Story
+										</span>
 									</div>
 								</div>
 							</a>
@@ -713,19 +712,35 @@ const socialLinks = [
 						<ul class="posts-grid">
 							{latestPosts.map((post: any, i: number) => (
 								<li class={`post-card reveal reveal-delay-${Math.min(i + 1, 2)}`}>
-									<a href={`/blog/${post.slug.current}/`} aria-label={post.title} style="display: flex; flex-direction: column; height: 100%;">
+									<a
+										href={post.slug ? `/blog/${post.slug}/` : '/blog/'}
+										aria-label={post.title}
+										style="display: flex; flex-direction: column; height: 100%;"
+									>
 										<div class="post-thumb-wrapper">
 											{post.imageUrl ? (
-												<img class="post-thumb" src={post.imageUrl} alt={post.title} loading="lazy" />
+												<img
+													class="post-thumb"
+													src={`${post.imageUrl}?w=600&h=340&fit=crop&auto=format`}
+													alt={post.imageAlt || post.title}
+													width="600"
+													height="340"
+													loading="lazy"
+													decoding="async"
+												/>
 											) : (
-												<div style="display:grid; place-items:center; height:100%; color:var(--muted); font-size:0.85rem;">Article Preview</div>
+												<div style="display:grid; place-items:center; height:100%; color:var(--muted); font-size:0.85rem;">
+													Article Preview
+												</div>
 											)}
 										</div>
 										<div class="post-body">
 											<p class="post-date">
-												<time datetime={post._createdAt}>
-													{new Date(post._createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+												<time datetime={post.publishedAt || ''}>
+													{formatShortDate(post.publishedAt)}
 												</time>
+												{' · '}
+												{getReadingTime(post)}
 											</p>
 											<h3>{post.title}</h3>
 											<p class="post-desc">{post.excerpt}</p>
