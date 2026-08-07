@@ -1,11 +1,9 @@
 import { defineField, defineType } from 'sanity'
-import { DocumentTextIcon } from '@sanity/icons'
 
 export default defineType({
   name: 'post',
   title: 'Blog Post',
   type: 'document',
-  icon: DocumentTextIcon,
   groups: [
     { name: 'content', title: 'Content', default: true },
     { name: 'meta', title: 'Meta & SEO' },
