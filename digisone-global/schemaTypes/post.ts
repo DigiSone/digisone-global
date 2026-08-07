@@ -214,27 +214,26 @@ export default defineType({
     },
   ],
   preview: {
-    select: {
-      title: 'title',
-      author: 'author.name',
-      media: 'mainImage',
-      date: 'publishedAt',
-      featured: 'featured',
-    },
-    prepare({ title, author, media, date, featured }) {
-      const dateStr = date
-        ? new Date(date).toLocaleDateString('en-IN', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })
-        : 'No date'
-
-      return {
-        title: `\( {featured ? '⭐ ' : ''} \){title || 'Untitled'}`,
-        subtitle: `${author || 'No author'} • ${dateStr}`,
-        media,
-      }
-    },
+  select: {
+    title: 'title',
+    author: 'author.name',
+    media: 'mainImage',
+    date: 'publishedAt',
+    featured: 'featured',
   },
-})      
+  prepare({ title, author, media, date, featured }) {
+    const dateStr = date
+      ? new Date(date).toLocaleDateString('en-IN', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })
+      : 'No date';
+
+    return {
+      title: `${featured ? '⭐ ' : ''}${title || 'Untitled'}`,
+      subtitle: `${author || 'No author'} • ${dateStr}`,
+      media,
+    };
+  },
+}
