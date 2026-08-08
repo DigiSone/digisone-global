@@ -61,6 +61,7 @@ export async function getAllPosts(): Promise<UnifiedPost[]> {
           : readingTimeFromText(p.excerpt || ''),
       source: 'sanity' as const,
       href: `/blog/${p.slug}/`,
+      featured: Boolean(p.featured),
     };
   });
 
