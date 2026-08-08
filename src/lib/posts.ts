@@ -16,6 +16,7 @@ export type UnifiedPost = {
   readingTime: string;
   source: 'sanity' | 'markdown';
   href: string;
+  featured?: boolean;
 };
 
 function readingTimeFromText(text: string, fallbackMins = 1): string {
