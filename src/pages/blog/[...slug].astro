@@ -1,111 +1,330 @@
----
+                                                                                                          margin-bottom: 0.4rem;
+                  ---
 import { sanityClient } from 'sanity:client';
-import { PortableText } from 'astro-portabletext';
+import { getCollection, render } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { SITE_TITLE } from '../../consts';
 
 export async function getStaticPaths() {
-    const posts = await sanityClient.fetch(`
-        *[_type == "post" && defined(slug.current)] {
-                "slug": slug.current
-        }
-          `);
+  // Sanity slugs
+  const sanityPosts = await sanityClient.fetch(`
+    *[_type == "post" && defined(slug.current)]{ "slug": slug.current }
+  `);
+  const sanityPaths = (sanityPosts || []).map((p: { slug: string }) => ({
+    params: { slug: p.slug },
+  }));
 
-            return posts.map((post: { slug: string }) => ({
-                  params: { slug: post.slug },
-            }));
+  // Markdown ids
+  let mdPaths: { params: { slug: string } }[] = [];
+  try {
+    const md = await getCollection('blog');
+    mdPaths = md.map((entry) => ({
+      params: { slug: entry.id },
+    }));
+  } catch {
+    /* no collection */
+  }
+
+  // Dedupe by slug string
+  const seen = new Set<string>();
+  const paths: { params: { slug: string } }[] = [];
+  for (const p of [...sanityPaths, ...mdPaths]) {
+    if (!seen.has(p.params.slug)) {
+      seen.add(p.params.slug);
+      paths.push(p);
+    }
+  }
+  return paths;
 }
 
-const { slug } = Astro.params;
+const slug = Astro.params.slug || '';
 
-const post = await sanityClient.fetch(`
-  *[_type == "post" && slug.current == $slug][0] {
-        title,
-            excerpt,
-                body,
-                    publishedAt,
-                        "imageUrl": mainImage.asset->url,
-                            "authorName": author->name
+// 1) Try Sanity
+const sanityPost = await sanityClient.fetch(
+  `*[_type == "post" && slug.current == $slug][0]{
+    title,
+    excerpt,
+    publishedAt,
+    "slug": slug.current,
+    body,
+    "imageUrl": mainImage.asset->url,
+    "imageAlt": mainImage.alt,
+    "authorName": author->name,
+    "categories": categories[]->title,
+    "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180)
+  }`,
+  { slug }
+);
+
+let mode: 'sanity' | 'markdown' | 'none' = 'none';
+let mdEntry: any = null;
+let MdContent: any = null;
+
+if (sanityPost) {
+  mode = 'sanity';
+} else {
+  try {
+    const all = await getCollection('blog');
+    mdEntry = all.find((e) => e.id === slug);
+    if (mdEntry) {
+      mode = 'markdown';
+      const rendered = await render(mdEntry);
+      MdContent = rendered.Content;
+    }
+  } catch {
+    /* ignore */
   }
-  `, { slug });
+}
 
-  if (!post) {
-      return Astro.redirect('/404');
-  }
+if (mode === 'none') {
+  return Astro.redirect('/404');
+}
 
-  const pageTitle = `${post.title} — ${SITE_TITLE}`;
-  ---
+const title =
+  mode === 'sanity'
+    ? `${sanityPost.title} — ${SITE_TITLE}`
+    : `${mdEntry.data.title} — ${SITE_TITLE}`;
 
-  <!doctype html>
-  <html lang="en">
-    <head>
-        <BaseHead title={pageTitle} description={post.excerpt || post.title} />
-            <style>
-                  .post-container {
-                            width: min(100% - 2rem, 720px);
-                                    margin: 0 auto;
-                                            padding: 2.5rem 0 5rem;
-                  }
-                        .back-link {
-                                  display: inline-block;
-                                          margin-bottom: 1.8rem;
-                                                  color: #2563eb;
-                                                          font-weight: 500;
-                                                                  text-decoration: none;
-                                                                          font-size: 0.95rem;
-                        }
-                              .back-link:hover {
-                                        text-decoration: underline;
-                              }
-                                    .post-date {
-                                              color: #64748b;
-                                                      font-size: 0.95rem;
-                                                              margin-bottom: 0.6rem;
-                                    }
-                                          .post-title {
-                                                    font-size: clamp(1.9rem, 5vw, 2.7rem);
-                                                            line-height: 1.2;
-                                                                    margin: 0 0 0.7rem;
-                                                                            font-weight: 700;
-                                          }
-                                                .post-author {
-                                                          color: #64748b;
-                                                                  font-size: 0.95rem;
-                                                                          margin-bottom: 1.8rem;
-                                                }
-                                                      .post-image {
-                                                                width: 100%;
-                                                                        border-radius: 1rem;
-                                                                                margin-bottom: 2.2rem;
-                                                      }
-                                                            .post-content {
-                                                                      font-size: 1.125rem;
-                                                                              line-height: 1.8;
-                                                                                      color: #1e293b;
-                                                            }
-                                                                  .post-content :global(p) {
-                                                                            margin-bottom: 1.4rem;
-                                                                  }
-                                                                        .post-content :global(h2) {
-                                                                                  font-size: 1.6rem;
-                                                                                          margin: 2.2rem 0 1rem;
-                                                                                                  font-weight: 700;
-                                                                        }
-                                                                              .post-content :global(h3) {
-                                                                                        font-size: 1.3rem;
-                                                                                                margin: 1.8rem 0 0.8rem;
-                                                                                                        font-weight: 600;
-                                                                              }
-                                                                                    .post-content :global(ul),
-                                                                                          .post-content :global(ol) {
-                                                                                                    margin-bottom: 1.4rem;
-                                                                                                            padding-left: 1.5rem;
-                                                                                          }
-                                                                                                .post-content :global(li) {
-                                                                                                          margin-bottom: 0.4rem;
-                                                                                                }
+const description =
+  mode === 'sanity'
+    ? sanityPost.excerpt || SITE_TITLE
+    : mdEntry.data.description || SITE_TITLE;
+
+const publishedAt =
+  mode === 'sanity'
+    ? sanityPost.publishedAt
+      ? new Date(sanityPost.publishedAt)
+      : null
+    : mdEntry.data.pubDate
+      ? new Date(mdEntry.data.pubDate)
+      : null;
+
+const canonical = `https://digisone.com/blog/${slug}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <link rel="canonical" href={canonical} />
+    <style>
+      :root {
+        --text: #0b1220;
+        --muted: #475569;
+        --accent: #2563eb;
+        --border: rgba(15, 23, 42, 0.1);
+        --bg: #f8fafc;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+      .article-wrap {
+        width: min(100% - 2.5rem, 740px);
+        margin: 0 auto;
+        padding: 3rem 0 5rem;
+      }
+      .back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--accent);
+        text-decoration: none;
+        margin-bottom: 1.75rem;
+      }
+      .back:hover { text-decoration: underline; }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 0.65rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+      .meta .dot {
+        width: 3px; height: 3px; border-radius: 50%;
+        background: #94a3b8; align-self: center;
+      }
+      h1 {
+        font-size: clamp(1.85rem, 4.5vw, 2.6rem);
+        letter-spacing: -0.035em;
+        line-height: 1.15;
+        margin: 0 0 1rem;
+      }
+      .lead {
+        font-size: 1.12rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin: 0 0 1.75rem;
+      }
+      .hero-img {
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+        background: #e2e8f0;
+      }
+      .hero-img img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .prose {
+        font-size: 1.05rem;
+        line-height: 1.75;
+        color: #1e293b;
+      }
+      .prose :global(h2) {
+        margin: 2rem 0 0.75rem;
+        font-size: 1.45rem;
+        letter-spacing: -0.02em;
+      }
+      .prose :global(h3) {
+        margin: 1.5rem 0 0.5rem;
+        font-size: 1.2rem;
+      }
+      .prose :global(p) { margin: 0 0 1.15rem; }
+      .prose :global(ul), .prose :global(ol) {
+        margin: 0 0 1.15rem;
+        padding-left: 1.25rem;
+      }
+      .prose :global(a) { color: var(--accent); }
+      .prose :global(img) {
+        max-width: 100%;
+        border-radius: 12px;
+        margin: 1.25rem 0;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+      }
+      .tag {
+        font-size: 0.75rem;
+        font-weight: 650;
+        padding: 0.25rem 0.7rem;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--accent);
+        border: 1px solid #dbeafe;
+        text-decoration: none;
+      }
+      .archive-note {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <article class="article-wrap">
+      <a class="back" href="/blog/">← All articles</a>
+
+      {
+        mode === 'sanity' && sanityPost && (
+          <>
+            <div class="meta">
+              {publishedAt && (
+                <time datetime={publishedAt.toISOString()}>
+                  {publishedAt.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              )}
+              {sanityPost.authorName && (
+                <>
+                  <span class="dot" />
+                  <span>{sanityPost.authorName}</span>
+                </>
+              )}
+              {sanityPost.estimatedReadingTime > 0 && (
+                <>
+                  <span class="dot" />
+                  <span>{sanityPost.estimatedReadingTime} min read</span>
+                </>
+              )}
+            </div>
+            <h1>{sanityPost.title}</h1>
+            {sanityPost.excerpt && <p class="lead">{sanityPost.excerpt}</p>}
+            {sanityPost.imageUrl && (
+              <div class="hero-img">
+                <img
+                  src={`${sanityPost.imageUrl}?w=1200&auto=format`}
+                  alt={sanityPost.imageAlt || sanityPost.title}
+                />
+              </div>
+            )}
+            {/* Portable Text: replace with your PortableText component when ready */}
+            <div class="prose">
+              <p>
+                <em>
+                  Full body rendering via Portable Text component — wire
+                  <code> astro-portabletext </code>
+                  or your existing body renderer here.
+                </em>
+              </p>
+            </div>
+            {sanityPost.categories?.length > 0 && (
+              <div class="tags">
+                {sanityPost.categories.map((c: string) => (
+                  <a class="tag" href={`/blog/?category=${encodeURIComponent(c)}`}>
+                    {c}
+                  </a>
+                ))}
+              </div>
+            )}
+          </>
+        )
+      }
+
+      {
+        mode === 'markdown' && mdEntry && (
+          <>
+            <div class="meta">
+              {publishedAt && (
+                <time datetime={publishedAt.toISOString()}>
+                  {publishedAt.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              )}
+              {mdEntry.data.author && (
+                <>
+                  <span class="dot" />
+                  <span>{mdEntry.data.author}</span>
+                </>
+              )}
+            </div>
+            <h1>{mdEntry.data.title}</h1>
+            {mdEntry.data.description && (
+              <p class="lead">{mdEntry.data.description}</p>
+            )}
+            <div class="prose">
+              <MdContent />
+            </div>
+            <p class="archive-note">Archive article (Markdown)</p>
+          </>
+        )
+      }
+    </article>
+    <Footer />
+  </body>
+</html>                                                                              }
                                                                                                       .post-content :global(a) {
                                                                                                                 color: #2563eb;
                                                                                                                         text-decoration: underline;
