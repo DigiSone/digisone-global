@@ -1,103 +1,412 @@
 ---
-import { sanityClient } from 'sanity:client';
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import { SITE_TITLE } from '../../consts';
+import { getAllPosts, formatDate, type UnifiedPost } from '../../lib/posts';
 
-const posts = await sanityClient.fetch(`
-  *[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) {
-    title,
-    "slug": slug.current,
-    excerpt,
-    publishedAt,
-    "imageUrl": mainImage.asset->url,
-    "imageAlt": mainImage.alt,
-    "authorName": author->name,
-    "authorImage": author->image.asset->url,
-    "categories": categories[]->title,
-    "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),
-    featured
-  }
-`);
+const allPosts = await getAllPosts();
 
 const title = `Blog — ${SITE_TITLE}`;
+const description =
+  'Practical analysis on AI, business strategy, startups, cybersecurity, cloud, and the future of work.';
 
-const allCategories = Array.from(
-  new Set(
-    (posts || [])
-      .flatMap((p: any) => p.categories || [])
-      .filter(Boolean)
-  )
-).sort() as string[];
-
-function getReadingTime(post: any): string {
-  if (post.estimatedReadingTime && post.estimatedReadingTime > 0) {
-    return `${post.estimatedReadingTime} min read`;
+// Categories from all posts (Sanity titles + inferred)
+const categorySet = new Set<string>();
+for (const p of allPosts) {
+  for (const c of p.categories) {
+    if (c) categorySet.add(c);
   }
-  const words = (post.excerpt || '').split(/\s+/).length;
-  const mins = Math.max(1, Math.ceil(words / 35));
-  return `${mins} min read`;
 }
+// Also surface known pillars if posts matched via keywords only
+const pillarNames = [
+  'Artificial Intelligence',
+  'Business Strategy',
+  'Startups',
+  'Cybersecurity',
+  'Cloud Computing',
+  'Future of Work',
+  'Creator Economy',
+  'Digital Transformation',
+];
+for (const name of pillarNames) {
+  // only add if at least one post might relate — keep filter bar useful
+  if (allPosts.some((p) => {
+    const h = `${p.title} ${p.excerpt} ${p.categories.join(' ')}`.toLowerCase();
+    return h.includes(name.toLowerCase().split(' ')[0]!) || p.categories.includes(name);
+  })) {
+    categorySet.add(name);
+  }
+}
+const allCategories = Array.from(categorySet).sort();
 
 const initialCategory = Astro.url.searchParams.get('category') || 'all';
 const initialQuery = Astro.url.searchParams.get('q') || '';
+
+const total = allPosts.length;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={SITE_DESCRIPTION} />
+    <BaseHead title={title} description={description} />
+    <link rel="canonical" href="https://digisone.com/blog/" />
     <style>
       :root {
-        --text-primary: #0f172a;
+        --text-primary: #0b1220;
         --text-secondary: #475569;
         --text-muted: #64748b;
-        --border: #e2e8f0;
+        --border: rgba(15, 23, 42, 0.1);
         --border-hover: #cbd5e1;
+        --bg: #f1f5f9;
         --bg-card: #ffffff;
         --accent: #2563eb;
         --accent-soft: #eff6ff;
-        --radius: 16px;
+        --radius: 18px;
+        --radius-lg: 24px;
+        --shadow: 0 20px 44px -14px rgba(15, 23, 42, 0.12);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
-      .blog-page { width: min(100% - 2.5rem, 820px); margin: 0 auto; padding: 3.5rem 0 6.5rem; }
-      .blog-hero { margin-bottom: 2.25rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-      .blog-hero .label { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
-      .blog-hero .label::before { content: ""; width: 7px; height: 7px; background: var(--accent); border-radius: 50%; }
-      .blog-hero h1 { font-size: clamp(2.2rem, 5vw, 2.9rem); font-weight: 750; letter-spacing: -0.035em; color: var(--text-primary); margin: 0 0 0.8rem; line-height: 1.12; }
-      .blog-hero p { font-size: 1.08rem; color: var(--text-secondary); margin: 0; max-width: 38ch; line-height: 1.55; }
-      .controls { margin-bottom: 2rem; }
-      .search-wrapper { position: relative; margin-bottom: 1.25rem; }
-      .search-input { width: 100%; padding: 0.85rem 1.1rem 0.85rem 2.9rem; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 12px; background: white; color: var(--text-primary); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-      .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
-      .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; font-size: 1.05rem; }
-      .filter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-      .filter-btn { appearance: none; border: 1px solid var(--border); background: white; color: var(--text-secondary); font-size: 0.82rem; font-weight: 550; padding: 0.4rem 0.95rem; border-radius: 999px; cursor: pointer; transition: all 0.18s ease; }
-      .filter-btn:hover { border-color: #94a3b8; color: var(--text-primary); }
-      .filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.35); }
-      .filter-count { font-size: 0.82rem; color: var(--text-muted); margin: 1.1rem 0 1.5rem; font-weight: 500; }
-      .posts { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.75rem; }
-      .post-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1; transform: translateY(0); }
-      .post-card.is-hiding { opacity: 0; transform: translateY(8px); pointer-events: none; }
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        color: var(--text-primary);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 90% 55% at 8% -10%, rgba(37, 99, 235, 0.12), transparent 55%),
+          radial-gradient(ellipse 70% 45% at 100% 0%, rgba(99, 102, 241, 0.08), transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .blog-page {
+        width: min(100% - 2.5rem, 920px);
+        margin: 0 auto;
+        padding: 3.5rem 0 6.5rem;
+      }
+
+      .blog-hero {
+        margin-bottom: 2.35rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .blog-hero .label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.78rem;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.95rem;
+      }
+
+      .blog-hero .label::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
+
+      .blog-hero h1 {
+        font-size: clamp(2.35rem, 5vw, 3.1rem);
+        font-weight: 750;
+        letter-spacing: -0.038em;
+        color: var(--text-primary);
+        margin: 0 0 0.85rem;
+        line-height: 1.1;
+      }
+
+      .blog-hero p {
+        font-size: 1.08rem;
+        color: var(--text-secondary);
+        margin: 0;
+        max-width: 42ch;
+        line-height: 1.6;
+      }
+
+      .hero-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem 1.75rem;
+        margin-top: 1.5rem;
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        font-weight: 550;
+      }
+
+      .hero-stats strong {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      .controls { margin-bottom: 1.75rem; }
+
+      .search-wrapper {
+        position: relative;
+        margin-bottom: 1.15rem;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 0.9rem 1.15rem 0.9rem 2.95rem;
+        font-size: 0.95rem;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 1.05rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        pointer-events: none;
+        font-size: 1.05rem;
+      }
+
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .filter-btn {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.42rem 0.95rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .filter-btn:hover {
+        border-color: #94a3b8;
+        color: var(--text-primary);
+      }
+
+      .filter-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        box-shadow: 0 4px 14px -2px rgba(37, 99, 235, 0.4);
+      }
+
+      .filter-count {
+        font-size: 0.84rem;
+        color: var(--text-muted);
+        margin: 1.15rem 0 1.4rem;
+        font-weight: 550;
+      }
+
+      .posts {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .post-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.2s;
+      }
+
+      .post-card.is-hiding {
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
       .post-card.is-hidden { display: none; }
-      .post-card:hover { border-color: var(--border-hover); box-shadow: 0 18px 40px -12px rgba(15, 23, 42, 0.1); transform: translateY(-3px); }
-      .post-card a { display: grid; grid-template-columns: 210px 1fr; text-decoration: none; color: inherit; min-height: 160px; }
-      .post-image { position: relative; background: #f1f5f9; overflow: hidden; }
-      .post-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+
+      .post-card:hover {
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow);
+        transform: translateY(-3px);
+      }
+
+      .post-card a {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        text-decoration: none;
+        color: inherit;
+        min-height: 168px;
+      }
+
+      .post-image {
+        position: relative;
+        background: #e2e8f0;
+        overflow: hidden;
+      }
+
+      .post-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.45s var(--ease);
+      }
+
       .post-card:hover .post-image img { transform: scale(1.05); }
-      .post-content { padding: 1.5rem 1.7rem; display: flex; flex-direction: column; justify-content: center; }
-      .post-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.45rem; font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.65rem; }
-      .post-meta .dot { width: 3px; height: 3px; background: #94a3b8; border-radius: 50%; }
-      .post-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.55rem; line-height: 1.3; }
+
+      .post-image.placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        color: #94a3b8;
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      }
+
+      .post-content {
+        padding: 1.4rem 1.65rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .post-meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        font-weight: 550;
+        color: var(--text-muted);
+        margin-bottom: 0.55rem;
+      }
+
+      .post-meta .dot {
+        width: 3px;
+        height: 3px;
+        background: #94a3b8;
+        border-radius: 50%;
+      }
+
+      .source-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 0.12rem 0.4rem;
+        border-radius: 4px;
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid var(--border);
+      }
+
+      .post-title {
+        font-size: 1.22rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem;
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+      }
+
       .post-card:hover .post-title { color: var(--accent); }
-      .post-excerpt { color: var(--text-secondary); font-size: 0.94rem; line-height: 1.55; margin: 0 0 1rem; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; display: -webkit-box; }
-      .post-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
-      .tag { display: inline-flex; padding: 0.22rem 0.65rem; font-size: 0.72rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; border: 1px solid #dbeafe; }
-      .empty, .no-results { text-align: center; padding: 5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border); border-radius: var(--radius); }
-      .no-results { display: none; opacity: 0; transition: opacity 0.3s ease; }
-      .no-results.visible { display: block; opacity: 1; }
-      @media (max-width: 700px) { .blog-page { padding: 2.75rem 0 5rem; } .post-card a { grid-template-columns: 1fr; } .post-image { height: 200px; } }
+
+      .post-excerpt {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        line-height: 1.55;
+        margin: 0 0 0.85rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .post-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: auto;
+      }
+
+      .tag {
+        display: inline-flex;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.7rem;
+        font-weight: 650;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-radius: 999px;
+        border: 1px solid #dbeafe;
+      }
+
+      .empty,
+      .no-results {
+        text-align: center;
+        padding: 4.5rem 1.5rem;
+        background: var(--bg-card);
+        border: 1px dashed var(--border);
+        border-radius: var(--radius-lg);
+        color: var(--text-muted);
+      }
+
+      .no-results {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .no-results.visible {
+        display: block;
+        opacity: 1;
+      }
+
+      .empty h3,
+      .no-results h3 {
+        margin: 0 0 0.5rem;
+        color: var(--text-primary);
+        font-size: 1.15rem;
+      }
+
+      .empty p,
+      .no-results p {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 720px) {
+        .blog-page { padding: 2.5rem 0 5rem; }
+        .post-card a { grid-template-columns: 1fr; }
+        .post-image { height: 190px; }
+      }
     </style>
   </head>
   <body>
@@ -107,62 +416,136 @@ const initialQuery = Astro.url.searchParams.get('q') || '';
       <header class="blog-hero">
         <div class="label">Insights</div>
         <h1>Blog</h1>
-        <p>Practical analysis on AI, strategy, cloud, security, and the future of work.</p>
+        <p>
+          Practical analysis on AI, strategy, cloud, security, startups, and the future of work.
+        </p>
+        <div class="hero-stats">
+          <span><strong>{total}</strong> articles</span>
+          <span>·</span>
+          <span>Sanity + archive</span>
+        </div>
       </header>
 
-      {posts.length === 0 ? (
-        <div class="empty"><h3>No articles yet</h3></div>
-      ) : (
-        <>
-          <div class="controls">
-            <div class="search-wrapper">
-              <span class="search-icon">⌕</span>
-              <input type="search" id="searchInput" class="search-input" placeholder="Search articles..." value={initialQuery} />
-            </div>
-
-            <div class="filter-bar" id="filterBar">
-              <button class={`filter-btn ${initialCategory === 'all' ? 'active' : ''}`} data-filter="all">All</button>
-              {allCategories.map((cat) => (
-                <button class={`filter-btn ${initialCategory === cat ? 'active' : ''}`} data-filter={cat}>{cat}</button>
-              ))}
-            </div>
+      {
+        total === 0 ? (
+          <div class="empty">
+            <h3>No articles yet</h3>
+            <p>New analysis will appear here soon.</p>
           </div>
+        ) : (
+          <>
+            <div class="controls">
+              <div class="search-wrapper">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <input
+                  type="search"
+                  id="searchInput"
+                  class="search-input"
+                  placeholder="Search articles…"
+                  value={initialQuery}
+                  autocomplete="off"
+                />
+              </div>
 
-          <div class="filter-count" id="filterCount">Showing {posts.length} article{posts.length !== 1 ? 's' : ''}</div>
+              <div class="filter-bar" id="filterBar" role="group" aria-label="Filter by category">
+                <button
+                  type="button"
+                  class={`filter-btn ${initialCategory === 'all' ? 'active' : ''}`}
+                  data-filter="all"
+                >
+                  All
+                </button>
+                {allCategories.map((cat) => (
+                  <button
+                    type="button"
+                    class={`filter-btn ${initialCategory === cat ? 'active' : ''}`}
+                    data-filter={cat}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          <ul class="posts" id="postsList">
-            {posts.map((post: any) => (
-              <li class="post-card" data-categories={(post.categories || []).join(',')} data-title={(post.title || '').toLowerCase()}>
-                <a href={`/blog/${post.slug}/`}>
-                  <div class="post-image">
-                    {post.imageUrl ? <img src={`${post.imageUrl}?w=480&h=320&fit=crop`} alt={post.imageAlt} /> : <div style="display:flex;align-items:center;justify-content:center;height:100%">✦</div>}
-                  </div>
-                  <div class="post-content">
-                    <div class="post-meta">
-                      <span>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US') : 'Recently'}</span>
-                      {post.authorName && (
-                        <>
-                          <span class="dot"></span>
-                          <span>{post.authorName}</span>
-                        </>
+            <div class="filter-count" id="filterCount">
+              Showing {total} article{total !== 1 ? 's' : ''}
+            </div>
+
+            <ul class="posts" id="postsList">
+              {allPosts.map((post: UnifiedPost) => (
+                <li
+                  class="post-card"
+                  data-categories={(post.categories || []).join('|')}
+                  data-title={(post.title || '').toLowerCase()}
+                  data-excerpt={(post.excerpt || '').toLowerCase()}
+                  data-source={post.source}
+                >
+                  <a href={post.href}>
+                    <div class={`post-image ${post.imageUrl ? '' : 'placeholder'}`}>
+                      {post.imageUrl ? (
+                        <img
+                          src={
+                            post.source === 'sanity'
+                              ? `${post.imageUrl}?w=480&h=320&fit=crop&auto=format`
+                              : post.imageUrl
+                          }
+                          alt={post.imageAlt || post.title}
+                          loading="lazy"
+                          width="220"
+                          height="168"
+                        />
+                      ) : (
+                        <span aria-hidden="true">✦</span>
                       )}
                     </div>
-                    <h2 class="post-title">{post.title}</h2>
-                    <p class="post-excerpt">{post.excerpt}</p>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div class="no-results" id="noResults"><h3>No articles found</h3></div>
-        </>
-      )}
+                    <div class="post-content">
+                      <div class="post-meta">
+                        <time datetime={post.publishedAt.toISOString()}>
+                          {formatDate(post.publishedAt)}
+                        </time>
+                        <span class="dot" />
+                        <span>{post.readingTime}</span>
+                        {post.authorName && (
+                          <>
+                            <span class="dot" />
+                            <span>{post.authorName}</span>
+                          </>
+                        )}
+                        {post.source === 'markdown' && (
+                          <>
+                            <span class="dot" />
+                            <span class="source-badge">Archive</span>
+                          </>
+                        )}
+                      </div>
+                      <h2 class="post-title">{post.title}</h2>
+                      {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
+                      {post.categories.length > 0 && (
+                        <div class="post-tags">
+                          {post.categories.slice(0, 3).map((c) => (
+                            <span class="tag">{c}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div class="no-results" id="noResults">
+              <h3>No articles found</h3>
+              <p>Try another search or clear the category filter.</p>
+            </div>
+          </>
+        )
+      }
     </main>
 
     <Footer />
 
-    <script>
-      const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+    <script is:inline>
+      const searchInput = document.getElementById('searchInput');
       const filterButtons = document.querySelectorAll('.filter-btn');
       const postCards = document.querySelectorAll('.post-card');
       const filterCount = document.getElementById('filterCount');
@@ -176,7 +559,8 @@ const initialQuery = Astro.url.searchParams.get('q') || '';
         const params = new URLSearchParams();
         if (currentCategory !== 'all') params.set('category', currentCategory);
         if (currentQuery.trim()) params.set('q', currentQuery.trim());
-        const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+        const qs = params.toString();
+        const newUrl = qs ? window.location.pathname + '?' + qs : window.location.pathname;
         window.history.replaceState({}, '', newUrl);
       }
 
@@ -184,11 +568,14 @@ const initialQuery = Astro.url.searchParams.get('q') || '';
         const query = currentQuery.toLowerCase().trim();
         let visibleCount = 0;
 
-        postCards.forEach((card) => {
-          const categories = card.getAttribute('data-categories') || '';
+        postCards.forEach(function (card) {
+          const categories = (card.getAttribute('data-categories') || '').split('|');
           const title = card.getAttribute('data-title') || '';
-          const matchesCategory = currentCategory === 'all' || categories.split(',').includes(currentCategory);
-          const matchesSearch = !query || title.includes(query);
+          const excerpt = card.getAttribute('data-excerpt') || '';
+          const matchesCategory =
+            currentCategory === 'all' || categories.indexOf(currentCategory) !== -1;
+          const matchesSearch =
+            !query || title.indexOf(query) !== -1 || excerpt.indexOf(query) !== -1;
           const shouldShow = matchesCategory && matchesSearch;
 
           if (shouldShow) {
@@ -196,20 +583,27 @@ const initialQuery = Astro.url.searchParams.get('q') || '';
             visibleCount++;
           } else {
             card.classList.add('is-hiding');
-            setTimeout(() => { if (card.classList.contains('is-hiding')) card.classList.add('is-hidden'); }, 280);
+            setTimeout(function () {
+              if (card.classList.contains('is-hiding')) card.classList.add('is-hidden');
+            }, 260);
           }
         });
 
-        if (filterCount) filterCount.textContent = `Showing ${visibleCount} article${visibleCount !== 1 ? 's' : ''}`;
+        if (filterCount) {
+          filterCount.textContent =
+            'Showing ' + visibleCount + ' article' + (visibleCount !== 1 ? 's' : '');
+        }
         if (noResults && postsList) {
           postsList.style.display = visibleCount === 0 ? 'none' : 'flex';
           noResults.classList.toggle('visible', visibleCount === 0);
         }
       }
 
-      filterButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          filterButtons.forEach((b) => b.classList.remove('active'));
+      filterButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          filterButtons.forEach(function (b) {
+            b.classList.remove('active');
+          });
           btn.classList.add('active');
           currentCategory = btn.getAttribute('data-filter') || 'all';
           updateURL();
@@ -217,15 +611,20 @@ const initialQuery = Astro.url.searchParams.get('q') || '';
         });
       });
 
-      let debounceTimer: number;
-      searchInput?.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = window.setTimeout(() => {
-          currentQuery = searchInput.value;
-          updateURL();
-          applyFilters();
-        }, 220);
-      });
+      var debounceTimer;
+      if (searchInput) {
+        searchInput.addEventListener('input', function () {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function () {
+            currentQuery = searchInput.value;
+            updateURL();
+            applyFilters();
+          }, 200);
+        });
+      }
+
+      // Apply initial URL filters on load
+      applyFilters();
     </script>
   </body>
 </html>
