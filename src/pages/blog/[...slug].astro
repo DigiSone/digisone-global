@@ -1,5 +1,4 @@
-                                                                                                          margin-bottom: 0.4rem;
-                  ---
+---
 import { sanityClient } from 'sanity:client';
 import { getCollection, render } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
@@ -8,28 +7,26 @@ import Footer from '../../components/Footer.astro';
 import { SITE_TITLE } from '../../consts';
 
 export async function getStaticPaths() {
-  // Sanity slugs
   const sanityPosts = await sanityClient.fetch(`
     *[_type == "post" && defined(slug.current)]{ "slug": slug.current }
   `);
-  const sanityPaths = (sanityPosts || []).map((p: { slug: string }) => ({
+
+  const sanityPaths = (sanityPosts || []).map((p) => ({
     params: { slug: p.slug },
   }));
 
-  // Markdown ids
-  let mdPaths: { params: { slug: string } }[] = [];
+  let mdPaths = [];
   try {
     const md = await getCollection('blog');
     mdPaths = md.map((entry) => ({
       params: { slug: entry.id },
     }));
   } catch {
-    /* no collection */
+    // no markdown collection
   }
 
-  // Dedupe by slug string
-  const seen = new Set<string>();
-  const paths: { params: { slug: string } }[] = [];
+  const seen = new Set();
+  const paths = [];
   for (const p of [...sanityPaths, ...mdPaths]) {
     if (!seen.has(p.params.slug)) {
       seen.add(p.params.slug);
@@ -41,7 +38,6 @@ export async function getStaticPaths() {
 
 const slug = Astro.params.slug || '';
 
-// 1) Try Sanity
 const sanityPost = await sanityClient.fetch(
   `*[_type == "post" && slug.current == $slug][0]{
     title,
@@ -58,23 +54,23 @@ const sanityPost = await sanityClient.fetch(
   { slug }
 );
 
-let mode: 'sanity' | 'markdown' | 'none' = 'none';
-let mdEntry: any = null;
-let MdContent: any = null;
+let mode = 'none';
+let mdEntry = null;
+let MdContent = null;
 
 if (sanityPost) {
   mode = 'sanity';
 } else {
   try {
     const all = await getCollection('blog');
-    mdEntry = all.find((e) => e.id === slug);
+    mdEntry = all.find((e) => e.id === slug) || null;
     if (mdEntry) {
       mode = 'markdown';
       const rendered = await render(mdEntry);
       MdContent = rendered.Content;
     }
   } catch {
-    /* ignore */
+    // ignore
   }
 }
 
@@ -82,12 +78,12 @@ if (mode === 'none') {
   return Astro.redirect('/404');
 }
 
-const title =
+const pageTitle =
   mode === 'sanity'
     ? `${sanityPost.title} — ${SITE_TITLE}`
     : `${mdEntry.data.title} — ${SITE_TITLE}`;
 
-const description =
+const pageDescription =
   mode === 'sanity'
     ? sanityPost.excerpt || SITE_TITLE
     : mdEntry.data.description || SITE_TITLE;
@@ -101,13 +97,27 @@ const publishedAt =
       ? new Date(mdEntry.data.pubDate)
       : null;
 
+const readingLabel =
+  mode === 'sanity' && sanityPost.estimatedReadingTime > 0
+    ? `${sanityPost.estimatedReadingTime} min read`
+    : null;
+
 const canonical = `https://digisone.com/blog/${slug}/`;
+
+function formatLongDate(d) {
+  if (!d) return null;
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={pageTitle} description={pageDescription} />
     <link rel="canonical" href={canonical} />
     <style>
       :root {
@@ -139,7 +149,9 @@ const canonical = `https://digisone.com/blog/${slug}/`;
         text-decoration: none;
         margin-bottom: 1.75rem;
       }
-      .back:hover { text-decoration: underline; }
+      .back:hover {
+        text-decoration: underline;
+      }
       .meta {
         display: flex;
         flex-wrap: wrap;
@@ -149,8 +161,11 @@ const canonical = `https://digisone.com/blog/${slug}/`;
         margin-bottom: 1rem;
       }
       .meta .dot {
-        width: 3px; height: 3px; border-radius: 50%;
-        background: #94a3b8; align-self: center;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: #94a3b8;
+        align-self: center;
       }
       h1 {
         font-size: clamp(1.85rem, 4.5vw, 2.6rem);
@@ -190,12 +205,17 @@ const canonical = `https://digisone.com/blog/${slug}/`;
         margin: 1.5rem 0 0.5rem;
         font-size: 1.2rem;
       }
-      .prose :global(p) { margin: 0 0 1.15rem; }
-      .prose :global(ul), .prose :global(ol) {
+      .prose :global(p) {
+        margin: 0 0 1.15rem;
+      }
+      .prose :global(ul),
+      .prose :global(ol) {
         margin: 0 0 1.15rem;
         padding-left: 1.25rem;
       }
-      .prose :global(a) { color: var(--accent); }
+      .prose :global(a) {
+        color: var(--accent);
+      }
       .prose :global(img) {
         max-width: 100%;
         border-radius: 12px;
@@ -224,6 +244,15 @@ const canonical = `https://digisone.com/blog/${slug}/`;
         color: var(--muted);
         margin-top: 1rem;
       }
+      .body-placeholder {
+        padding: 1.25rem 1.35rem;
+        background: #fff;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+      }
     </style>
   </head>
   <body>
@@ -236,13 +265,7 @@ const canonical = `https://digisone.com/blog/${slug}/`;
           <>
             <div class="meta">
               {publishedAt && (
-                <time datetime={publishedAt.toISOString()}>
-                  {publishedAt.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
+                <time datetime={publishedAt.toISOString()}>{formatLongDate(publishedAt)}</time>
               )}
               {sanityPost.authorName && (
                 <>
@@ -250,15 +273,18 @@ const canonical = `https://digisone.com/blog/${slug}/`;
                   <span>{sanityPost.authorName}</span>
                 </>
               )}
-              {sanityPost.estimatedReadingTime > 0 && (
+              {readingLabel && (
                 <>
                   <span class="dot" />
-                  <span>{sanityPost.estimatedReadingTime} min read</span>
+                  <span>{readingLabel}</span>
                 </>
               )}
             </div>
+
             <h1>{sanityPost.title}</h1>
+
             {sanityPost.excerpt && <p class="lead">{sanityPost.excerpt}</p>}
+
             {sanityPost.imageUrl && (
               <div class="hero-img">
                 <img
@@ -267,19 +293,20 @@ const canonical = `https://digisone.com/blog/${slug}/`;
                 />
               </div>
             )}
-            {/* Portable Text: replace with your PortableText component when ready */}
+
+            {/*
+              TODO: Wire your Portable Text / body renderer here.
+              Example: <PortableText value={sanityPost.body} />
+            */}
             <div class="prose">
-              <p>
-                <em>
-                  Full body rendering via Portable Text component — wire
-                  <code> astro-portabletext </code>
-                  or your existing body renderer here.
-                </em>
-              </p>
+              <div class="body-placeholder">
+                Post body will render here once Portable Text (or your body component) is connected.
+              </div>
             </div>
-            {sanityPost.categories?.length > 0 && (
+
+            {sanityPost.categories && sanityPost.categories.length > 0 && (
               <div class="tags">
-                {sanityPost.categories.map((c: string) => (
+                {sanityPost.categories.map((c) => (
                   <a class="tag" href={`/blog/?category=${encodeURIComponent(c)}`}>
                     {c}
                   </a>
@@ -295,13 +322,7 @@ const canonical = `https://digisone.com/blog/${slug}/`;
           <>
             <div class="meta">
               {publishedAt && (
-                <time datetime={publishedAt.toISOString()}>
-                  {publishedAt.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
+                <time datetime={publishedAt.toISOString()}>{formatLongDate(publishedAt)}</time>
               )}
               {mdEntry.data.author && (
                 <>
@@ -310,13 +331,15 @@ const canonical = `https://digisone.com/blog/${slug}/`;
                 </>
               )}
             </div>
+
             <h1>{mdEntry.data.title}</h1>
-            {mdEntry.data.description && (
-              <p class="lead">{mdEntry.data.description}</p>
-            )}
+
+            {mdEntry.data.description && <p class="lead">{mdEntry.data.description}</p>}
+
             <div class="prose">
               <MdContent />
             </div>
+
             <p class="archive-note">Archive article (Markdown)</p>
           </>
         )
@@ -324,72 +347,4 @@ const canonical = `https://digisone.com/blog/${slug}/`;
     </article>
     <Footer />
   </body>
-</html>                                                                              }
-                                                                                                      .post-content :global(a) {
-                                                                                                                color: #2563eb;
-                                                                                                                        text-decoration: underline;
-                                                                                                      }
-                                                                                                            .post-content :global(strong) {
-                                                                                                                      font-weight: 700;
-                                                                                                            }
-                                                                                                                </style>
-                                                                                                                  </head>
-                                                                                                                    <body>
-                                                                                                                        <Header />
-
-                                                                                                                            <main class="post-container">
-                                                                                                                                  <a href="/blog/" class="back-link">← Back to Blog</a>
-
-                                                                                                                                        <article>
-                                                                                                                                                <p class="post-date">
-                                                                                                                                                          {post.publishedAt 
-                                                                                                                                                                      ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-                                                                                                                                                                                        year: 'numeric',
-                                                                                                                                                                                                        month: 'long',
-                                                                                                                                                                                                                        day: 'numeric',
-                                                                                                                                                                      })
-                                                                                                                                                                                  : 'August 4, 2026'}
-                                                                                                                                                                                          </p>
-
-                                                                                                                                                                                                  <h1 class="post-title">{post.title}</h1>
-
-                                                                                                                                                                                                          {post.authorName && (
-                                                                                                                                                                                                                      <p class="post-author">By {post.authorName}</p>
-                                                                                                                                                                                                          )}
-
-                                                                                                                                                                                                                  {post.imageUrl && (
-                                                                                                                                                                                                                              <img src={post.imageUrl} alt={post.title} class="post-image" />
-                                                                                                                                                                                                                  )}
-
-                                                                                                                                                                                                                          <div class="post-content">
-                                                                                                                                                                                                                                    {post.body && <PortableText value={post.body} />}
-                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                  </article>
-                                                                                                                                                                                                                                                      </main>
-
-                                                                                                                                                                                                                                                          <Footer />
-                                                                                                                                                                                                                                                            </body>
-                                                                                                                                                                                                                                                            </html>
-                                                                                                                                                                                                                  )}
-                                                                                                                                                                                                          )}
-                                                                                                                                                                      })}
-                                                                                                            }
-                                                                                                      }
-                                                                                                }
-                                                                                          }
-                                                                              }
-                                                                        }
-                                                                  }
-                                                            }
-                                                      }
-                                                }
-                                          }
-                                    }
-                              }
-                        }
-                  }
-  }
-  })
-            }))
-        })
-}
+</html>
