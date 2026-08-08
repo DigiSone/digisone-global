@@ -1,56 +1,35 @@
+
 ---
-import { sanityClient } from 'sanity:client';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getAllPosts, formatDate, type UnifiedPost } from '../lib/posts';
 
-const posts = await sanityClient.fetch(`
-  *[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    excerpt,
-    publishedAt,
-    "imageUrl": mainImage.asset->url,
-    "imageAlt": mainImage.alt,
-    "authorName": author->name,
-    "categories": categories[]->title,
-    "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),
-    featured
-  }
-`);
+const allPosts = await getAllPosts();
 
-const safePosts = posts || [];
-const featuredPost = safePosts.find((p: any) => p.featured) || safePosts[0] || null;
-const latestPosts = safePosts
-  .filter((p: any) => p._id !== featuredPost?._id)
+const featuredPost: UnifiedPost | null =
+  allPosts.find((p) => p.featured) || allPosts[0] || null;
+
+const latestPosts = allPosts
+  .filter((p) => p.id !== featuredPost?.id)
   .slice(0, 6);
 
-function formatDate(dateStr?: string | null) {
-  if (!dateStr) return 'Recently';
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
-
-function formatShortDate(dateStr?: string | null) {
-  if (!dateStr) return 'Recently';
-  return new Date(dateStr).toLocaleDateString('en-US', {
+function formatShortDate(d: Date | null | undefined): string {
+  if (!d || d.getTime() === 0) return 'Recently';
+  return d.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   });
 }
 
-function getReadingTime(post: any): string {
-  if (post?.estimatedReadingTime && post.estimatedReadingTime > 0) {
-    return `${post.estimatedReadingTime} min read`;
+function imageSrc(post: UnifiedPost, w: number, h: number): string {
+  if (!post.imageUrl) return '';
+  if (post.source === 'sanity') {
+    return `\( {post.imageUrl}?w= \){w}&h=${h}&fit=crop&auto=format`;
   }
-  const words = (post?.excerpt || '').split(/\s+/).filter(Boolean).length;
-  return `${Math.max(1, Math.ceil(words / 40))} min read`;
+  return post.imageUrl;
 }
 
 const trendingTopics = [
@@ -98,8 +77,6 @@ const socialLinks = [
   },
 ];
 ---
-
-
 
 <!doctype html>
 <html lang="en">
@@ -648,20 +625,17 @@ const socialLinks = [
 				</div>
 			</section>
 
-<!-- FEATURED ARTICLE (Sanity CMS) -->
+<!-- FEATURED ARTICLE (Sanity + Markdown) -->
 			<section class="section reveal" aria-label="Featured article">
 				{
 					featuredPost ? (
 						<article class="featured-article">
-							<a
-								href={featuredPost.slug ? `/blog/${featuredPost.slug}/` : '/blog/'}
-								aria-label={`Read: ${featuredPost.title}`}
-							>
+							<a href={featuredPost.href} aria-label={`Read: ${featuredPost.title}`}>
 								<div class="featured-grid">
 									<div class="featured-media">
 										{featuredPost.imageUrl ? (
 											<img
-												src={`${featuredPost.imageUrl}?w=900&h=600&fit=crop&auto=format`}
+												src={imageSrc(featuredPost, 900, 600)}
 												alt={featuredPost.imageAlt || featuredPost.title}
 												width="900"
 												height="600"
@@ -677,11 +651,11 @@ const socialLinks = [
 											Editor's Choice • By {featuredPost.authorName || 'Vikas Mishra'}
 										</div>
 										<p class="article-date">
-											<time datetime={featuredPost.publishedAt || ''}>
+											<time datetime={featuredPost.publishedAt.toISOString()}>
 												{formatDate(featuredPost.publishedAt)}
 											</time>
 											{' · '}
-											{getReadingTime(featuredPost)}
+											{featuredPost.readingTime}
 										</p>
 										<h3>{featuredPost.title}</h3>
 										<p class="article-excerpt">{featuredPost.excerpt}</p>
@@ -696,7 +670,7 @@ const socialLinks = [
 							</a>
 						</article>
 					) : (
-						<div class="empty-state">No articles published yet. Add posts via Sanity Studio.</div>
+						<div class="empty-state">No articles published yet.</div>
 					)
 				}
 			</section>
@@ -711,10 +685,10 @@ const socialLinks = [
 				{
 					latestPosts.length > 0 ? (
 						<ul class="posts-grid">
-							{latestPosts.map((post: any, i: number) => (
+							{latestPosts.map((post, i) => (
 								<li class={`post-card reveal reveal-delay-${Math.min(i + 1, 2)}`}>
 									<a
-										href={post.slug ? `/blog/${post.slug}/` : '/blog/'}
+										href={post.href}
 										aria-label={post.title}
 										style="display: flex; flex-direction: column; height: 100%;"
 									>
@@ -722,7 +696,7 @@ const socialLinks = [
 											{post.imageUrl ? (
 												<img
 													class="post-thumb"
-													src={`${post.imageUrl}?w=600&h=340&fit=crop&auto=format`}
+													src={imageSrc(post, 600, 340)}
 													alt={post.imageAlt || post.title}
 													width="600"
 													height="340"
@@ -737,11 +711,11 @@ const socialLinks = [
 										</div>
 										<div class="post-body">
 											<p class="post-date">
-												<time datetime={post.publishedAt || ''}>
+												<time datetime={post.publishedAt.toISOString()}>
 													{formatShortDate(post.publishedAt)}
 												</time>
 												{' · '}
-												{getReadingTime(post)}
+												{post.readingTime}
 											</p>
 											<h3>{post.title}</h3>
 											<p class="post-desc">{post.excerpt}</p>
